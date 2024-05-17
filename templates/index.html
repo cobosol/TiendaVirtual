@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+    <div id="header-carousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active" style="height: 100%;">
+                <img class="img-fluid" src="/static/images/carrusel/Producciones.png" alt="Image">
+                <div class="d-flex flex-column align-items-center justify-content-center">
+                    <div class="p-3" style="max-width: 700px;">
+                                    <!-- <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order</h4>
+                                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Fashionable Dress</h3> -->
+                           <!--          <a href="" class="btn btn-light py-2 px-3">Comprar</a> -->                                
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item" style="height: 100%;">
+                <img class="img-fluid" src="/static/images/carrusel/Banner3Tienda.png" alt="Image">
+                <div class="d-flex flex-column align-items-center justify-content-center">
+                    <div class="p-3" style="max-width: 700px;">
+<!--                                     <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order</h4>
+                                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Reasonable Price</h3> -->
+                      <!--               <a href="" class="btn btn-light py-2 px-3">Comprar ahora</a> -->
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item" style="height: 100%;">
+                <img class="img-fluid" src="/static/images/carrusel/ventas_mayoristas.png" alt="Image">
+                <div class="d-flex flex-column align-items-center justify-content-center">
+                    <div class="p-3" style="max-width: 700px;">
+                              <!--      <h3 class="display-4 text-white font-weight-semi-bold mb-4">Reasonable Price</h3>
+                                   <a href="" class="btn btn-light py-2 px-3">Comprar ahora</a>                     -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                    <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
+                        <div class="btn btn-dark" style="width: 45px; height: 45px;">
+                            <span class="carousel-control-prev-icon mb-n2"></span>
+                        </div>
+                    </a>
+                    <a class="carousel-control-next" href="#header-carousel" data-slide="next">
+                        <div class="btn btn-dark" style="width: 45px; height: 45px;">
+                            <span class="carousel-control-next-icon mb-n2"></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Navbar End -->
+
+    <!-- Ofertas del día. Todos los activos -->
+
+    <div class="container-fluid bg-primary mb-2">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 60px">
+            <h2 class="text-light font-weight-semi-bold text-uppercase mb-2" style="font-family: roboto;">Hoy le ofrecemos</h2>
+        </div>
+    </div>
+
+    <div class="container-fluid bg-purple-300 mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+            <div class="container-fluid pt-5">
+                <div class="row px-xl-5 pb-3">
+                    {% for p in products %}
+                    {% if p.is_active%}
+                    <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                        <div class="card product-item border-1 mb-2">
+                            <div class="card-header product-img position-relative text-center overflow-hidden bg-transparent border p-0">
+                                <img width="80%" height="80%" class="img-fluid w-8" src="{{p.get_image_url}}" alt="{{p.get_image_url}}">
+                            </div>
+                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                                <h6 class="text-truncate mb-3" style="font-family: roboto;">{{ p.name }}</h6>
+                                <div class="d-flex justify-content-center">
+                                    <h6 class="text-red" style="font-family: roboto;">$ {{p.price}}</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                </div>
+                                <div class="card-footer d-flex justify-content-center text-center bg-secondary border">
+                                    <a href="{{p.get_absolute_url}}" class="btn btn-sm text-secondary p-0"><i class="fas fa-eye text-secondary mr-1"></i>Detalles</a>
+    <!--                                 <a href="" class="btn btn-sm text-red p-0"><i class="fas fa-shopping-cart text-red mr-1"></i>Muy pronto</a> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Próxima venta -->
+
+    <div class="container-fluid bg-primary mb-2">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 60px">
+            <h2 class="text-light font-weight-semi-bold text-uppercase mb-2" style="font-family: roboto;">Pròximamente a su disposición</h2>
+        </div>
+    </div>
+
+    <div class="container-fluid bg-purple-300 mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+            <div class="container-fluid pt-5">
+                <div class="row px-xl-5 pb-3">
+                    {% for p in products %}
+                    {% if p.is_featured %}
+                    <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                        <div class="card product-item border-1 mb-2">
+                            <div class="card-header product-img position-relative text-center overflow-hidden bg-transparent border p-0">
+                                <img width="80%" height="80%" class="img-fluid w-10" src="{{p.get_image_url}}" alt="{{p.get_image_url}}">
+                            </div>
+                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                                <h6 class="text-truncate mb-3" style="font-family: roboto;">{{ p.name }}</h6>
+                                <div class="d-flex justify-content-center">
+                                    <h6 class="text-red" style="font-family: roboto;">$ {{p.price}}</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                </div>
+                                <div class="card-footer d-flex justify-content-center text-center bg-secondary border">
+                                   <!-- <a href="#" class="btn btn-sm text-secondary p-0"><i class="fas fa-eye text-secondary mr-1"></i>Detalles</a>
+                                 <a href="" class="btn btn-sm text-red p-0"><i class="fas fa-shopping-cart text-red mr-1"></i>Muy pronto</a> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

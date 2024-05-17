@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+
+<title>Producto</title>
+
+{% block content %}
+
+<div class="container-fluid bg-secondary mb-2">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 60px">
+        <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: roboto;">Detalles del producto</h4>
+    </div>
+</div>
+<!-- Page Header End -->
+
+
+    <!-- Shop Detail Start -->
+    <div class="container-fluid py-2">
+        <div class="row px-xl-5">
+            <div id="imagen" class="col-lg-3 pb-0 card-header product-img position-relative text-md-left overflow-hidden bg-transparent p-0">
+                <img width="220" height="320" src="{{p.get_image_url}}" alt="{{p.get_image_url}}">
+                <div class="d-flex mb-4">
+                    <p class="text-dark font-weight-medium mb-0 mr-3" style="font-family: roboto;">Ficha Técnica:</p>
+                    <a href="{{ p.get_file_url }}" target="_blank"> {{ p.gname }} </a>
+                </div>
+                <div class="d-flex mb-4">
+                    <p class="text-dark font-weight-medium mb-0 mr-3" style="font-family: roboto;">Categorí{{ categories.count|pluralize:"a,as" }}:</p>
+                    {% for c in categories %}
+                        <p class="m-0" style="font-family: roboto;"><a href="{{ c.get_absolute_url }}" style="font-family: roboto;">{{ c.name }}</a></p>
+                        {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div id="detalles" class="col-lg-5 pb-1">
+                <h5 class="font-weight-semi-bold" style="font-family: roboto;">{{ p.gname }}</h5>
+                <h6 class="font-weight-semi-bold" style="font-family: roboto;">{{ p.presentation }}</h6>
+                <h5 class="font-weight-semi-bold mb-4" style="font-family: roboto;">Precio: $ {{ p.price }} USD</h5>
+            <!--     <h4 class="mb-4" style="font-family: roboto;">Producto de: {{ p.brand }} </h4> -->
+                <p>
+                <h6 class="font-weight-semi-bold mb-4" style="font-family: roboto;"> Descripción: </h6>{{p.description|safe}}
+                <br> 
+                </p>
+            </div>
+            <div id="opciones_compra" class="col-lg-4 pb-0">
+                <div>
+                    <h3 class="font-weight-semi-bold text-primary" style="font-family: roboto;">Disponibilidad</h3>
+                    <table class="table table-bordered text-center mb-0 border-0" style="font-family: roboto;">
+                        <thead class="bg-primary text-light">
+                            <tr>
+                                <th>Forma de entrega</th>
+                                <th>Disponibles</th>
+                            </tr>
+                        </thead>
+                        <tbody class="align-middle">
+                            {% for ps in products_stores %}
+                            <tr>
+                                <td class="align-middle">
+                                    <a href="{{ps.store.get_absolute_url}}" class="text-dark font-weight-medium mb-0 mr-3" style="font-family: roboto;">{{ ps.store.name }}:</a>
+                                </td>
+                                <td class="align-middle">
+                                    {{ ps.available }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row px-xl-8">
+                    <form method="post" action="." class="cart">
+                        {% csrf_token %}
+                        <div >
+                            <p><h6 class="font-weight-semi-bold text-primary" style="font-family: roboto;">Seleccione forma de entrega</h6></p>                        
+                            {{form.delivery_type}}
+                            <p><h6 class="font-weight-semi-bold bg-secondary text-primary" style="font-family: roboto;">Cantidad</h6></p>
+                                <div class="input-group quantity mr-2" style="width: 250px;">
+                                    {{form.quantity}}
+                                    <input type="submit" class="btn btn-primary px-3 fa fa-shopping-cart mr-1" value="Comprar" name="submit" alt="Add To Cart" />
+                                    {{form.product_slug}}
+                                </div>
+                        </div>    
+                    </form>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row px-xl-5">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }} text-red">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
+
+    <!-- Shop Detail End -->
+

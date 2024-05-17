@@ -1,0 +1,8 @@
+# Variables de entorno
+.env
+
+# Base de datos
+db.sqlite3
+
+# Ignora la carpeta media
+media

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Perfil{% endblock %}
+{% block content %}
+
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-2">
+  <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+      <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: roboto;"> Perfil de usuario </h4>
+  </div>
+</div>
+<!-- Page Header End -->
+
+
+<style>.errorlist{color:red;} label{display:none}</style>
+<main role="main">
+  <div class="container">
+    <form action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row mt-3">
+      <div id="avatar" class="col col-md-5 mx-auto mb-4 col-lg-3 pb-0">
+          <div class="col-md-12">
+            {% if request.user.profile.avatar %}
+              <img width="200" height="200" src="{{request.user.profile.get_avatar_url}}" alt="{{request.user.profile.get_avatar_url}}">
+            <!--   <h6 class="text-dark font-weight-semi-bold mb-3" style="font-family: roboto;">Foto del perfil</h6> -->
+<!--                <img src="{{request.user.profile.avatar.url}}" class="img-fluid"> -->
+<!--               <p class="mt-1">¿Borrar? <input type="checkbox" id="avatar-clear" name="avatar-clear" /></p> -->
+            {% else %}
+              <img src="{% static 'images/Profile/silueta.jpg' %}" class="img-fluid">
+            {% endif %}
+            <h6 class="text-dark font-weight-semi-bold mb-3" style="font-family: roboto;">Cambiar foto</h6>
+            <input type="file" name="avatar" class="form-control-file btn-block mt-3" id="id_avatar">
+          </div>
+      </div>
+      <div id="datos" class="col col-md-7 mx-auto mb-5 col-lg-9 pb-1">
+          <!-- Formulario -->
+            <h3 >{{request.user.username}}</h3> 
+            <h1> </h1>
+            <!-- <h6 class="text-dark font-weight-semi-bold mb-3" style="font-family: roboto;">Resumen biográfico</h6> -->
+            {{ form.bio }}
+            <h1></h1>
+<!--             <h6 class="text-dark font-weight-semi-bold mb-3" style="font-family: roboto;">Sitio web personal</h6> -->
+            {{ form.link }}
+            <h1></h1>
+            <h6 class="text-dark font-weight-semi-bold mb-3" style="font-family: roboto;">Tipo de cliente en nuestra tienda</h6>
+            {{ form.client_type }}
+            <h1></h1>
+            <h6 class="text-dark font-weight-semi-bold mb-3" style="font-family: roboto;">Correo electrónico</h6>
+            <input type="email" value="{{request.user.email}}" class="form-control mt-3" readonly>
+            <p class="mt-3">
+              Si deseas editar tu email haz clic <a href="{% url 'profile_email' %}">aquí</a>.<br>
+              Si quieres cambiar tu contraseña haz clic <a href="{% url 'password_change' %}">aquí</a>.
+            </p>
+            <input type="submit" class="btn btn-primary btn-block mt-3" value="Actualizar">
+      </div>
+      </div>
+    </form>
+  </div>
+</main>
+{% endblock %}

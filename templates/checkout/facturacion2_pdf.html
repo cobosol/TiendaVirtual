@@ -1,0 +1,228 @@
+{% load static %}
+{% load delete_underscore %}
+{% load qr_code %}
+<html>
+
+<head>
+    <style>
+        @page {
+            /* Configuracion general de la hoja */
+            /* size: a4 landscape; */
+            size: a4; 
+            margin: 1cm, 1cm, 1cm, 1cm;
+
+            @frame footer_frame {
+                /* Another static Frame */
+                -pdf-frame-content: footer_content;
+                left: 180pt;
+                width: 505pt;
+                top: 810pt;
+                height: 20pt;
+            }
+        }
+
+        th,
+        th {
+            font-size: 8px;
+            font-weight: bold;
+        }
+
+        td {
+            font-size: 8px;
+            padding: 2px;
+            word-wrap: break-word,
+        }
+
+        .first-td {
+            font-size: 8px;
+            padding: 1px;
+            word-wrap: break-word,
+        }
+
+        .table-info-td {
+            font-size: 6px;
+            padding: 0.8px;
+            word-wrap: break-word,
+        }
+
+        #descripcion_cargas {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+            font-size: 1px;
+        }
+
+        #footer_content label{
+            font-size: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <img src="{{request.scheme}}://{{request.get_host}}{% static '/img/criminal.jpg' %}" /> !-->
+    {% for current_factura in lista_facturas %}
+    {% for x in current_factura.Copias_Facturas %}
+    <table border="0">
+        <tbody>
+            <tr>
+                <td rowspan="2" style="width: 100px; height: 40px;"><img style="height: 100%; width: 100%;"
+                        src="{{request.scheme}}://{{request.get_host}}{% static '/dist/img/logo.png' %}" />
+                </td>
+                <td class="header-td" colspan="4">
+                    {% if current_factura.id_factura %}
+                    <h1 style="text-align: left; font-size: 10px; margin-left: 100px;">COMPROBANTE DE ENTREGA AL DESTINATARIO
+                        No: {{current_factura.id_factura}}</h1> 
+                    {% else %}
+                    <h1 style="text-align: left; font-size: 10px; margin-left: 180px;">VISTA PREVIA DEL COMPROBANTE</h1>    
+                    {% endif %}
+                </td>
+                <td class="first-td" >
+                    <!-- <img width="100px" height="100px"
+                        src="{{request.scheme}}://{{request.get_host}}/media/QR/factura_{{current_factura.id_factura}}.png" /> -->
+                    {% qr_from_text qr size="s" image_format="png" error_correction="L" %}
+
+                    {% if current_factura.id_factura %}
+                    <h1 style="text-align: left; font-size: 10px; margin-left: 0px;">Fecha de facturación: {{fecha_factura|date:"d/m/Y" }}</h1> 
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {% if current_factura.id_factura %}
+                    
+                    {% else %}
+                    <h1 style="text-align: left; font-size: 10px; margin-left: 130px;">Para generar el comprobante debe ejecutar el traslado</h1> 
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr>
+    <table border="0" style="border-collapse: collapse;">
+        <tbody>
+            <tr>
+                <td colspan="3" style="text-align: center;" class="first-td"><strong>DATOS DEL CLIENTE</strong></td>
+            </tr>
+            <tr>
+                <td class="first-td"><strong>Nombre:</strong>{{current_factura.Destinatario.Nombre}}</td>
+                {% if current_factura.Destinatario.CI %}
+                <td class="first-td"><strong>Carnet de identidad:</strong>{{current_factura.Destinatario.CI}}</td>
+                {% endif %}
+                {% if not current_factura.Destinatario.CI and current_factura.Destinatario.Pasaporte_DNI %}
+                <td class="first-td"><strong>Pasaporte o DNI:</strong>{{current_factura.Destinatario.Pasaporte_DNI}}</td>
+                {% endif %}
+                <td class="first-td"><strong>Teléfono:</strong>{{current_factura.Destinatario.Telefono}}</td>
+            </tr>
+            <tr>
+                <td class="first-td" colspan="3"><strong>Dirección:</strong>{{current_factura.Destinatario.Direccion|upper|delete_underscore}}</td>
+            </tr>
+            <tr>
+                <td colspan="3" style="text-align: center;" class="first-td"><br><strong>DETALLES DE LA FACTURA</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    <table border="0.5" style="border-collapse: collapse; text-align: center;">
+        <tbody>
+            <tr>
+                <td class="table-info-td" style="width: 100px;"><strong>HBL</strong></td>
+                <td class="table-info-td" style="width: 100px;"><strong>PESO</strong></td>
+                <td class="table-info-td" style="width: 100px;"><strong>CANTIDAD DE BULTOS</strong></td>
+                <td class="table-info-td" style="width: 125px;"><strong>IMPORTE TRANSCARGO</strong></td>
+                <td class="table-info-td" style="width: 190px;"><strong>SEGURO DE CARGA</strong></td>
+                <td class="table-info-td" style="width: 140px;"><strong>SOBREDIMENSIÓN</strong></td>
+                <td class="table-info-td" style="width: 190px;"><strong>TRANSPORTACIÓN</strong></td>
+            </tr>
+            {% for current_inventario in current_factura.Inventarios %}
+            <tr>
+                <td class="table-info-td" style="width: 100px;">{{current_inventario.Inventario.HBL}}</td>
+                <td class="table-info-td" style="width: 100px;">{{current_inventario.Inventario.Peso|floatformat:2}} KG</td>
+                <td class="table-info-td" style="width: 100px;">{{current_inventario.Inventario.Cantidad_Bultos}}</td>
+                <td class="table-info-td" style="width: 125px;">{{current_inventario.Importe_Transcargo|floatformat:2}} MN</td>
+                <td class="table-info-td" style="width: 190px;">{{current_inventario.Importe_Seguro_Carga|floatformat:2}} MN</td>
+                <td class="table-info-td" style="width: 140px;">{{current_inventario.Importe_Sobredimension|floatformat:2}} MN</td>
+                <td class="table-info-td" style="width: 190px;">{{current_inventario.Importe_Transportacion|floatformat:2}} MN</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td class="table-info-td" style="width: 100px;" colspan="2"><strong>SUBTOTALES</strong></td>
+                <td class="table-info-td" style="width: 125px;"><strong>{{current_factura.Cantidad_Bultos_Total}}</strong></td>
+                <td class="table-info-td" style="width: 125px;"><strong>{{current_factura.Importe_Transcargo_Total|floatformat:2}} MN</strong></td>
+                <td class="table-info-td" style="width: 190px;"><strong>{{current_factura.Importe_Seguro_Carga_Total|floatformat:2}} MN</strong></td>
+                <td class="table-info-td" style="width: 140px;"><strong>{{current_factura.Importe_Sobredimension_Total|floatformat:2}} MN</strong></td>
+                <td class="table-info-td" style="width: 190px;"><strong>{{current_factura.Importe_Transportacion_Total|floatformat:2}} MN</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <table border="0" style="border-collapse: collapse;">
+        <tbody>
+            <tr>
+                <td class="first-td"><strong>DERECHOS ADUANALES: {{current_factura.Importe_Derecho_Aduanal_Total|floatformat:2}} MN </strong></td>
+                <td class="first-td"><strong>SERVICIOS ADUANALES: {{current_factura.Importe_Servicio_Aduanal_Total|floatformat:2}} MN </strong></td>
+                <td class="first-td"><strong>CARGOS EXTRA: {{current_factura.Importe_Recargo_Total|floatformat:2}} MN </strong></td>
+                <td class="first-td"><strong>IMPORTE TOTAL A PAGAR: {{current_factura.Precio_Total_Factura|floatformat:2}} MN </strong></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr>
+    {% if current_factura.id_factura %} 
+    <table border="0" style="border-collapse: collapse;">
+        <tbody>
+            <tr>
+                <td class="first-td" colspan="2">
+                    <strong>ENTREGADO POR</strong><br>
+                    Nombre y apellidos <br>
+                    Carnet de identidad<br>
+                    Fecha
+                </td>
+                <td class="first-td" colspan="2">
+                    <strong>RECIBIDO POR</strong><br>
+                    Nombre y apellidos <br>
+                    Carnet de identidad<br>
+                    Fecha
+                </td>
+            </tr>
+            <tr>
+                <td class="first-td" colspan="4">
+                    
+                </td>
+            </tr>
+            <tr>
+                <td class="first-td" colspan="2">
+                    <strong>FACTURADO POR:</strong> {{current_factura.facturador}}
+                </td>
+            </tr>
+           
+        </tbody>
+    </table>
+    
+  
+<!--     <table border="0" style="border-collapse: collapse;">
+        <tbody>
+            <hr>
+            <tr>
+                <td class="first-td" colspan="2">
+                    <strong >PAGAR POR ENZONA</strong><br>
+                    <img width="200px" height="200px"
+                        src="{{request.scheme}}://{{request.get_host}}/media/QR/factura_{{current_factura.id_factura}}.png" />
+                </td>
+                <td class="first-td" colspan="2">
+                    <strong>PAGAR POR TRANSFERMÓVIL</strong><br>
+                    <img width="200px" height="200px"
+                        src="{{request.scheme}}://{{request.get_host}}/media/QR/factura_{{current_factura.id_factura}}.png" />
+                </td>
+            </tr>
+        </tbody>
+    </table> -->
+    
+    {% endif %}
+    <div style="page-break-after: always;"><span style="display: none;">&nbsp;</span></div> 
+    {% endfor %}
+    {% endfor %}
+    <div id="footer_content">
+        <label>Sistema de Gestión de Paquetería TRANSIPACK v 1.0. Desarrollado por SITRANS</label>
+    </div>
+     
+</body>
+
+</html>

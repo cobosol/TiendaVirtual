@@ -1,0 +1,719 @@
+Traceback (most recent call last):
+  File "/home/zcipcnjx/tiendaMuhia/passenger_wsgi.py", line 10, in <module>
+    from tienda.wsgi import app
+  File "/home/zcipcnjx/tiendaMuhia/tienda/wsgi.py", line 16, in <module>
+    application = get_wsgi_application()
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/core/wsgi.py", line 12, in get_wsgi_application
+    django.setup(set_prefix=False)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/__init__.py", line 19, in setup
+    configure_logging(settings.LOGGING_CONFIG, settings.LOGGING)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/conf/__init__.py", line 82, in __getattr__
+    self._setup(name)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/conf/__init__.py", line 69, in _setup
+    self._wrapped = Settings(settings_module)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/conf/__init__.py", line 170, in __init__
+    mod = importlib.import_module(self.SETTINGS_MODULE)
+  File "/opt/alt/python39/lib64/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "/home/zcipcnjx/tiendaMuhia/tienda/settings.py", line 39
+    EMAIL_SETTINGS_FILE = os.path.join(BASE_DIR, 'email_settings.json') with open(EMAIL_SETTINGS_FILE) as data_file:
+                                                                        ^
+SyntaxError: invalid syntax
+Traceback (most recent call last):
+  File "/home/zcipcnjx/tiendaMuhia/passenger_wsgi.py", line 10, in <module>
+    from tienda.wsgi import app
+  File "/home/zcipcnjx/tiendaMuhia/tienda/wsgi.py", line 16, in <module>
+    application = get_wsgi_application()
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/core/wsgi.py", line 12, in get_wsgi_application
+    django.setup(set_prefix=False)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/__init__.py", line 19, in setup
+    configure_logging(settings.LOGGING_CONFIG, settings.LOGGING)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/conf/__init__.py", line 82, in __getattr__
+    self._setup(name)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/conf/__init__.py", line 69, in _setup
+    self._wrapped = Settings(settings_module)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/conf/__init__.py", line 170, in __init__
+    mod = importlib.import_module(self.SETTINGS_MODULE)
+  File "/opt/alt/python39/lib64/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "/home/zcipcnjx/tiendaMuhia/tienda/settings.py", line 39
+    EMAIL_SETTINGS_FILE = os.path.join(BASE_DIR, 'email_settings.json') with open(EMAIL_SETTINGS_FILE) as data_file:
+                                                                        ^
+SyntaxError: invalid syntax
+[UID:2351][3599040] Child process with pid: 3599095 was killed by signal: 15, core dumped: no
+Traceback (most recent call last):
+  File "/home/zcipcnjx/tiendaMuhia/passenger_wsgi.py", line 10, in <module>
+    from tienda.wsgi import app
+  File "/home/zcipcnjx/tiendaMuhia/tienda/wsgi.py", line 16, in <module>
+    application = get_wsgi_application()
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/core/wsgi.py", line 12, in get_wsgi_application
+    django.setup(set_prefix=False)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/__init__.py", line 19, in setup
+    configure_logging(settings.LOGGING_CONFIG, settings.LOGGING)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/conf/__init__.py", line 82, in __getattr__
+    self._setup(name)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/conf/__init__.py", line 69, in _setup
+    self._wrapped = Settings(settings_module)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/conf/__init__.py", line 170, in __init__
+    mod = importlib.import_module(self.SETTINGS_MODULE)
+  File "/opt/alt/python39/lib64/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "/home/zcipcnjx/tiendaMuhia/tienda/settings.py", line 39
+    EMAIL_SETTINGS_FILE = os.path.join(BASE_DIR, 'email_settings.json') with open(EMAIL_SETTINGS_FILE) as data_file:
+                                                                        ^
+SyntaxError: invalid syntax
+[UID:2351][3599040] Child process with pid: 3599224 was killed by signal: 15, core dumped: no
+Traceback (most recent call last):
+  File "/home/zcipcnjx/tiendaMuhia/passenger_wsgi.py", line 10, in <module>
+    from tienda.wsgi import app
+ImportError: cannot import name 'app' from 'tienda.wsgi' (/home/zcipcnjx/tiendaMuhia/tienda/wsgi.py)
+Traceback (most recent call last):
+  File "/home/zcipcnjx/tiendaMuhia/passenger_wsgi.py", line 10, in <module>
+    from tienda.wsgi import app
+ImportError: cannot import name 'app' from 'tienda.wsgi' (/home/zcipcnjx/tiendaMuhia/tienda/wsgi.py)
+[UID:2351][3626579] Child process with pid: 3626610 was killed by signal: 15, core dumped: no
+Not Found: /static/admin/css/fonts.css
+Not Found: /favicon.ico
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/core/handlers/base.py", line 167, in _get_response
+    callback, callback_args, callback_kwargs = self.resolve_request(request)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/core/handlers/base.py", line 290, in resolve_request
+    resolver_match = resolver.resolve(request.path_info)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/urls/resolvers.py", line 556, in resolve
+    for pattern in self.url_patterns:
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/utils/functional.py", line 48, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/urls/resolvers.py", line 598, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/utils/functional.py", line 48, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/urls/resolvers.py", line 591, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "/opt/alt/python39/lib64/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/home/zcipcnjx/tiendaMuhia/tienda/urls.py", line 18, in <module>
+    path('carrito/', include('cart.urls')),
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/urls/conf.py", line 34, in include
+    urlconf_module = import_module(urlconf_module)
+  File "/opt/alt/python39/lib64/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/home/zcipcnjx/tiendaMuhia/cart/urls.py", line 2, in <module>
+    from . import views
+  File "/home/zcipcnjx/tiendaMuhia/cart/views.py", line 10, in <module>
+    from ccheckout.ccheckout import get_checkout_url
+  File "/home/zcipcnjx/tiendaMuhia/ccheckout/ccheckout.py", line 22, in <module>
+    from core.settings import TOKEN
+ModuleNotFoundError: No module named 'core'
+[UID:2351][3712252] Child process with pid: 3736786 was killed by signal: 15, core dumped: no
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/views/generic/base.py", line 98, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/home/zcipcnjx/tiendaMuhia/tienda/views.py", line 9, in get
+    return render(request, 'index.html', {'products':products})
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/template/base.py", line 168, in render
+    with context.bind_template(self):
+  File "/opt/alt/python39/lib64/python3.9/contextlib.py", line 119, in __enter__
+    return next(self.gen)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/template/context.py", line 240, in bind_template
+    processors = (template.engine.template_context_processors +
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/utils/functional.py", line 48, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/template/engine.py", line 85, in template_context_processors
+    return tuple(import_string(path) for path in context_processors)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/template/engine.py", line 85, in <genexpr>
+    return tuple(import_string(path) for path in context_processors)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/utils/module_loading.py", line 17, in import_string
+    module = import_module(module_path)
+  File "/opt/alt/python39/lib64/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/home/zcipcnjx/tiendaMuhia/utils/context_processors.py", line 2, in <module>
+    from core import settings
+ModuleNotFoundError: No module named 'core'
+[UID:2351][3822071] Child process with pid: 3822182 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+[UID:2351][3976297] Child process with pid: 3976344 was killed by signal: 15, core dumped: no
+[UID:2351][3992716] Child process with pid: 3993662 was killed by signal: 15, core dumped: no
+Not Found: /favicon.ico
+[UID:2351][4043080] Child process with pid: 4043136 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+Internal Server Error: /compra/
+Traceback (most recent call last):
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/contrib/auth/decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/home/zcipcnjx/tiendaMuhia/ccheckout/views.py", line 144, in show_checkout
+    print(dicto)
+UnicodeEncodeError: 'ascii' codec can't encode character '\xf3' in position 131: ordinal not in range(128)
+<QueryDict: {'csrfmiddlewaretoken': ['IQ7G4EN59Gr00KdYtipCLJvseM0FFgITvSsZhFmHXc7KHQWOz7CCyNRZOKAPsnwe'], 'delivery_type': ['2'], 'quantity': ['1'], 'submit': ['Comprar'], 'product_slug': ['detergente-de-fregar-1l']}>
+El valor de value?
+None
+Pagar con Tropipay
+Llamo a crear pago
+{'Prefer': 'code=200, example=Example with client data', 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJlbnQiOm51bGwsImNyZWRlbnRpYWxJZCI6MTI5ODM3LCJjcmVkZW50aWFsTmFtZSI6ImM2YTk5NWI5ZTFkYjI0MmYzMDdmZWE2ODI4NmMyMGY4IiwiaWQiOiI3YmY0NTE1MC02NTU4LTExZWQtYmQzMy1mYjc2MWRhNjQ5ODgiLCJpYXQiOjE3MTQ3NDY3NzIsImV4cCI6MTcxNDc1Mzk3Mn0.R1nUKt6Tp-78ksbfPCC6uAbFKtLdYoGRieGKBBOkiIw'}
+Not Found: /robots.txt
+Not Found: /catalogo/producto/desengrasante-500ml/
+Not Found: /robots.txt
+Not Found: /catalogo/producto/gel-de-bano-1l/
+Not Found: /robots.txt
+Not Found: /catalogo/producto/acido-citrico/
+Not Found: /catalogo/producto/detergente-de-fregar-ecologico-1l/
+[UID:2351][1878704] Child process with pid: 1879758 was killed by signal: 15, core dumped: no
+Internal Server Error: /compra/
+Traceback (most recent call last):
+  File "/home/zcipcnjx/tiendaMuhia/ccheckout/views.py", line 147, in show_checkout
+    url_pay = dicto["shortUrl"]
+KeyError: 'shortUrl'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/contrib/auth/decorators.py", line 21, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/home/zcipcnjx/tiendaMuhia/ccheckout/views.py", line 162, in show_checkout
+    url_pay = dicto2["shortUrl"]
+KeyError: 'shortUrl'
+Not Found: /favicon.ico
+<QueryDict: {'csrfmiddlewaretoken': ['ZIlpnbWIJEmklwAeZhu9rvdOpU3ICbPLMKGIAcvkxa242Cj456H9ezzlZSDSpiD6'], 'delivery_type': ['2'], 'quantity': ['1'], 'submit': ['Comprar'], 'product_slug': ['detergente-de-fregar-1l']}>
+{'Prefer': 'code=200, example=Example with client data', 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJlbnQiOm51bGwsImNyZWRlbnRpYWxJZCI6MTI5ODM3LCJjcmVkZW50aWFsTmFtZSI6ImM2YTk5NWI5ZTFkYjI0MmYzMDdmZWE2ODI4NmMyMGY4IiwiaWQiOiI3YmY0NTE1MC02NTU4LTExZWQtYmQzMy1mYjc2MWRhNjQ5ODgiLCJpYXQiOjE3MTQ3NDY3NzIsImV4cCI6MTcxNDc1Mzk3Mn0.R1nUKt6Tp-78ksbfPCC6uAbFKtLdYoGRieGKBBOkiIw'}
+Entro al try y trato de llamar a la URL de pago
+{'Prefer': 'code=200, example=Example with client data', 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJlbnQiOm51bGwsImNyZWRlbnRpYWxJZCI6MTI5ODM3LCJjcmVkZW50aWFsTmFtZSI6ImM2YTk5NWI5ZTFkYjI0MmYzMDdmZWE2ODI4NmMyMGY4IiwiaWQiOiI3YmY0NTE1MC02NTU4LTExZWQtYmQzMy1mYjc2MWRhNjQ5ODgiLCJpYXQiOjE3MTQ3ODc1MjgsImV4cCI6MTcxNDc5NDcyOH0.IQo3x95LxsW-HJinSvW_qlD2NQ5URNVv8kQsTTLieWI'}
+Invalid HTTP_HOST header: 'tienda.produccionesmuhia.ca'. You may need to add 'tienda.produccionesmuhia.ca' to ALLOWED_HOSTS.
+Bad Request: /accounts/profile/
+[UID:2351][1368317] Child process with pid: 1368328 was killed by signal: 15, core dumped: no
+[UID:2351][1371568] Child process with pid: 1371600 was killed by signal: 15, core dumped: no
+[UID:2351][1371568] Child process with pid: 1371580 was killed by signal: 15, core dumped: no
+Not Found: /favicon.ico
+OSError: LSAPI: File error
+<QueryDict: {'csrfmiddlewaretoken': ['nELPytpgY3eostkUuCMfPcFzuN9cN9xZXVBftDfHbp1yCefxcjzRreqKN86F24qY'], 'delivery_type': ['3'], 'quantity': ['1'], 'submit': ['Comprar'], 'product_slug': ['detergente-de-lavar-1l']}>
+<Response [200]>
+https://checkout.stripe.com/c/pay/cs_live_a1b3M8xciiqhCdc5tEIlqrnmJnRLWv4iQJS8Kd9Dfbvjpk0eCC6GtsY6sC#fidkdWxOYHwnPyd1blppbHNgWjA0SkNJSE9Jb2lLbW9Xf2ROYEprbzFJaGpEXE1oYmFtZm5QQGpsRkBHXWRANH9Wd05Oa3wyYkxGVVNCQE99UU1UPWx3b39KZFBTcWFKcE1WZENxfUlxfG1XNTVNNzZzdzFcYicpJ2N3amhWYHdzYHcnP3F3cGApJ2lkfGpwcVF8dWAnPyd2bGtiaWBabHFgaCcpJ2BrZGdpYFVpZGZgbWppYWB3dic%2FcXdwYHgl
+https://checkout.stripe.com/c/pay/cs_live_a1b3M8xciiqhCdc5tEIlqrnmJnRLWv4iQJS8Kd9Dfbvjpk0eCC6GtsY6sC#fidkdWxOYHwnPyd1blppbHNgWjA0SkNJSE9Jb2lLbW9Xf2ROYEprbzFJaGpEXE1oYmFtZm5QQGpsRkBHXWRANH9Wd05Oa3wyYkxGVVNCQE99UU1UPWx3b39KZFBTcWFKcE1WZENxfUlxfG1XNTVNNzZzdzFcYicpJ2N3amhWYHdzYHcnP3F3cGApJ2lkfGpwcVF8dWAnPyd2bGtiaWBabHFgaCcpJ2BrZGdpYFVpZGZgbWppYWB3dic%2FcXdwYHgl
+getSize: Not a float '100%'
+getSize: Not a float '100%'
+<QueryDict: {'csrfmiddlewaretoken': ['YTirsCuLawl9xVPzccijC22RdG1yMjr4ya8RnMkcnS8jHGKcUT5Ve4N2w1Y11ek3'], 'delivery_type': ['3'], 'quantity': ['1'], 'submit': ['Comprar'], 'product_slug': ['detergente-de-fregar-1l']}>
+<Response [200]>
+https://checkout.stripe.com/c/pay/cs_live_a1WuF5F8IWjjkKl4TiYOm2kKSlZeeZBSDnvIEsvwRHIMkVlkyjZsMAwo8a#fidkdWxOYHwnPyd1blppbHNgWjA0SkNJSE9Jb2lLbW9Xf2ROYEprbzFJaGpEXE1oYmFtZm5QQGpsRkBHXWRANH9Wd05Oa3wyYkxGVVNCQE99UU1UPWx3b39KZFBTcWFKcE1WZENxfUlxfG1XNTVNNzZzdzFcYicpJ2N3amhWYHdzYHcnP3F3cGApJ2lkfGpwcVF8dWAnPyd2bGtiaWBabHFgaCcpJ2BrZGdpYFVpZGZgbWppYWB3dic%2FcXdwYHgl
+https://checkout.stripe.com/c/pay/cs_live_a1WuF5F8IWjjkKl4TiYOm2kKSlZeeZBSDnvIEsvwRHIMkVlkyjZsMAwo8a#fidkdWxOYHwnPyd1blppbHNgWjA0SkNJSE9Jb2lLbW9Xf2ROYEprbzFJaGpEXE1oYmFtZm5QQGpsRkBHXWRANH9Wd05Oa3wyYkxGVVNCQE99UU1UPWx3b39KZFBTcWFKcE1WZENxfUlxfG1XNTVNNzZzdzFcYicpJ2N3amhWYHdzYHcnP3F3cGApJ2lkfGpwcVF8dWAnPyd2bGtiaWBabHFgaCcpJ2BrZGdpYFVpZGZgbWppYWB3dic%2FcXdwYHgl
+Session data corrupted
+<QueryDict: {'csrfmiddlewaretoken': ['Et2lVJ7doU7WxQyeJZIihY24Jc1Icnuym3IP3n7vmOsNfIEYPED0wFLkcThFgdfe'], 'delivery_type': ['1'], 'quantity': ['1'], 'submit': ['Comprar'], 'product_slug': ['gel-anticalcareo-1l']}>
+No valida la cantidad 
+[UID:2351][1389229] Child process with pid: 1485343 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+<QueryDict: {'csrfmiddlewaretoken': ['MgDr3RUz8R17iK5GvFD8DIr0nSv2NxfmuQjVbvUR6LmY0CbqBkyQSpagQzLZRn02'], 'delivery_type': ['1'], 'quantity': ['4'], 'submit': ['Comprar'], 'product_slug': ['detergente-de-lavar-1l']}>
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+Requested Range Not Satisfiable: /static/images/IsologoPMuhia.png
+Se acaba de crear un usuario y su pefil enlazado.
+Requested Range Not Satisfiable: /static/images/carrusel/Producciones.png
+Requested Range Not Satisfiable: /static/images/carrusel/Banner3Tienda.png
+[UID:2351][1389229] Child process with pid: 1499488 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+<QueryDict: {'csrfmiddlewaretoken': ['2x1PjsWgXMwwIvNJiEJnVL3FpIYBjNVgK7Hjr6WyVGRnqnTtojE5asMVSpeynDGW'], 'delivery_type': ['3'], 'quantity': ['3'], 'submit': ['Comprar'], 'product_slug': ['gel-anticalcareo-1l']}>
+No valida la cantidad 
+[UID:2351][1553247] Child process with pid: 1553876 was killed by signal: 15, core dumped: no
+[UID:2351][1668357] Child process with pid: 1668391 was killed by signal: 15, core dumped: no
+[UID:2351][1668357] Child process with pid: 1668889 was killed by signal: 15, core dumped: no
+[UID:2351][1668357] Child process with pid: 1680417 was killed by signal: 15, core dumped: no
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+[UID:2351][1668357] Child process with pid: 1685035 was killed by signal: 15, core dumped: no
+[UID:2351][1668357] Child process with pid: 1688319 was killed by signal: 15, core dumped: no
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+[UID:2351][1668357] Child process with pid: 1825748 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+[UID:2351][1668357] Child process with pid: 1851646 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+[UID:2351][1989543] Child process with pid: 2074372 was killed by signal: 15, core dumped: no
+Not Found: /favicon.ico
+[UID:2351][1989543] Child process with pid: 2087226 was killed by signal: 15, core dumped: no
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Internal Server Error: /admin/catalog/product/8/change/
+Traceback (most recent call last):
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/contrib/admin/options.py", line 616, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/views/decorators/cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/contrib/admin/sites.py", line 232, in inner
+    return view(request, *args, **kwargs)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/contrib/admin/options.py", line 1658, in change_view
+    return self.changeform_view(request, object_id, form_url, extra_context)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/utils/decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/contrib/admin/options.py", line 1538, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/contrib/admin/options.py", line 1584, in _changeform_view
+    self.save_model(request, new_object, form, not add)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/contrib/admin/options.py", line 1097, in save_model
+    obj.save()
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/db/models/base.py", line 726, in save
+    self.save_base(using=using, force_insert=force_insert,
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/db/models/base.py", line 763, in save_base
+    updated = self._save_table(
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/db/models/base.py", line 842, in _save_table
+    values = [(f, None, (getattr(self, f.attname) if raw else f.pre_save(self, False)))
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/db/models/base.py", line 842, in <listcomp>
+    values = [(f, None, (getattr(self, f.attname) if raw else f.pre_save(self, False)))
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/db/models/fields/files.py", line 301, in pre_save
+    file.save(file.name, file.file, save=False)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/db/models/fields/files.py", line 88, in save
+    self.name = self.storage.save(name, content, max_length=self.field.max_length)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/core/files/storage.py", line 52, in save
+    return self._save(name, content)
+  File "/home/zcipcnjx/virtualenv/tiendaMuhia/3.9/lib/python3.9/site-packages/django/core/files/storage.py", line 267, in _save
+    fd = os.open(full_path, self.OS_OPEN_FLAGS, 0o666)
+UnicodeEncodeError: 'ascii' codec can't encode character '\xc9' in position 68: ordinal not in range(128)
+Not Found: /favicon.ico
+Not Found: /static/path_to.css
+[UID:2351][1989543] Child process with pid: 2095924 was killed by signal: 15, core dumped: no
+[UID:2351][1989543] Child process with pid: 2103197 was killed by signal: 15, core dumped: no
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+[UID:2351][1989543] Child process with pid: 2104932 was killed by signal: 15, core dumped: no
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /favicon.ico
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /favicon.ico
+Not Found: /static/path_to.css
+[UID:2351][1989543] Child process with pid: 2109482 was killed by signal: 15, core dumped: no
+Not Found: /favicon.ico
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+[UID:2351][1989543] Child process with pid: 2120393 was killed by signal: 15, core dumped: no
+[UID:2351][1989543] Child process with pid: 2122263 was killed by signal: 15, core dumped: no
+[UID:2351][1989543] Child process with pid: 2123037 was killed by signal: 15, core dumped: no
+[UID:2351][1989543] Child process with pid: 2127944 was killed by signal: 15, core dumped: no
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /favicon.ico
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+[UID:2351][2189761] Child process with pid: 2190846 was killed by signal: 15, core dumped: no
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /favicon.ico
+Session data corrupted
+Not Found: /favicon.ico
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+[UID:2351][3035015] Child process with pid: 3035153 was killed by signal: 9, core dumped: no
+Not Found: /static/images/carrusel/ventas_mayoristas.png
+[UID:2351][3261164] Child process with pid: 3346007 was killed by signal: 15, core dumped: no
+Not Found: /static/images/carrusel/ventas_mayoristas.png
+Not Found: /static/images/carrusel/ventas_mayoristas.png
+OSError: LSAPI: File error
+Not Found: /static/images/carrusel/ventas_mayoristas.png
+Not Found: /%7B$%20static%20'images/carrusel/ventas_mayoristas.png'%20%%7D
+Not Found: /%7B$%20static%20'images/carrusel/ventas_mayoristas.png'%20%%7D
+Not Found: /%7B$%20static%20'images/carrusel/ventas_mayoristas.png'%20%%7D
+[UID:2351][3261164] Child process with pid: 3440916 was killed by signal: 15, core dumped: no
+[UID:2351][3908529] Child process with pid: 3908858 was killed by signal: 15, core dumped: no
+[UID:2351][3908529] Child process with pid: 3908856 was killed by signal: 15, core dumped: no
+[UID:2351][3908529] Child process with pid: 3908859 was killed by signal: 15, core dumped: no
+[UID:2351][941034] Child process with pid: 966630 was killed by signal: 15, core dumped: no
+[UID:2351][941034] Child process with pid: 966530 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+[UID:2351][941034] Child process with pid: 997714 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+Not Found: /favicon.ico
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 7, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 7, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 7, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 7, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 7, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][1003831] Reached max children process limit: 6, extra: 2, current: 8, busy: 7, please increase LSAPI_CHILDREN.
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+Not Found: /static/path_to.css
+[UID:2351][1003831] Child process with pid: 1005487 was killed by signal: 15, core dumped: no
+Not Found: /static/path_to.css
+Not Found: /favicon.ico
+[UID:2351][1003831] Child process with pid: 1007022 was killed by signal: 15, core dumped: no
+[UID:2351][1164417] Child process with pid: 1164904 was killed by signal: 15, core dumped: no
+[UID:2351][1164417] Child process with pid: 1164905 was killed by signal: 15, core dumped: no
+[UID:2351][1164417] Child process with pid: 1164902 was killed by signal: 15, core dumped: no
+[UID:2351][1164417] Child process with pid: 1164870 was killed by signal: 15, core dumped: no
+[UID:2351][1164417] Child process with pid: 1194784 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+[UID:2351][1628022] Child process with pid: 1628335 was killed by signal: 15, core dumped: no
+[UID:2351][2902782] Reached max children process limit: 6, extra: 2, current: 8, busy: 7, please increase LSAPI_CHILDREN.
+[UID:2351][2902782] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][2902782] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][2902782] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][2902782] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][2902782] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][2902782] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][2902782] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][2902782] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][2902782] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][2902782] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][2902782] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][2902782] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][2902782] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+Not Found: /pepe
+Not Found: /favicon.ico
+[UID:2351][3296475] Child process with pid: 3296480 was killed by signal: 15, core dumped: no
+[UID:2351][73330] Child process with pid: 74480 was killed by signal: 15, core dumped: no
+[UID:2351][73330] Child process with pid: 74561 was killed by signal: 15, core dumped: no
+[UID:2351][73330] Child process with pid: 77149 was killed by signal: 15, core dumped: no
+[UID:2351][73330] Child process with pid: 77440 was killed by signal: 15, core dumped: no
+Not Found: /favicon.ico
+[UID:2351][73330] Child process with pid: 82000 was killed by signal: 15, core dumped: no
+[UID:2351][73330] Child process with pid: 84703 was killed by signal: 15, core dumped: no
+[UID:2351][73330] Child process with pid: 84755 was killed by signal: 15, core dumped: no
+[UID:2351][73330] Child process with pid: 87162 was killed by signal: 15, core dumped: no
+[UID:2351][73330] Child process with pid: 88471 was killed by signal: 15, core dumped: no
+[UID:2351][73330] Child process with pid: 88470 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+[UID:2351][73330] Child process with pid: 90881 was killed by signal: 15, core dumped: no
+[UID:2351][73330] Child process with pid: 90882 was killed by signal: 15, core dumped: no
+[UID:2351][73330] Child process with pid: 91898 was killed by signal: 15, core dumped: no
+[UID:2351][73330] Child process with pid: 91859 was killed by signal: 15, core dumped: no
+[UID:2351][73330] Child process with pid: 91858 was killed by signal: 15, core dumped: no
+Not Found: /robots.txt
+Not Found: /robots.txt
+Not Found: /robots.txt
+Not Found: /%20
+[UID:2351][1393520] Child process with pid: 1399697 was killed by signal: 15, core dumped: no
+[UID:2351][1393520] Child process with pid: 1399680 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+[UID:2351][1393520] Child process with pid: 1400589 was killed by signal: 15, core dumped: no
+[UID:2351][1393520] Child process with pid: 1400652 was killed by signal: 15, core dumped: no
+[UID:2351][1393520] Child process with pid: 1400697 was killed by signal: 15, core dumped: no
+[UID:2351][1393520] Child process with pid: 1400746 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+[UID:2351][1427317] Child process with pid: 1430691 was killed by signal: 15, core dumped: no
+[UID:2351][1427317] Child process with pid: 1427414 was killed by signal: 15, core dumped: no
+[UID:2351][1427317] Child process with pid: 1427415 was killed by signal: 15, core dumped: no
+<QueryDict: {'csrfmiddlewaretoken': ['ktDOHln4sYDJd3ZDq3AIQdDHUZZGHlNSfyaQgLm0OVVEIfWJRPYvzWwoLunPJ9Jx'], 'delivery_type': ['3'], 'quantity': ['1'], 'submit': ['Comprar'], 'product_slug': ['liquido-de-freno-500-ml']}>
+No valida la cantidad 
+<QueryDict: {'csrfmiddlewaretoken': ['8deTT3wSbSVvEyRSgcXiFuHC5mCBl03X3iLVstvOxPdq9KOYHYl5odAjWR0KnOZC'], 'delivery_type': ['3'], 'quantity': ['1'], 'submit': ['Comprar'], 'product_slug': ['ambientador-1l']}>
+[UID:2351][1427317] Child process with pid: 1541127 was killed by signal: 15, core dumped: no
+[UID:2351][3039015] Child process with pid: 3039221 was killed by signal: 15, core dumped: no
+<QueryDict: {'csrfmiddlewaretoken': ['PDKCVoZhxb2bP6xHN5zd9mTciony9Vv873FnAK2KHNcjJIvosSH3yutFKKlWdaKX'], 'delivery_type': ['1'], 'quantity': ['1'], 'submit': ['Comprar'], 'product_slug': ['gel-anticalcareo-1l']}>
+No valida la cantidad 
+<QueryDict: {'csrfmiddlewaretoken': ['m9bHCMZj364eiamtGL7p7VqNYAXDX7omEz6sh82MdIemcMkalyffw30gqWV11mDb'], 'delivery_type': ['1'], 'quantity': ['1'], 'submit': ['Comprar'], 'product_slug': ['gel-anticalcareo-1l']}>
+No valida la cantidad 
+<QueryDict: {'csrfmiddlewaretoken': ['4bSAprNrtfLySYrP61R8AdW2RoH6URi9mBNl4NQUDRVGMApwLOZYZlwvjKFuY6xY'], 'delivery_type': ['2'], 'quantity': ['1'], 'submit': ['Comprar'], 'product_slug': ['gel-anticalcareo-1l']}>
+No valida la cantidad 
+<QueryDict: {'csrfmiddlewaretoken': ['SYWe07VjRbdqYKlenScU7Wc8CbQHL7q6aoRZFtYM1NnySmjV2FkKw4MB4xO5PmFV'], 'delivery_type': ['3'], 'quantity': ['1'], 'submit': ['Comprar'], 'product_slug': ['gel-anticalcareo-1l']}>
+OSError: LSAPI: File error
+[UID:2351][4019580] Child process with pid: 4030210 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+[UID:2351][211078] Child process with pid: 211097 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+[UID:2351][211078] Child process with pid: 220111 was killed by signal: 15, core dumped: no
+[UID:2351][3264086] Reached max children process limit: 6, extra: 2, current: 8, busy: 7, please increase LSAPI_CHILDREN.
+[UID:2351][3264086] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][3264086] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][3264086] Reached max children process limit: 6, extra: 2, current: 8, busy: 7, please increase LSAPI_CHILDREN.
+[UID:2351][3264086] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][3264086] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][3264086] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][3264086] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][3264086] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+OSError: LSAPI: File error
+[UID:2351][3264086] Child process with pid: 3415233 was killed by signal: 15, core dumped: no
+[UID:2351][3264086] Child process with pid: 3415125 was killed by signal: 15, core dumped: no
+[UID:2351][3562583] Child process with pid: 3563744 was killed by signal: 15, core dumped: no
+[UID:2351][3562583] Child process with pid: 3563768 was killed by signal: 15, core dumped: no
+[UID:2351][3562583] Child process with pid: 3563743 was killed by signal: 15, core dumped: no
+[UID:2351][3562583] Child process with pid: 3563749 was killed by signal: 15, core dumped: no
+[UID:2351][3562583] Child process with pid: 3563769 was killed by signal: 15, core dumped: no
+<QueryDict: {'csrfmiddlewaretoken': ['wK98edLxDED6TcODg4Sl5F73LEfsinlKIK0SqU7HSAQHPKevaGyFnw1XDfWsb72Y'], 'delivery_type': ['1'], 'quantity': ['1'], 'submit': ['Comprar'], 'product_slug': ['gel-de-bano-1l']}>
+No valida la cantidad 
+OSError: LSAPI: File error
+[UID:2351][3822674] Child process with pid: 3823287 was killed by signal: 15, core dumped: no
+[UID:2351][3822674] Child process with pid: 3822851 was killed by signal: 15, core dumped: no
+[UID:2351][3822674] Child process with pid: 3823282 was killed by signal: 15, core dumped: no
+[UID:2351][3822674] Child process with pid: 3823284 was killed by signal: 15, core dumped: no
+[UID:2351][3822674] Child process with pid: 3826545 was killed by signal: 15, core dumped: no
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 7, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 7, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][838] Reached max children process limit: 6, extra: 2, current: 8, busy: 7, please increase LSAPI_CHILDREN.
+io.UnsupportedOperation: fileno
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+[UID:2351][360423] Child process with pid: 548916 was killed by signal: 15, core dumped: no
+[UID:2351][360423] Child process with pid: 549089 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+[UID:2351][800675] Child process with pid: 870669 was killed by signal: 15, core dumped: no
+[UID:2351][800675] Child process with pid: 870670 was killed by signal: 15, core dumped: no
+[UID:2351][1027260] Child process with pid: 1101533 was killed by signal: 15, core dumped: no
+[UID:2351][1027260] Child process with pid: 1101531 was killed by signal: 15, core dumped: no
+[UID:2351][1027260] Child process with pid: 1101535 was killed by signal: 15, core dumped: no
+[UID:2351][1027260] Child process with pid: 1101534 was killed by signal: 15, core dumped: no
+[UID:2351][1027260] Child process with pid: 1101412 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+[UID:2351][1330967] Child process with pid: 1403895 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+[UID:2351][1330967] Child process with pid: 1403897 was killed by signal: 15, core dumped: no
+[UID:2351][1330967] Child process with pid: 1404126 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+[UID:2351][1330967] Child process with pid: 1404122 was killed by signal: 15, core dumped: no
+[UID:2351][1510276] Child process with pid: 1510794 was killed by signal: 15, core dumped: no
+[UID:2351][1510276] Child process with pid: 1510853 was killed by signal: 15, core dumped: no
+[UID:2351][1510276] Child process with pid: 1510793 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+[UID:2351][1510276] Child process with pid: 1734427 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+[UID:2351][1510276] Child process with pid: 1734561 was killed by signal: 15, core dumped: no
+[UID:2351][1510276] Child process with pid: 1734428 was killed by signal: 15, core dumped: no
+[UID:2351][1510276] Child process with pid: 1736180 was killed by signal: 15, core dumped: no
+[UID:2351][1510276] Child process with pid: 1736179 was killed by signal: 15, core dumped: no
+[UID:2351][1510276] Child process with pid: 1736181 was killed by signal: 15, core dumped: no
+[UID:2351][1510276] Child process with pid: 1736173 was killed by signal: 15, core dumped: no
+[UID:2351][1901369] Child process with pid: 1901797 was killed by signal: 15, core dumped: no
+[UID:2351][1901369] Child process with pid: 1905519 was killed by signal: 15, core dumped: no
+[UID:2351][1901369] Child process with pid: 1986408 was killed by signal: 15, core dumped: no
+[UID:2351][1901369] Child process with pid: 1988017 was killed by signal: 15, core dumped: no
+[UID:2351][1901369] Child process with pid: 1985717 was killed by signal: 15, core dumped: no
+[UID:2351][1901369] Child process with pid: 2049889 was killed by signal: 15, core dumped: no
+[UID:2351][1901369] Child process with pid: 2049902 was killed by signal: 15, core dumped: no
+[UID:2351][1901369] Child process with pid: 2049890 was killed by signal: 15, core dumped: no
+[UID:2351][1901369] Child process with pid: 2049903 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+[UID:2351][3114712] Child process with pid: 3115231 was killed by signal: 15, core dumped: no
+[UID:2351][3114712] Child process with pid: 3133149 was killed by signal: 15, core dumped: no
+[UID:2351][626409] Child process with pid: 628143 was killed by signal: 15, core dumped: no
+[UID:2351][626409] Child process with pid: 634738 was killed by signal: 15, core dumped: no
+[UID:2351][626409] Child process with pid: 708115 was killed by signal: 15, core dumped: no
+[UID:2351][626409] Child process with pid: 706834 was killed by signal: 15, core dumped: no
+[UID:2351][626409] Child process with pid: 708111 was killed by signal: 15, core dumped: no
+[UID:2351][626409] Child process with pid: 708112 was killed by signal: 15, core dumped: no
+[UID:2351][626409] Child process with pid: 712847 was killed by signal: 15, core dumped: no
+[UID:2351][626409] Child process with pid: 708113 was killed by signal: 15, core dumped: no
+[UID:2351][626409] Child process with pid: 708109 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+[UID:2351][780277] Child process with pid: 789405 was killed by signal: 15, core dumped: no
+[UID:2351][780277] Child process with pid: 789406 was killed by signal: 15, core dumped: no
+[UID:2351][780277] Child process with pid: 789404 was killed by signal: 15, core dumped: no
+[UID:2351][1079014] Child process with pid: 1079604 was killed by signal: 15, core dumped: no
+[UID:2351][1079014] Child process with pid: 1079568 was killed by signal: 15, core dumped: no
+[UID:2351][1079014] Child process with pid: 1082950 was killed by signal: 15, core dumped: no
+[UID:2351][1079014] Child process with pid: 1082948 was killed by signal: 15, core dumped: no
+[UID:2351][1079014] Child process with pid: 1082608 was killed by signal: 15, core dumped: no
+[UID:2351][1392387] Child process with pid: 1393287 was killed by signal: 15, core dumped: no
+[UID:2351][1392387] Child process with pid: 1393288 was killed by signal: 15, core dumped: no
+[UID:2351][1668816] Child process with pid: 1668999 was killed by signal: 9, core dumped: no
+OSError: LSAPI: File error
+[UID:2351][583402] Child process with pid: 691880 was killed by signal: 15, core dumped: no
+[UID:2351][583402] Child process with pid: 691741 was killed by signal: 15, core dumped: no
+[UID:2351][583402] Child process with pid: 691883 was killed by signal: 15, core dumped: no
+[UID:2351][583402] Child process with pid: 691881 was killed by signal: 15, core dumped: no
+[UID:2351][583402] Child process with pid: 691882 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+[UID:2351][2635420] Child process with pid: 2667833 was killed by signal: 15, core dumped: no
+[UID:2351][2886339] Child process with pid: 2886468 was killed by signal: 15, core dumped: no
+[UID:2351][2886339] Child process with pid: 2995213 was killed by signal: 15, core dumped: no
+[UID:2351][3758605] Child process with pid: 3758774 was killed by signal: 9, core dumped: no
+[UID:2351][565912] Child process with pid: 565974 was killed by signal: 9, core dumped: no
+[UID:2351][565912] Child process with pid: 565989 was killed by signal: 9, core dumped: no
+[UID:2351][565912] Child process with pid: 566008 was killed by signal: 15, core dumped: no
+[UID:2351][565912] Child process with pid: 566338 was killed by signal: 15, core dumped: no
+[UID:2351][565912] Child process with pid: 566012 was killed by signal: 15, core dumped: no
+[UID:2351][565912] Child process with pid: 566337 was killed by signal: 15, core dumped: no
+[UID:2351][565912] Child process with pid: 567565 was killed by signal: 15, core dumped: no
+[UID:2351][1726094] Child process with pid: 1726269 was killed by signal: 15, core dumped: no
+[UID:2351][1726094] Child process with pid: 1728684 was killed by signal: 15, core dumped: no
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 7, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 7, please increase LSAPI_CHILDREN.
+[UID:2351][4002346] Reached max children process limit: 6, extra: 2, current: 8, busy: 8, please increase LSAPI_CHILDREN.
+OSError: LSAPI: File error
+OSError: LSAPI: File error
+[UID:2351][399595] Child process with pid: 431517 was killed by signal: 15, core dumped: no
+[UID:2351][399595] Child process with pid: 431516 was killed by signal: 15, core dumped: no
+[UID:2351][2046660] Child process with pid: 2046903 was killed by signal: 9, core dumped: no
+[UID:2351][2974167] Child process with pid: 2977588 was killed by signal: 15, core dumped: no
+[UID:2351][2974167] Child process with pid: 2974278 was killed by signal: 15, core dumped: no
+[UID:2351][2974167] Child process with pid: 2977562 was killed by signal: 15, core dumped: no
+[UID:2351][2974167] Child process with pid: 2974277 was killed by signal: 15, core dumped: no
+[UID:2351][2974167] Child process with pid: 2974280 was killed by signal: 15, core dumped: no
+OSError: LSAPI: File error
+[UID:2351][3644713] Child process with pid: 3644900 was killed by signal: 15, core dumped: no
+[UID:2351][3644713] Child process with pid: 3644784 was killed by signal: 15, core dumped: no
+[UID:2351][3690387] Child process with pid: 3727844 was killed by signal: 15, core dumped: no
+[UID:2351][3690387] Child process with pid: 3727843 was killed by signal: 15, core dumped: no
+[UID:2351][4070320] Child process with pid: 4070928 was killed by signal: 15, core dumped: no
+[UID:2351][4070320] Child process with pid: 4075626 was killed by signal: 15, core dumped: no

@@ -1,0 +1,12 @@
+
+<h3>Almacenes</h3>
+<ul id="Almacenes">
+    {% with  as cats %}
+    {% for s in stores %}
+        <p class="text-dark font-weight-medium mb-0 mr-3">{{ s.name }}:</p>
+        <br>
+        <p class="m-0"><a href="">{{ products_count }}</a></p>
+        {% if not forloop.last %} , {% endif %}
+    {% endfor %}
+    {% endwith %}
+</ul>

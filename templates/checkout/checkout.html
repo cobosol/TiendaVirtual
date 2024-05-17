@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load checkout_tags %}
+{% block content %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-secondary mb-2">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+            <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: roboto;">Datos para la venta</h4>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+{% if error_message %}
+<ul class="errorlist">
+    <li>{{ error_message }}</li>
+</ul>
+{% endif %}
+<form action="." method="post">
+    {% csrf_token %}
+    <fieldset class="checkout">
+        <legend style="font-family: roboto;">Información de contacto</legend>
+        <table> 
+            {% form_table_row form.email %}
+            {% form_table_row form.phone %}
+        </table>
+    </fieldset>
+    <fieldset class="checkout">
+        <legend style="font-family: roboto;">Información de entrega</legend>
+        <table>
+            {% form_table_row form.delivery_name %}
+            {% form_table_row form.delivery_ci %}
+            {% form_table_row form.delivery_address_1 %}
+            {% form_table_row form.delivery_address_2 %}
+            {% form_table_row form.delivery_state %}
+        </table>
+    </fieldset>
+<!--     <fieldset class="checkout">
+        <legend>Información de facturación</legend>
+        <table>
+            {% form_table_row form.billing_name %}
+            {% form_table_row form.billing_address_1 %}
+            {% form_table_row form.billing_address_2 %}
+            {% form_table_row form.billing_city %}
+            {% form_table_row form.billing_state %}
+            {% form_table_row form.billing_zip %}
+            {% form_table_row form.billing_country %}
+        </table>
+    </fieldset>
+    <fieldset class="checkout">
+        <legend>Información de la tarjeta de crédito</legend>
+        <table>
+            {% form_table_row form.credit_card_number %}
+            {% form_table_row form.credit_card_type %}
+            {% form_table_row form.credit_card_expire_month %}
+            {% form_table_row form.credit_card_expire_year %}
+            {% form_table_row form.credit_card_cvv %}
+        </table>
+    </fieldset> -->
+    <table>
+    <tr>
+<!--         <td class="first-td">
+            <th colspan="2">
+                <input type="submit" name="submit" value="Pagar con Tropipay" class="btn btn-block btn-primary my-2 py-2"/>
+            </th>
+        </td> -->
+        <td class="first-td"><strong>
+            <th colspan="2">
+                <input type="submit" name="submit" value="Efectuar Pago" class="btn btn-block btn-primary my-2 py-2"/>
+            </th>
+        </td>
+        {% if cobra_efectivo %}
+        <td class="first-td"><strong>
+            <th colspan="2">
+                <input type="submit" name="submit" value="Confirmar pago efectivo" class="btn btn-block btn-primary my-2 py-2"/>
+            </th>
+        </td>
+        {% endif %}
+    </tr>
+
+    <tr>
+        
+    </tr>
+    </table>
+</form>
+<div class="row px-xl-5">
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }} text-red">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
+{% endblock %}
