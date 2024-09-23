@@ -1,20 +1,5 @@
 import httplib, urllib, base64, json, sys
-# This is a python script to test the CMS API.
-# To use this script, edit the configuration file brightcove_oauth.txt
-# with your brightcove account ID, and a client ID and client secret for
-# an Oauth credential that has CMS API - Videos Read permission.
-# You can find instructions on how to generate Oauth credentials
-# https://apis.support.brightcove.com/cms/getting-started/practice-area-cms-api.html
-# This script demonstrates how to refresh the access token
-# in handling 401 - Unauthorized errors from the CMS API
-# Because the Oauth tokens have a 300 second time to live,
-# The refresh logic to handle 401 errors will be a normal part of runtime behavior.
-# Note that the client_id and client_secret secure the access to the CMS API
-# Therefore, it is not advisable to expose them to browsers. These are meant for
-# server to server communication to obtain an access token.
-# The access token can be exposed to the browser. Its limited permissions and expiry
-# time make limit the duration and scope of its usage should it be observed in network
-# traffic or obtained from a browser.
+
 class AuthError(Exception):
     def __init__(self):
          self.msg = "auth error"

@@ -3,22 +3,18 @@ from stores.models import Store
 import datetime
 import re
 
-DELIVERY_TYPES = {}
+class DeliveryForm(forms.Form):    
+    delivery_type = forms.ModelChoiceField(queryset=Store.objects.all(), initial=3)
 
-class DeliveryForm(forms.ModelForm):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, request=None, *args, **kwargs):
+        self.request = request
         super(DeliveryForm, self).__init__(*args, **kwargs)
-        # override default attributes
-        for field in self.fields:
-            self.fields[field].widget.attrs['size'] = '30'
-        self.fields['credit_card_type'].widget.attrs['size'] = '1'
-        
-        # Llenar la lista de formas de envío]
-        stores = Store.objects.all()
-        for s in stores:
-            delivery_slug = s.slug
-            DELIVERY_TYPES[delivery_slug] = delivery_slug
 
-    delivery_type = forms.CharField(widget=forms.Select(choices=DELIVERY_TYPES))
 
+    # custom validation to check for cookies
+    def clean(self):
+        if self.request:
+            if not self.request.session.test_cookie_worked():
+                raise forms.ValidationError("Debe habilitar las cookies.")
+        return self.cleaned_data

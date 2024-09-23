@@ -1,6 +1,9 @@
 {% extends "base.html" %}
+{% load static %}
 {% load checkout_tags %}
+{% load catalog_filters %}
 {% block content %}
+
 
     <!-- Page Header Start -->
     <div class="container-fluid bg-secondary mb-2">
@@ -15,63 +18,69 @@
     <li>{{ error_message }}</li>
 </ul>
 {% endif %}
-<form action="." method="post">
+
+<div class="row px-xl-6">
+    <div id="Info de contacto" class="col-lg-9">
+    <form action="." method="post">
     {% csrf_token %}
     <fieldset class="checkout">
-        <legend style="font-family: roboto;">Información de contacto</legend>
+        <legend style="font-family: sans-serif;">Datos para el pago por tarjetas internacionales</legend>
         <table> 
-            {% form_table_row form.email %}
-            {% form_table_row form.phone %}
+            <tr>
+                <td>
+                    {% form_table_row form.payment_name %}
+                    {% form_table_row form.payment_phone %}
+                </td>
+            </tr>    
+            <tr>
+                <td>
+                </td>
+                <td  align="left" colspan="2">
+                    Formato: XXX-XXX-XXXX
+                </td>
+                <td>
+                    {% form_table_row form.payment_email %}
+                    {% form_table_row form.payment_city %}
+                    {% form_table_row form.payment_postCode %}
+                </td>
+            </tr>   
         </table>
     </fieldset>
     <fieldset class="checkout">
-        <legend style="font-family: roboto;">Información de entrega</legend>
+        <legend style="font-family: roboto;">Información para la entrega</legend>
         <table>
             {% form_table_row form.delivery_name %}
             {% form_table_row form.delivery_ci %}
+            {% form_table_row form.delivery_phone %}
+            {% form_table_row form.delivery_ws %}
             {% form_table_row form.delivery_address_1 %}
             {% form_table_row form.delivery_address_2 %}
             {% form_table_row form.delivery_state %}
         </table>
     </fieldset>
-<!--     <fieldset class="checkout">
-        <legend>Información de facturación</legend>
-        <table>
-            {% form_table_row form.billing_name %}
-            {% form_table_row form.billing_address_1 %}
-            {% form_table_row form.billing_address_2 %}
-            {% form_table_row form.billing_city %}
-            {% form_table_row form.billing_state %}
-            {% form_table_row form.billing_zip %}
-            {% form_table_row form.billing_country %}
-        </table>
-    </fieldset>
-    <fieldset class="checkout">
-        <legend>Información de la tarjeta de crédito</legend>
-        <table>
-            {% form_table_row form.credit_card_number %}
-            {% form_table_row form.credit_card_type %}
-            {% form_table_row form.credit_card_expire_month %}
-            {% form_table_row form.credit_card_expire_year %}
-            {% form_table_row form.credit_card_cvv %}
-        </table>
-    </fieldset> -->
     <table>
     <tr>
-<!--         <td class="first-td">
-            <th colspan="2">
-                <input type="submit" name="submit" value="Pagar con Tropipay" class="btn btn-block btn-primary my-2 py-2"/>
+        <td class="first-td">
+            <th colspan="2">    
+                <div class="btntropipay-over border-1 mb-1">            
+                    <input type="submit" name="submit" value=" " class="btn btntropipay my-0 py-0"/>
+                </div> 
+                <div class="pb-2 padding">
+                    <h6 style="font-family: sans-serif;">TropiPay brinda la opción de pagar con tarjetas Visa, MasterCard y muchas otras.</h6>
+                </div>               
             </th>
-        </td> -->
-        <td class="first-td"><strong>
+        </td>
+         <td class="second-td"><strong>
             <th colspan="2">
-                <input type="submit" name="submit" value="Efectuar Pago" class="btn btn-block btn-primary my-2 py-2"/>
+                <div class="pb-3 padding">
+              <!--       <h6 style="font-family: sans-serif;">TropiPay brinda la opción de pagar con tarjetas Visa, MasterCard y muchas otras.</h6> -->
+                </div>
             </th>
         </td>
         {% if cobra_efectivo %}
-        <td class="first-td"><strong>
-            <th colspan="2">
-                <input type="submit" name="submit" value="Confirmar pago efectivo" class="btn btn-block btn-primary my-2 py-2"/>
+        <td>
+            <th>
+                <input type="submit" name="submit" value="Confirmar pago efectivo" class="btn btn-block btn-primary my-0 py-0"/>
             </th>
         </td>
         {% endif %}
@@ -81,7 +90,46 @@
         
     </tr>
     </table>
-</form>
+    </form>
+    </div>
+    <div id = "Total a pagar" class="col-lg-3">
+    <div class="card border-secondary mb-5">
+        <div class="card-header bg-primary border-0">
+            <h4 class="font-weight-semi-bold m-0 text-light" style="font-family: roboto;">A pagar</h4>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-3 pt-1">
+                <h6 class="font-weight-medium" style="font-family: roboto;">Subtotal:{{ cart_item_count }}</h6>
+                <h6 class="font-weight-medium" style="font-family: roboto;">$ {{ cart_subtotal }}</h6>
+            </div>
+            <div class="d-flex justify-content-between">
+                {% if envio %}
+                    <h6 class="font-weight-medium" style="font-family: roboto;">Envío</h6>
+                    <h6 class="font-weight-medium" style="font-family: roboto;">$ {{ cart_delivery }}</h6>
+                {% else %}
+                    <h6 class="font-weight-medium" style="font-family: roboto;">Recogida en</h6>
+                    <h6 class="font-weight-medium" style="font-family: roboto;">$ {{ cart_delivery }}</h6>
+            </div>
+            <div class="d-flex justify-content-between mb-3 pt-1">
+                <a href="{{st.get_absolute_url}}" class="text-dark font-weight-medium mb-0 mr-3" style="font-family: roboto;">{{ st_name }}:</a>
+                <!-- <h6 class="font-weight-medium" style="font-family: roboto;">{{ delivery_name }}</h6> -->
+            </div>
+            {% endif %}
+        </div>
+        <div class="card-footer border-secondary bg-transparent">
+            <div class="d-flex justify-content-between mt-2">
+                <h6 class="font-weight-bold" style="font-family: roboto;">Total:{{ cart_item_count }}</h5>
+                <h6 class="font-weight-bold" style="font-family: roboto;">{{ cart_total }} USD</h5>
+            </div>
+        </div>
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+            <a href="/carrito/carrito/" style="font-family: sans-serif;"><i class="fas fa-shopping-cart text-secondary mr-1"></i>Volver al carrito</a>
+            <h4 class="text-secondary  bg-primary mb-2" style="font-family: roboto;"></h4>
+        </div>
+    </div>
+    </div>
+</div>
+
 <div class="row px-xl-5">
     {% if messages %}
     <ul class="messages">

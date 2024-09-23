@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
-from .forms import CheckoutForm
+from .forms import CheckoutForm, UpdateStatusForm, PagarForm, CachForm
 from django.urls import reverse
 from .models import Order, OrderItem
-from ccheckout.ccheckout import process2, export_pdf, createPaymentCardsJSON, process_iracuba, tPAccessToken, loadSecret
+from ccheckout.ccheckout import process2, export_pdf, createPaymentCardsJSON, tPAccessToken, loadSecret, create_order
 from cart import cart
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
@@ -17,39 +17,81 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 import json
-from tienda.settings import API_CLIENT, API_SECRET
+#from tienda.settings import API_CLIENT, API_SECRET
 import hashlib
 from .views import loadSecret
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+from django.contrib.admin.views.decorators import staff_member_required
+from registration.models import Profile
 
-
+# Retorno del pago en Tropipay
+@csrf_exempt
+@require_http_methods(["POST"])
 def payment_notification(request):
-    response=json.loads(request.raw_post_data)
-    if response["status"] == "OK":
+    #response = json.loads(request.__dict__()) #.raw_post_data
+    #response2 = json.loads(str(request))
+    #js = request.json()
+    #response = json.loads(js)
+    #status = json.loads(request.POST.get('status')) 
+    #print(status)
+    response = json.loads(request.body)
+    #print(response)
+    
+    """ st = response["status"]
+    print("response[status]")
+    print(st) """
+
+    print("response.get(status)")
+    status = response.get("status")
+    print(status)
+    
+    try:
+        print(response.get("status") == 'OK')
+        if response.get("status") == 'OK':
+            print("Entró al if")
+        
         data = response["data"]
-        signature = response["signaturev2"]
+        print(data)
+        signature = data["signaturev2"]
         bankOrderCode = data["bankOrderCode"]
         creds = loadSecret()
-        clientId = "c6a995b9e1db242f307fea68286c20f8" #creds["client_id"]
-        clientSecret = "d1bdbeff05927ca063ae04dbba9a1d42" #creds["client_secret"]
+        clientId = creds["client_id"]
+        clientSecret = creds["client_secret"]
         originalCurrencyAmount = data["originalCurrencyAmount"]
-        chekSignature = hashlib.sha256( bankOrderCode + clientId + clientSecret + originalCurrencyAmount )
-        if signature == chekSignature:
-            order_number = request.session.get('order_number','')
+        #print("CI: " + clientId)
+        #print("CS: " + clientSecret)
+        chekSignature = hashlib.sha256(str(bankOrderCode + clientId + clientSecret + originalCurrencyAmount).encode('utf-8'))
+        #print("checked")
+        encodehash = chekSignature.hexdigest()
+        #print(encodehash)
+        if signature == encodehash:
+            #print("Confirmed")
+            paymentcard = data["paymentcard"]
+            order_number = paymentcard["reasonId"]
+            #print(order_number)
             if order_number:
-                order = Order.objects.filter(id=order_number)[0]
+                order = get_object_or_404(Order, id=order_number) 
                 order.status = Order.PROCESSED
                 order.transaction_id = data["id"]
                 order.save()
-    else:
-        print("status=KO")
+            else:
+                print("Error al generar orden")
+        else:
+            print("No coinciden las firmas")
+    except OSError:
+        print("OSError --- status"+status)
+   
     return request
 
+# Donde redirecciona al usuario Tropipay después de pagar
 def hit(request):
-    print(request)
     order_number = request.session.get('order_number','')
     if order_number:
         order = Order.objects.filter(id=order_number)[0]
         if order.status == Order.PROCESSED: #SUBMITTED: # PROCESSED
+            order.update_status(Order.PAIDED)
+            order.save()
             receipt_url = reverse('checkout_receipt')
             return HttpResponseRedirect(receipt_url)
         else:
@@ -58,16 +100,7 @@ def hit(request):
     else:
         print("Error en el número de la orden")
 
-def hitS(request):
-    postdata = request.POST.copy()
-    order_number = request.session.get('order_number','')
-    if order_number:
-        order = Order.objects.filter(id=order_number)[0]
-        order.status = Order.PROCESSED
-        order.save()
-        receipt_url = reverse('checkout_receipt')
-        return HttpResponseRedirect(receipt_url)
-
+# El view de la página de pago
 @login_required
 def show_checkout(request, template_name='checkout/checkout.html'):
     if cart.is_empty(request):
@@ -75,31 +108,26 @@ def show_checkout(request, template_name='checkout/checkout.html'):
         return HttpResponseRedirect(cart_url)
     if request.method == 'POST': 
         postdata = request.POST.copy()
-        #print("El valor de value?")
-        #print(request.POST.get('value'))
-        #print(postdata['submit'])
-        if postdata['submit'] == 'Pagar con Tropipay':
+        if postdata['submit'] == ' ':
             form = CheckoutForm(postdata)
-            #form.name = request.user.first_name + request.user.last_name
             if form.is_valid():
-                #response = process_iracuba(request)
-                order_number = process2(request) 
+                order_number = create_order(request, 2) 
                 error_message = postdata.get('message','')
                 if order_number:
                     request.session['order_number'] = order_number['order_number']
-                    # Creada la orden llamo a efectuar el pago por tropipay
-                    #print("Llamo a crear pago")
                     response = createPaymentCardsJSON(request, order_number)
                     dicto = json.loads(response.content)
-                    print(dicto)
                     try:
-                        print("Entro al try y trato de llamar a la URL de pago")
                         url_pay = dicto["shortUrl"]
+                        order = Order.objects.filter(id=order_number['order_number'])[0]
+                        order.pay_url = url_pay
+                        order.save()
+                        order.update_status(order.PROCESSED)
+                        order.save()
                         return HttpResponseRedirect(url_pay)
                     except Exception as e:
-                        print("Error en: ")
-                        print(dicto["error"]["code"])
-                        if dicto["error"]["code"] == "EXPIRED_TOKEN":
+                        #print("Error en: ")
+                        if dicto["error"]["code"] in ["EXPIRED_TOKEN", "INVALID_CREDENTIAL"]:
                             response = tPAccessToken()
                             dicto = json.loads(response.content)
                             creds = loadSecret()
@@ -110,9 +138,12 @@ def show_checkout(request, template_name='checkout/checkout.html'):
                             #("Llamo por segunda vez al pago")
                             response2 = createPaymentCardsJSON(request, order_number)
                             dicto2 = json.loads(response2.content)
-                            print(dicto2)
-                            #print("llamo por segunda vez a la URL de pago")
                             url_pay = dicto2["shortUrl"]
+                            order = Order.objects.filter(id=order_number['order_number'])[0]
+                            order.pay_url = url_pay
+                            order.save()
+                            order.update_status(order.PROCESSED)
+                            order.save()
                             return HttpResponseRedirect(url_pay)
                         else:
                             fail_url = reverse('checkout_fail')
@@ -120,39 +151,104 @@ def show_checkout(request, template_name='checkout/checkout.html'):
             else:
                 fail_url = reverse('checkout_fail')
                 return HttpResponseRedirect(fail_url)
-        elif postdata['submit'] == 'Efectuar Pago':
-            form = CheckoutForm(postdata)
-            #form.name = request.user.first_name + request.user.last_name
+        else:
+            form = CachForm(postdata)
             if form.is_valid():
-                #response = process_iracuba(request)
-                order_number = process2(request) 
+                order_number = create_order(request, 1, True, True) # Crear la orden con tipo de transacción 1 usd en cach
                 error_message = postdata.get('message','')
                 if order_number:
                     request.session['order_number'] = order_number['order_number']
-                    # Creada la orden llamo a efectuar el pago por tropipay
-                    #print("Llamo a crear pago")
-                    try:
-                        response = process_iracuba(request, order_number)
-                        url_pay = json.loads(response.content)
-                        print(url_pay)
-                        return HttpResponseRedirect(url_pay)
-                    except Exception as e:
-                        print("Error en pago con Stripe")
-            else:
-                messages.error(request,form.errors.as_data)
-                error_message = 'Corrija los errores señalados'
-        elif postdata['submit'] == 'Confirmar pago efectivo':
-                form = CheckoutForm(postdata)
-                #form.name = request.user.first_name + request.user.last_name
+                    order = Order.objects.filter(id=order_number['order_number'])[0]
+                    order.transaction_id = 1 # 1 para pago en efectivo USD 
+                    order.save()
+                    order.update_status(Order.PAIDED)
+                    order.update_status(Order.DELIVERED)
+                    order.save()
+                    receipt_url = reverse('checkout_receipt')
+                    return HttpResponseRedirect(receipt_url)
+    else:
+        form = CheckoutForm()
+        form.name = request.user.first_name + request.user.last_name
+    page_title = 'Checkout'
+    cobra_efectivo = False
+    cart_subtotal = cart.cart_subtotal(request)
+    cart_delivery = cart.cart_delivery_price(request)
+    cart_total = cart_subtotal + cart_delivery
+    st_name = cart.delivery_Store(request).name
+    envio = False
+    deli = cart.get_delivery(request)
+    if deli == '3':
+        envio = True 
+    if (request.user.groups.filter(name='vendedor').exists() or request.user.is_superuser):
+        cobra_efectivo = True
+    return render(request, template_name, locals())
+
+@login_required
+def cach(request, template_name='checkout/cach.html'):
+    if cart.is_empty(request):
+        cart_url = reverse('show_cart')
+        return HttpResponseRedirect(cart_url)
+    if request.method == 'POST': 
+        postdata = request.POST.copy()
+        if postdata['submit'] == 'Confirmar pago':
+            form = CachForm(postdata)
+            if form.is_valid():
+                MND = 'USD'
+                user = request.user
+                profile = get_object_or_404(Profile, user = user)
+                MND = profile.MONEY_TYPE[profile.money_type][1]
+                if MND == 'USD':
+                    order_number = create_order(request, 1, True, True) # Crear la orden con tipo de transacción 1 usd en cach
+                else:
+                    order_number = create_order(request, 3, False, True)
+                error_message = postdata.get('message','')
+                if order_number:
+                    request.session['order_number'] = order_number['order_number']
+                    order = Order.objects.filter(id=order_number['order_number'])[0]
+                    order.transaction_id = 1 # 1 para pago en efectivo USD 
+                    order.save()
+                    order.update_status(Order.PAIDED)
+                    order.update_status(Order.DELIVERED)
+                    order.save()
+                    receipt_url = reverse('checkout_receipt')
+                    return HttpResponseRedirect(receipt_url)
+    else:
+        form = CachForm()
+        form.name = request.user.first_name + request.user.last_name
+    page_title = 'Cach'
+    cobra_efectivo = False
+    cart_subtotal = cart.cart_subtotal(request)
+    cart_delivery = cart.cart_delivery_price(request)
+    cart_total = cart_subtotal + cart_delivery
+    st_name = cart.delivery_Store(request).name
+    envio = False
+    deli = cart.get_delivery(request)
+    if deli == '3':
+        envio = True 
+    if (request.user.groups.filter(name='vendedor').exists() or request.user.is_superuser):
+        cobra_efectivo = True
+    return render(request, template_name, locals())
+
+# El view de la página de pago nacional
+@login_required
+def pagar(request, template_name='checkout/pagar.html'):
+    if cart.is_empty(request):
+        cart_url = reverse('show_cart')
+        return HttpResponseRedirect(cart_url)
+    if request.method == 'POST': 
+        postdata = request.POST.copy()
+        if postdata['submit'] == 'Confirmar pago':
+                form = PagarForm(postdata)
                 if form.is_valid():
-                    #response = process_iracuba(request)
-                    order_number = process2(request) 
+                    order_number = process2(request, False)
                     error_message = postdata.get('message','')
                     if order_number:
                         request.session['order_number'] = order_number['order_number']
                         order = Order.objects.filter(id=order_number['order_number'])[0]
-                        order.status = Order.ENTREGADA
-                        order.transaction_id = 1
+                        order.transaction_id = 1 # 1 para pago en efectivo USD 
+                        order.save()
+                        order.update_status(Order.PAIDED)
+                        order.update_status(Order.DELIVERED)
                         order.save()
                         receipt_url = reverse('checkout_receipt')
                         return HttpResponseRedirect(receipt_url)
@@ -160,25 +256,32 @@ def show_checkout(request, template_name='checkout/checkout.html'):
                     messages.error(request,form.errors.as_data)
                     error_message = 'Corrija los errores señalados'
     else:
-        form = CheckoutForm()
+        form = PagarForm()
         form.name = request.user.first_name + request.user.last_name
     page_title = 'Checkout'
     cobra_efectivo = False
-    if (request.user.groups.filter(name='Tendero').exists() or request.user.is_superuser):
+    cart_subtotal = cart.cart_subtotal(request)
+    cart_delivery = cart.cart_delivery_price(request)
+    cart_total = cart_subtotal + cart_delivery
+    st_name = cart.delivery_Store(request).name
+    envio = False
+    deli = cart.get_delivery(request)
+    if deli == '3':
+        envio = True 
+    if (request.user.groups.filter(name='vendedor').exists() or request.user.is_superuser):
         cobra_efectivo = True
-
     return render(request, template_name, locals())
 
+# El view de la página de pago completado
+@login_required
 def receipt(request, template_name='checkout/receipt.html'):
     order_number = request.session.get('order_number','')
-    if order_number:
-        order = Order.objects.filter(id=order_number)[0]
+    order = Order.objects.filter(id=order_number)[0]
+    if order_number and order.status == order.PAIDED:    
         order_items = OrderItem.objects.filter(order=order_number)
         orderN = order_number
         user = order.user
-        """ del request.session['order_number'] """
     else:
-        print(str(order_number) + 'No existe la orden')
         cart_url = reverse('show_cart')
         return HttpResponseRedirect(cart_url)
     # Capturar el POST de un botón para generar pdf
@@ -187,24 +290,58 @@ def receipt(request, template_name='checkout/receipt.html'):
         return export_pdf(request, order_number)
     return render(request, template_name, locals())
 
+# El view de la lista de órdenes (compras) realizadas por el usuario
+@login_required
 def orders_list(request, template_name='checkout/orders_list.html'):
     if request.method == 'POST':
         postdata = request.POST.copy()
-        if postdata['submit'] == 'Generar factura':
+        if postdata['submit'] == 'Factura':
             order_number = postdata['order_id']
             return export_pdf(request, order_number)
     orders = Order.objects.filter(user=request.user)
+    user_name = request.user.first_name + " " + request.user.last_name
     return render(request, template_name, locals())
 
+# view de la lista de ordenes (compras) relizadas a la tienda
 def admin_orders_list(request, template_name='checkout/orders_list.html'):
     if request.method == 'POST':
         postdata = request.POST.copy()
-        if postdata['submit'] == 'Generar factura':
+        if postdata['submit'] == 'Factura':
             order_number = postdata['order_id']
             return export_pdf(request, order_number)
+        if postdata['submit'] == 'Detalles':
+            order_id = postdata['order_id']
+            template = 'checkout/details.html'
+            return redirect(reverse('details'))
         return HttpResponseRedirect(receipt)
     orders = Order.objects.all()
+    user_name = ""
     return render(request, template_name, locals())
 
+# view de la página que se visualiza al usuario cuando hubo algún problema en el pago desde la pasarela.
 def fail(request, template_name='checkout/fail.html'):
+    order_number = request.session.get('order_number','')
+    order = Order.objects.filter(id=order_number['order_number'])[0]
+    order.status = Order.CANCELLED
+    order.save()    
+    return render(request, template_name, locals())
+
+@staff_member_required
+def details(request, order_id, template_name='checkout/details.html'):
+    order = Order.objects.filter(id=order_id)[0]
+    subtotal = order.total - order.delivery_price    
+    order_items = OrderItem.objects.filter(order=order_id)
+    orderN = order_id
+    user = order.user
+    # Capturar el POST de un botón para generar pdf
+    if request.method == 'POST':
+        postdata = request.POST.copy()
+        if postdata['submit'] == 'Generar Factura':
+            return export_pdf(request, order_id)
+        elif postdata['submit'] == 'Actualizar':
+            form = UpdateStatusForm(request.POST)
+            order.status = int(postdata['status'])
+            order.save()
+    else:
+        form = UpdateStatusForm()
     return render(request, template_name, locals())

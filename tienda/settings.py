@@ -29,9 +29,6 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 #SECRET_KEY = 'django-insecure-%s)n3v*q7f0jgnt3taoo#=eeuepers8ep38&5gh#&i#t+41rne'
 SECRET_KEY = env('SECRET_KEY')
 
-API_CLIENT = env('API_CLIENT')
-API_SECRET = env('API_SECRET')
-
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = False
 DEBUG = env('DEBUG', cast=bool)
@@ -45,11 +42,43 @@ LOGOUT_REDIRECT_URL = '/'
 #EMAIL_SETTINGS_FILE = os.path.join(BASE_DIR, 'tienda/email_settings.json') with open(EMAIL_SETTINGS_FILE) as data_file:
 #    email_settings = json.load(data_file)
 
-EMAIL_HOST = env('EMAIL_HOST')
-EMAIL_PORT = env('EMAIL_PORT')
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = env('EMAIL_USE_TLS')
+#EMAIL_HOST = env('EMAIL_HOST')
+#EMAIL_PORT = env('EMAIL_PORT')
+#EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+#EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+#EMAIL_USE_TLS = env('EMAIL_USE_TLS')
+
+
+#EMAIL_HOST = 'produccionesmuhia.ca'
+#EMAIL_HOST_USER = 'ycoca@produccionesmuhia.ca'
+#EMAIL_HOST_PASSWORD = 'TestingCorreo2024++'
+#EMAIL_PORT =  '465'
+#MAIL_USE_TLS = True
+#EMAIL_USE_SSL = False
+
+""" EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'ycocab@gmail.com'
+EMAIL_RECEIPT = 'ycoca@produccionesmuhia.ca'
+EMAIL_HOST_PASSWORD = 'zccvswdhcvtoblpm'
+EMAIL_PORT =  '587'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False """
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'produccionesmuhia.ca'
+EMAIL_HOST_USER = 'ycoca@produccionesmuhia.ca'
+EMAIL_RECEIPT = 'ycoca@produccionesmuhia.ca'
+EMAIL_HOST_PASSWORD = 'TestingCorreo2024++'
+EMAIL_PORT =  '465'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False 
+
+
+#EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+#EMAIL_HOST_USER = '136a9ea75e0faf'
+#EMAIL_HOST_PASSWORD = '72fb00b192a4f6'
+#EMAIL_PORT =  '25'
 
 # Application definition
 
@@ -62,6 +91,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
     
     #apps modulos del sistema
     'cart.apps.CartConfig',
@@ -71,6 +101,7 @@ INSTALLED_APPS = [
     'contact.apps.ContactConfig',
     'stores.apps.StoresConfig',
     'utils.apps.UtilsConfig',
+    'promo.apps.PromoConfig',
     'tienda',
 
     #apps adicionales
@@ -85,6 +116,9 @@ INSTALLED_APPS = [
 #configuracion básica del ckeditors
 CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 CKEDITOR_UPLOAD_PATH = "/media/ckeditor/"
+
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 
 #¿?
 #NPM_BIN_PATH =
@@ -172,7 +206,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+CKEDITOR_5_FILE_UPLOAD_PERMISSION = "staff"
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -199,7 +233,9 @@ MEDIA_URL = '/media/'
 #MEDIA_ROOT = #'/home/zcipcnjx/tiendaMuhia/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
 
 customColorPalette = [
         {

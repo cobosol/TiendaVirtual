@@ -2,17 +2,39 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template import RequestContext
 from django.views import View
 from catalog.models import Product
+from registration.models import Profile
+from cart import cart
+from promo.models import Banner
 
-class HomeView(View):
-    def get(self, request, *args, **kargs):
-        products = Product.objects.all()
-        return render(request, 'index.html', {'products':products})
-
+def index_view(request, template_name="index.html"):
+    products = Product.objects.all()
+    banners = Banner.objects.all()
+    distribuidor = False
+    productor = False
+    user1 = request.user
+    """ MND = 'USD'
+    UT = 'COMPRADOR'
+    if (user1.is_authenticated):
+        profile = get_object_or_404(Profile, user = user1)
+        MND = profile.MONEY_TYPE[profile.money_type][1]
+        print(profile.client_type)
+        #UT = profile.CLIENT_TYPE[][1] """ 
+    if request.method == 'POST':
+        try:
+            postdata = request.POST.copy()
+            if postdata['submit'] == 'Comprar':
+                product_slug = postdata.get('product_slug','')
+                cart.add_to_cart(request, product_slug)
+                if request.session.test_cookie_worked():
+                    request.session.delete_test_cookie()
+        except Exception:
+                print("Error en el envío de información")
+    return render(request, 'index.html', {'products':products, 'banners':banners})
 
 """ def file_not_found_404(request):
     page_title = 'Page Not Found'
-    return render(request, '404.html', {'title':'Página no encontrada'})
- """
+    return render(request, '404.html', {'title':'Página no encontrada'}) """
+
 
 def about(request):    
     context={

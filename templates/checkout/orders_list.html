@@ -7,7 +7,10 @@
     <!-- Page Header Start -->
       <div class="container-fluid bg-secondary mb-2">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
-            <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: roboto;">Compras realizadas</h4>
+            {% if user_name%}
+            <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: roboto;">{{ user_name }} estas son sus</h4>
+            {% endif %}
+            <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: roboto;">compras realizadas</h4>
         </div>
     </div>
     <!-- Page Header End -->
@@ -20,11 +23,17 @@
                 <thead class="bg-primary text-light">
                     <tr>
                         <th>Id</th>
+                        {% if not user_name %}
+                        <th>Cliente</th>
+                        {% endif%}
                         <th>Estado</th>
                         <th>Productos</th>
                         <th>Importe</th>
                         <th>Fecha</th>
-                   
+                        <th>Acción</th>
+                        {% if not user_name %}
+                        <th>Detalles</th>
+                        {% endif%}
                     </tr>
                 </thead>
                 <tbody class="align-middle text-primary">
@@ -34,6 +43,11 @@
                         <td class="align-middle">
                                 {{ order.id }}
                         </td>
+                        {% if not user_name %}
+                        <td class="align-middle">
+                            {{ order.user.first_name }}
+                        </td>
+                        {% endif%}
                         <td class="align-middle">
                             {{ order.statusS }}
                         </td>
@@ -43,19 +57,32 @@
                             {% endfor %}
                         </td>
                         <td class="align-middle">
-                            {{ order.total|currency }}      
+                            {{ order.total|currency }} {{ order.currency }}      
                         </td>
                         <td class="align-middle">
-                            {{ order.date }}
+                            {{ order.date|date:"d/m/y" }}
                         </td>
-                      
-                     
-                            
-                          
-                 
-              
-                           
-            
+                        <td class="align-middle">
+                            {% if order.statusS == "Pagada" %}
+                            <form action="." method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="order_id" value="{{ order.id }}" /> 
+                                <input type="submit" name="submit" class="btn btn-block btn-primary my-2 py-2" value="Factura" />
+                            </form>
+                            {% elif order.statusS == "Procesada" %}
+                            <a class="" id="url" href="{{ order.pay_url }}" target="_blank" style="width: 100%;"> {{order.pay_url}} </a>
+                            {% endif %}
+                        </td>
+                        {% if not user_name %}
+                        <td>
+                            <form action="." method="post">
+                                {% csrf_token %}
+                                <a href="{{ order.get_absolute_url }}" class="cart">Detalles</a>
+<!--                                 <input type="hidden" name="order_id" value="{{ order.id }}" /> 
+                                <input type="submit" name="submit" class="btn btn-block btn-primary my-2 py-2" value="Detalles" /> -->
+                            </form>
+                        </td>
+                        {% endif%}
                     </tr>
                     {% endfor %}
                     {% else %}
@@ -68,33 +95,6 @@
                 </tbody>
             </table>
         </div>
-<!--         <div class="col-lg-3">
-            <div class="card border-secondary mb-5">
-                <div class="card-header bg-primary border-0">
-                    <h4 class="font-weight-semi-bold m-0 text-light" style="font-family: roboto;">Total a pagar</h4>
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between mb-3 pt-1">
-                        <h6 class="font-weight-medium" style="font-family: roboto;">Subtotal:{{ cart_item_count }}</h6>
-                        <h6 class="font-weight-medium" style="font-family: roboto;">$ {{ cart_subtotal }}</h6>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <h6 class="font-weight-medium" style="font-family: roboto;">Envío</h6>
-                        <h6 class="font-weight-medium" style="font-family: roboto;">$ {{ cart_delivery }}</h6>
-                    </div>
-                </div>
-                <div class="card-footer border-secondary bg-transparent">
-                    <div class="d-flex justify-content-between mt-2">
-                        <h5 class="font-weight-bold" style="font-family: roboto;">Total:{{ cart_item_count }}</h5>
-                        <h5 class="font-weight-bold" style="font-family: roboto;">{{ cart_total }}</h5>
-                    </div>
-                    <form method="post" action="." class="cart">
-                        {% csrf_token %}
-                        <input type="submit" class="btn btn-block btn-primary my-2 py-2" name="submit" value="Pagar" alt="Checkout" />
-                    </form>
-                </div>
-            </div>
-        </div> -->
     </div>
 </div>
 

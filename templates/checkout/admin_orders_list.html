@@ -23,6 +23,7 @@
                         <th>Estado</th>
                         <th>Importe</th>
                         <th>Fecha</th>
+                        <th>Factura </th>
                     </tr>
                 </thead>
                 <tbody class="align-middle text-primary">
@@ -39,7 +40,14 @@
                             {{ order.total|currency }}      
                         </td>
                         <td class="align-middle">
-                            {{ order.date }}
+                            {{ order.date|date:"d/m/y" }}
+                        </td>
+                        <td class="align-middle">
+                            <form action="." method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="order_id" value="{{ order.id }}" /> 
+                                <input type="submit" name="submit" class="btn btn-block btn-primary my-2 py-2" value="Factura" />
+                            </form>
                         </td>
                     </tr>
                     {% endfor %}
@@ -53,7 +61,6 @@
                 </tbody>
             </table>
         </div>
-<!--         <div class="col-lg-3">
             <div class="card border-secondary mb-5">
                 <div class="card-header bg-primary border-0">
                     <h4 class="font-weight-semi-bold m-0 text-light" style="font-family: roboto;">Total a pagar</h4>

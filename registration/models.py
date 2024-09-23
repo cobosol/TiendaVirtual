@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User 
+from django.contrib.auth.models import User, Group 
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
@@ -9,18 +9,42 @@ def custom_upload_to(instance, filename):
     return 'profiles/' + filename
     
 class Profile(models.Model):
-    COMPRADOR = 1
-    PRODUCTOR = 2
-    COMERCIANTE = 3
-    # set of possible order statuses
-    CLIENT_TYPE = ((COMPRADOR,'Comprador ocasional'),
-                   (PRODUCTOR,'Comprador de materias primas'),
-                   (COMERCIANTE,'Comprador al mayor'),)
+    # Tipo de cliente
+    COMPRADOR = 0
+    PRODUCTOR = 1
+    DISTRIBUIDOR = 2
+
+    CLIENT_TYPE = ((COMPRADOR,'Comprador'),
+                   (PRODUCTOR,'Productor'),
+                   (DISTRIBUIDOR,'Distribuidor'),
+                   )
+
+    # Moneda preferida
+    USD = 0
+    CUP = 1
+    MLC = 2
+
+    MONEY_TYPE = ((USD,'USD'),
+                   (CUP,'CUP'),
+                   (MLC,'MLC'),
+                   )
+    
     user = models.OneToOneField(User, on_delete = models.CASCADE, verbose_name = "Usuario")
+    cid = models.CharField(max_length=20, unique="True", 
+                            help_text='Número de identificación', 
+                            verbose_name = "Número de identidad")
     avatar = models.ImageField(upload_to='profiles', null=True, blank=True, verbose_name = "Foto")
     bio = models.TextField(null=True, blank=True, verbose_name = "Biografía")
-    client_type = models.IntegerField(choices=CLIENT_TYPE, default=COMPRADOR, verbose_name = "Tipo de cliente")
+    client_type = models.IntegerField(choices=CLIENT_TYPE, default=COMPRADOR, help_text='Puede cambiarlo cuando desee en su perfil', verbose_name = "Tipo de cliente")
+    money_type = models.IntegerField(choices=MONEY_TYPE, default=USD, help_text='En cualquier momento puede cambiarla', verbose_name = "Tipo de moneda")
     link = models.URLField(max_length=200, null=True, blank=True, verbose_name = "Enlace")
+    phone = models.CharField(max_length=15, null=True, blank = True,
+                            help_text='', 
+                            verbose_name = "Número de móvil")
+    ws = models.CharField(max_length=15, null=True, blank = True,
+                            help_text='Número de teléfono para WhatsApp', 
+                            verbose_name = "Número para WhatsApp")
+    
     # Special User
     reeup = models.CharField(max_length=20, unique=True, null=True, blank = True,
                             help_text='', 
@@ -34,6 +58,35 @@ class Profile(models.Model):
                             verbose_name = "Agencia bancaria")
     contract = models.CharField(max_length=50, null=True, blank = True, 
                             verbose_name = "Número de contrato")
+
+    class Meta:
+        ordering = ['user']
+        verbose_name = "Perfil"
+        verbose_name_plural = "Perfiles"
+
+    def __str__(self):
+        return self.user.first_name
+
+    def save(self, *args, **kwargs):
+        print("Entre a save")
+        super(Profile, self).save(*args, **kwargs)
+        if self.client_type == self.PRODUCTOR:
+            group = Group.objects.get(name='productores')
+            self.user.groups.add(group)
+            group2 = Group.objects.get(name='distribuidores')
+            self.user.groups.remove(group2)
+        elif self.client_type == self.DISTRIBUIDOR:
+            group = Group.objects.get(name='distribuidores')
+            self.user.groups.add(group)
+            group2 = Group.objects.get(name='productores')
+            self.user.groups.remove(group2)
+        else:
+            group = Group.objects.get(name='distribuidores')
+            self.user.groups.remove(group)
+            group2 = Group.objects.get(name='productores')
+            self.user.groups.remove(group2)
+        print("Verifique")
+        super(Profile, self).save(*args, **kwargs)
 
     @property
     def name(self):
@@ -50,4 +103,4 @@ class Profile(models.Model):
 def ensure_profile_exists(sender, instance, **kwargs):
     if kwargs.get('created', False):
         Profile.objects.get_or_create(user=instance)
-        print("Se acaba de crear un usuario y su pefil enlazado.")
+        print("Se acaba de crear un usuario y su perfil enlazado.")

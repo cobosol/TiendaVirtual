@@ -9,7 +9,9 @@ class Store(models.Model):
     image = models.ImageField(upload_to="Tiendas", null=True, blank=True,
                               verbose_name="Imagen del punto de venta")
     hours = models.CharField(max_length=255, verbose_name="Horario de entrega")
-    price = models.FloatField(verbose_name="Precio de entrega", default=0)
+    price_usd = models.FloatField(verbose_name="Precio de entrega en USD", default=0)
+    price_cup = models.FloatField(verbose_name="Precio de entrega en CUP", default=0)
+    price_mlc = models.FloatField(verbose_name="Precio de entrega en MLC", default=0)
     address = models.CharField(max_length=255, verbose_name="Dirección de entrega")
 
     class Meta:
@@ -27,6 +29,7 @@ class Store(models.Model):
         else:
             return "/static/tiendas/TiendaDefault.jpg"
     
+    # Revisar este método. No debe hacer falta, este resultado sale del atributo de Producto
     def product_count(self, product):
         products = Product_Sales.objects.filter(store=self)
         c = 0
@@ -38,15 +41,21 @@ class Store(models.Model):
     def get_absolute_url(self):
         return f"/tiendas/{self.slug}/"
 
+    # Actualiza la cantidad de Producto a partir de los productos por almacen    
+    def update_prod_count2(self, prod):
+        products_by_store = Product_Sales.objects.filter(product=prod)
+        prod.count = 0
+        for ps in products_by_store:
+            prod.count = prod.count + ps.count 
     
-    """     def products(self, product):
-        products_stores = Product_Sales.objects.filter(product)
-        c = 0
+    def update_prod_count(self, prod, count):
+        products = Product_Sales.objects.filter(store=self)
         for p in products:
-            if p.gname == product:
-                c+=1
-        return c """
-    
+            if p.product == prod:
+                if p.update_available(count):
+                    p.save()
+                    return True
+        return False
 
     def __unicode__(self):
         return self.name
@@ -55,23 +64,33 @@ class Store(models.Model):
         return self.name
 
 class Product_Sales(models.Model):
+    products_store = models.CharField(max_length=255,
+                            help_text='Nombre único para cada tipo de producto en cada almacén.', 
+                            verbose_name = "Nombre único", default = "nombre")
     product = models.ForeignKey(Product, on_delete = models.CASCADE, verbose_name="Producto a vender")
     store = models.ForeignKey(Store, on_delete=models.CASCADE, verbose_name="Almacén de ventas" )
+    count = models.IntegerField(default=0, blank=False, null=False, verbose_name="Cantidad del producto en el almacén")
     available = models.IntegerField(default=0, blank=False, null=False, verbose_name="Cantidad a la venta")
-    reserved = models.IntegerField(default=0, blank=True, null=True, verbose_name="Cantidad de vendidos sin entregar")
+    reserved = models.IntegerField(default=0, verbose_name="Cantidad de reservados, sin pagar")
+    sold = models.IntegerField(default=0, blank=True, null=True, verbose_name="Cantidad de vendidos por entregar")
 
     class Meta:
         verbose_name = "producto en venta"
         verbose_name_plural = "productos en venta"
-        ordering = ['product']
+        ordering = ['store']
 
     def __unicode__(self):
-        return self.product.name
+        return self.products_store
     
-    def updateAvailable(reserve):
-        available = available - reserve
-        reserved = reserved + reserve
-        print(reserved)
+    def update_available(self, buyed):
+        if buyed < self.available:
+            self.available = self.available - buyed
+            return True
+        return False
     
     def __str__(self):
-        return self.product.name
+        return self.products_store
+    
+    def update_count(self):
+        self.product.update_count2()
+        

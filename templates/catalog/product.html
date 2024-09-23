@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load catalog_filters %}
 
 <title>Producto</title>
 
@@ -17,6 +18,7 @@
     <div class="container-fluid py-2">
         <div class="row px-xl-5">
             <div id="imagen" class="col-lg-3 pb-0 card-header product-img position-relative text-md-left overflow-hidden bg-transparent p-0">
+                <h5 class="font-weight-semi-bold" style="font-family: roboto;">{{ p.gname }} {{ p.presentation }}</h5>
                 <img width="220" height="320" src="{{p.get_image_url}}" alt="{{p.get_image_url}}">
                 <div class="d-flex mb-4">
                     <p class="text-dark font-weight-medium mb-0 mr-3" style="font-family: roboto;">Ficha Técnica:</p>
@@ -31,18 +33,49 @@
                 </div>
             </div>
             <div id="detalles" class="col-lg-5 pb-1">
-                <h5 class="font-weight-semi-bold" style="font-family: roboto;">{{ p.gname }}</h5>
-                <h6 class="font-weight-semi-bold" style="font-family: roboto;">{{ p.presentation }}</h6>
-                <h5 class="font-weight-semi-bold mb-4" style="font-family: roboto;">Precio: $ {{ p.price }} USD</h5>
+                <div>
+                    <h6 class="font-weight-semi-bold text-primary" style="font-family: roboto;">Precios</h6>
+                    <table class="table table-bordered text-center mb-0 border-0" style="font-family: roboto;">
+                        <thead class="bg-primary text-light">
+                            <tr>
+                                <th>Moneda</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody class="align-middle">
+                            <tr>
+                                <td class="align-middle">
+                                    USD
+                                </td>
+                                <td class="align-middle">
+                                    {{ p.price_base|currency }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle">
+                                    CUP
+                                </td>
+                                <td class="align-middle">
+                                    {{ p.price_cup|currency }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle">
+                                    MLC
+                                </td>
+                                <td class="align-middle">
+                                    {{ p.price_mlc|currency }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
             <!--     <h4 class="mb-4" style="font-family: roboto;">Producto de: {{ p.brand }} </h4> -->
-                <p>
-                <h6 class="font-weight-semi-bold mb-4" style="font-family: roboto;"> Descripción: </h6>{{p.description|safe}}
-                <br> 
-                </p>
             </div>
             <div id="opciones_compra" class="col-lg-4 pb-0">
                 <div>
-                    <h3 class="font-weight-semi-bold text-primary" style="font-family: roboto;">Disponibilidad</h3>
+                    <h6 class="font-weight-semi-bold text-primary" style="font-family: roboto;">Disponibilidad</h6>
                     <table class="table table-bordered text-center mb-0 border-0" style="font-family: roboto;">
                         <thead class="bg-primary text-light">
                             <tr>
@@ -64,20 +97,18 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="row px-xl-8">
-                    <form method="post" action="." class="cart">
-                        {% csrf_token %}
-                        <div >
-                            <p><h6 class="font-weight-semi-bold text-primary" style="font-family: roboto;">Seleccione forma de entrega</h6></p>                        
-                            {{form.delivery_type}}
-                            <p><h6 class="font-weight-semi-bold bg-secondary text-primary" style="font-family: roboto;">Cantidad</h6></p>
-                                <div class="input-group quantity mr-2" style="width: 250px;">
-                                    {{form.quantity}}
-                                    <input type="submit" class="btn btn-primary px-3 fa fa-shopping-cart mr-1" value="Comprar" name="submit" alt="Add To Cart" />
-                                    {{form.product_slug}}
-                                </div>
-                        </div>    
-                    </form>
+               <div class="row px-xl-12 justify-content-center">
+                <form method="post" action="." class="cart">
+                    {% csrf_token %}
+                    <input type="hidden" name="product_slug" value="{{ p.slug }}" />
+                    <button type="submit" name="submit" value="Comprar" class="btn btn-secondary my-2 py-0 text-light" name="submit" alt="Add To Cart">
+                        <i class="fas fa-shopping-cart text-secondary mr-1"></i>
+                        Comprar
+                    </button>
+                </form>
+                </div> 
+                <div class="row px-xl-12 justify-content-left">
+                    <h6 class="font-weight-medium mb-4" style="font-family: sans-serif;"> Usted puede ajustar cantidad del producto y forma de entrega en el carrito. </h6>
                 </div>
             </div>
         </div>
@@ -90,6 +121,10 @@
                 {% endfor %}
             </ul>
             {% endif %}
+            <p>
+                <h6 class="font-weight-semi-bold mb-4" style="font-family: roboto;"> Descripción: </h6>{{p.description|safe}}
+                <br> 
+            </p>
         </div>
     </div>
 

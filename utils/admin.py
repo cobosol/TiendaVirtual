@@ -1,3 +1,7 @@
 from django.contrib import admin
+from utils.models import Price
 
-# Register your models here.
+class PriceAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Price, PriceAdmin)

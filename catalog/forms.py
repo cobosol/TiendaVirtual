@@ -1,41 +1,51 @@
 from django import forms
 from catalog.models import Product
-from stores.models import Store
+from stores.models import Store, Product_Sales
 from django.db import models
+from django_ckeditor_5.widgets import CKEditor5Widget
 
 
-class ProductAdminForm(forms.ModelForm):
+class ProductForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          self.fields["description"].required = False
+
     class Meta:
         model = Product
         fields = '__all__'
-        # pass admin: Yosoy2024++ o CoboSol2024++
-
-    def clean_price(self):
-        if self.cleaned_data['price'] <= 0:
-            raise forms.ValidationError('El precio debe ser mayor que cero')
-        return self.cleaned_data['price']
-
-""" CARD_TYPES = (('Mastercard','Mastercard'),
-              ('VISA','VISA'),
-              ('AMEX','AMEX'),
-              ('Discover','Discover'),) """
-
-
-class ProductAddToCartForm(forms.Form):
-    """ def deliverys():
-        DELIVERY_TYPES = {}
-        stores = Store.objects.all()
-        for s in stores:
-            delivery_slug = s.slug
-            DELIVERY_TYPES[delivery_slug] = delivery_slug
-        return DELIVERY_TYPES """
+        widgets = {
+            "description": CKEditor5Widget(
+                  attrs={"class": "django_ckeditor_5"}, config_name="comment"
+              )
+          }
     
+class ProductAlmacenForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+
+    class Meta:
+        model = Product_Sales
+        fields = '__all__'
+        
+class ProductAdminForm(forms.ModelForm):    
+    def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          self.fields["description"].required = False
+
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+"""     def clean_price(self):
+        if self.cleaned_data['price_base'] <= 0:
+            raise forms.ValidationError('El precio debe ser mayor que cero')
+        return self.cleaned_data['price_base'] """
+    
+
+class ProductAddToCartForm(forms.Form):    
     quantity = forms.IntegerField(widget=forms.TextInput(attrs={'size':'2', 'value':'1', 'class':'form-control bg-secondary text-center', 'maxlength':'3'}), error_messages={'invalid':'Por favor entre un valor entero mayor que cero.'}, min_value=1)
     product_slug = forms.CharField(widget=forms.HiddenInput())
-    #delivery_type = forms.CharField(widget=forms.Select(choices=Store.objects.all()))
     delivery_type = forms.ModelChoiceField(queryset=Store.objects.all(), initial=1)
-    #credit_card_type = forms.CharField(widget=forms.Select(choices=CARD_TYPES))
-
 
     # override the default __init__ so we can set the request
     def __init__(self, request=None, *args, **kwargs):

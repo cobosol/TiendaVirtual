@@ -4,22 +4,25 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Profile
 
 class UserCreationFormWithEmail(UserCreationForm):
-    email = forms.EmailField(required=True, help_text="Requerido. 254 caracteres como máximo y debe ser un emai válido.")
-
+    email = forms.EmailField(required=True, help_text="Requerido. 254 caracteres como máximo y debe ser un correo válido.")
+    
     class Meta:
         model = User
         fields = ("username", "first_name", "last_name", "email", "password1", "password2")
 
+    def __init__(self, *args, **kwargs):
+        super(UserCreationFormWithEmail, self).__init__(*args, **kwargs)   
+        self.fields['username'].help_text = 'Requerido. Solo letras, dígitos y @/./+/-/_ '
+        self.fields['first_name'].help_text = 'Requerido.'
+        self.fields['last_name'].help_text = 'Requerido.'
+        self.fields['password1'].help_text = 'No puede ser similar a tu otra información. Debe contener al menos 8 caracteres e incluir letras, números y caracteres especiales.'
+        self.fields['password2'].help_text = 'Verifique que coincide exatamente con la contraseña anterior'
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
-            raise forms.ValidationError(u'El email ya está registrado, pruebe con otro.')
+            raise forms.ValidationError(u'El correo ya está registrado, pruebe con otro.')
         return email
-    
-CLIENT_TYPE = (('Comprador ocasional','Comprador ocasional'),
-               ('Comprador de materias primas','Comprador de materias primas'),
-               ('Comprador al mayor','Comprador al mayor'),)
-
     
 class ProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -29,11 +32,12 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ['avatar', 'bio', 'link', 'client_type', 'reeup', 'nit', 'address', 'agency', 'contract']
+        fields = ['avatar', 'bio', 'link', 'cid', 'client_type', 'money_type', 'reeup', 'nit', 'address', 'agency', 'contract']
         widgets = {
             'avatar': forms.ClearableFileInput(attrs={'class':'btn-primary btn-block form-control-file mt-3', 'placeholder':'Subir foto'}),
             'bio': forms.Textarea(attrs={'class':'form-control mt-3', 'rows':3, 'placeholder':'Biografía'}),
             'link': forms.URLInput(attrs={'class': 'form-control mt-3', 'placeholder':'enlace'}),
+            'cid': forms.TextInput(attrs={'class':'form-control mt-3', 'placeholder':'Número de identidad', 'required': True}),
             'reeup': forms.TextInput(attrs={'class':'form-control mt-3', 'placeholder':'Código reeup'}),
             'nit': forms.TextInput(attrs={'class':'form-control mt-3', 'placeholder':'Código nit'}),
             'address': forms.TextInput(attrs={'class':'form-control mt-3', 'placeholder':'Dirección legal'}),

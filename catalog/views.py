@@ -1,14 +1,34 @@
-from django.shortcuts import render
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from catalog.models import Category, Product
 from django.template import RequestContext
-from django.urls import reverse
-from cart import cart
+from django.urls import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+import uuid
+from django.core.files.base import ContentFile
+from base64 import b64decode
+
+#Librerías para mensajes, algunos basados en views
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin 
+
+# Instanciamos las vistas genéricas de Django 
+#from django.views import View
+from django.views.generic import ListView, DetailView 
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
+# Habilitamos los formularios en Django
+from django import forms
+
+#from registration.views import superuser_only
+
+# Importamos lo necesario de la aplicación
+from cart import cart
 from catalog.forms import ProductAddToCartForm
 from stores.models import Store, Product_Sales
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from catalog.models import *
+from pages.models import *
+from .forms import ProductAdminForm, ProductForm, ProductAlmacenForm
 
 def index(request, template_name="index.html"):
     context = {'name':'Tienda Virtual MUHIA'}
@@ -20,47 +40,23 @@ def show_category(request, category_slug, template_name="catalog/category.html")
     page_title = c.name
     meta_keywords = c.meta_keywords
     meta_description = c.meta_description
+    cart_items = cart.get_cart_items(request)
     product = get_object_or_404(Product, pk=1)
-
     # Add to cart
-    """     if request.method == 'POST':
+    if request.method == 'POST':
         try:
             postdata = request.POST.copy()
-            if postdata['submit'] == 'Carrito':
-                form = ProductAddToCartForm(request, postdata)
-                form.quantity = postdata['quantity']
-                #check if posted data is valid
-                if form.is_valid():
-                    #add to cart and redirect to cart page 
-                    cart.add_to_cart(request)
-                    # if test cookie worked, get rid of it
-                    if request.session.test_cookie_worked():
-                        request.session.delete_test_cookie()
-                    url = reverse('show_cart')
-                    return HttpResponseRedirect(url)
-                else:
-                    print(form.errors.as_data)
-            else:
-                form = ProductAddToCartForm(request=request)
-                # assign the hidden input the product slug
-                form.fields['product_slug'].widget.attrs['value'] = product_slug
-                quantity = postdata['quantity']
-                form.fields['quantity'].widget.attrs['value'] = postdata['quantity']
+            if postdata['submit'] == 'Comprar': 
+                product_slug = postdata.get('product_slug','')
+                cart.add_to_cart(request, product_slug)
+                if request.session.test_cookie_worked():
+                    request.session.delete_test_cookie()
         except Exception:
-            print("Error en el envío de información")
-    else:
-        # it’s a GET, create the unbound form. Note request as a kwarg
-        print("No POST")
-    form = ProductAddToCartForm(request=request)
-    # assign the hidden input the product slug
-    form.fields['product_slug'].widget.attrs['value'] = product_slug
-    form.fields['quantity'].widget.attrs['value'] = quantity
-    # set the test cookie on our first GET request
-    request.session.set_test_cookie() """
+            print("Error al adicionar al carrito")
+    request.session.set_test_cookie()
     return render(request, template_name, locals())
 
 def show_categories(request, template_name="catalog/categories.html"):
-
     return render(request, template_name, locals())
 
 def validateCount(postdata, products_stores):
@@ -91,53 +87,91 @@ def show_product(request, product_slug, template_name="catalog/product.html"):
     meta_description = p.meta_description
     quantity = 1
     delivery = 1
-    # need to evaluate the HTTP method
     if request.method == 'POST':
         try:
             postdata = request.POST.copy()
-            """             form = ProductAddToCartForm(request=request)
-            # assign the hidden input the product slug
-            form.fields['product_slug'].widget.attrs['value'] = product_slug
-            quantity = postdata['quantity']
-            form.fields['quantity'].widget.attrs['value'] = postdata['quantity'] """
-            print(postdata)
-            if postdata['submit'] == 'Comprar':
-                ps = get_Product_Store(postdata, products_stores)
-                if not(validateCount(postdata, products_stores)):
-                    print("No valida la cantidad ")
-                    messages.warning(request, "Está solicitando más cantidad de la disponible para ese tipo de entrega")
-                else:
-                    form = ProductAddToCartForm(request, postdata)
-                    form.quantity = postdata['quantity']
-                    form.delivery_type = postdata['delivery_type']
-                    #check if posted data is valid """
-                    if form.is_valid():
-                        #add to cart and redirect to cart page 
-                        cart.add_to_cart(request)
-                        # if test cookie worked, get rid of it
-                        if request.session.test_cookie_worked():
-                            request.session.delete_test_cookie()
-                        url = reverse('show_cart')
-                        return HttpResponseRedirect(url)
-                    else:
-                        messages.error(request,form.errors.as_data)
-            else:
-                form = ProductAddToCartForm(request=request)
-                # assign the hidden input the product slug
-                form.fields['product_slug'].widget.attrs['value'] = product_slug
-#                form.fields['delivery_type'].widget.attrs['value'] = 'EnvioHabana'
-                quantity = postdata['quantity']
-                delivery = postdata['delivery_type']
-                form.fields['quantity'].widget.attrs['value'] = postdata['quantity']
-                form.fields['delivery_type'].widget.attrs['value'] = postdata['delivery_type']
+            if postdata['submit'] == 'Comprar': 
+                product_slug = postdata.get('product_slug','')
+                flag = cart.add_to_cart(request, product_slug)
+                if request.session.test_cookie_worked():
+                    request.session.delete_test_cookie()
+                url = reverse('show_cart')
+                return HttpResponseRedirect(url)
         except Exception:
             messages.error(request,"Error desconocido en el envío de información")
-    form = ProductAddToCartForm(request=request)
-    # assign the hidden input the product slug
-    form.fields['product_slug'].widget.attrs['value'] = product_slug
-    #print(postdata)
-    #... valores = mismafunción.widget.attrs['value']
-    form.fields['quantity'].widget.attrs['value'] = quantity
-    # set the test cookie on our first GET request
     request.session.set_test_cookie()
     return render(request, template_name, locals())
+
+#@method_decorator(superuser_only)
+def i_admin(request):
+    return render(request, "catalog/gestion.html", {})
+
+#---------- Gestión de productos ----------------
+class gestion_productos(ListView):
+    model = Product
+
+class crear_producto(SuccessMessageMixin, CreateView):
+    model = Product
+    form = ProductForm
+    fields = "__all__"
+    success_message = "Se ha subido correctamente el nuevo producto."
+
+    def get_success_url(self):
+        return reverse('productos')
+
+class detal_producto(DetailView):
+    model = Product
+
+class actualizar_producto(SuccessMessageMixin, UpdateView):
+    model = Product
+    form = ProductForm
+    fields = "__all__"
+    success_message = "Se ha actualizado correctamente el producto."
+
+    def get_success_url(self):
+        return reverse('productos')
+
+class eliminar_producto(SuccessMessageMixin, DeleteView):
+    model = Product
+    form = Product
+    fields = "__all__"
+
+    def get_success_url(self): 
+        success_message = 'Producto eliminado correctamente!'
+        messages.success (self.request, (success_message))       
+        return reverse('productos') # Redireccionamos a la vista principal
+    
+#---------- Gestión de productos en almacen----------------
+class gestion_productos_almacen(ListView):
+    model = Product_Sales
+
+class crear_producto_almacen(SuccessMessageMixin, CreateView):
+    model = Product_Sales
+    form = ProductAlmacenForm
+    fields = "__all__"
+    success_message = "Se ha subido correctamente el nuevo producto."
+
+    def get_success_url(self):
+        return reverse('productos')
+
+class detal_producto_almacen(DetailView):
+    model = Product_Sales
+
+class actualizar_producto_almacen(SuccessMessageMixin, UpdateView):
+    model = Product_Sales
+    form = ProductAlmacenForm
+    fields = "__all__"
+    success_message = "Se ha actualizado correctamente el producto."
+
+    def get_success_url(self):
+        return reverse('productos_almacen')
+
+class eliminar_producto_almacen(SuccessMessageMixin, DeleteView):
+    model = Product_Sales
+    form = ProductAlmacenForm
+    fields = "__all__"
+
+    def get_success_url(self): 
+        success_message = 'Producto eliminado correctamente!'
+        messages.success (self.request, (success_message))       
+        return reverse('productos_almacen') # Redireccionamos a la vista principal

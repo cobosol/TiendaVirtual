@@ -1,14 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
+{% load catalog_filters %}
 
 {% block content %}
     <!-- Page Header Start -->
     <div class="container-fluid bg-secondary mb-2">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
             <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: roboto;">Productos en la categoría: {{ c.name }}</h4>
-            <!-- <div class="d-inline-flex">
-                <h4 class="text-secondary font-weight-semi-bold text-uppercase mb-3" style="font-family: roboto;">{{ c.name }}</h4>
-            </div> -->
         </div>
     </div>
     <!-- Page Header End -->
@@ -23,40 +21,38 @@
                         <div class="card product-item border-0 mb-4 text-primary">
                             <a href="{{p.get_absolute_url}}">
                             <div class="card-header text-center product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <img class="img-fluid w-30" src="{{p.get_image_url}}" alt="{{ p.image }}">
+                                <img class="img-fluid w-10" src="{{p.get_image_url}}" alt="{{ p.image }}">
                             </div>
                             <div class="card-body border-left border-right text-primary text-center p-0 pt-4 pb-3">
                                 <h6 class="mb-3 text-primary" style="font-family: roboto;">{{ p.gname }}</h6>
                                 <h6 class="mb-3 text-primary" style="font-family: roboto;">{{ p.presentation }}</h6>
-                                <div class="d-flex justify-content-center">
-                                    <h6 class="text-dark" style="font-family: roboto;">$ {{p.price}} USD</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
-                                </div>
+                                {% if MND == 'USD' %}
+                                  <div class="d-flex justify-content-center">
+                                    <h6 class="text-dark" style="font-family: roboto;"> {{p.price_base|currency}} USD</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                  </div>
+                                {% elif MND == 'CUP' %}
+                                  <div class="d-flex justify-content-center">
+                                    <h6 class="text-dark" style="font-family: roboto;"> {{p.price_cup|currency}} CUP</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                  </div>
+                                {% else %}
+                                  <div class="d-flex justify-content-center">
+                                    <h6 class="text-dark" style="font-family: roboto;"> {{p.price_mlc|currency}} MLC</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                  </div>
+                                {% endif %}
                             </div>
                             </a>
                             <div class="card-footer d-flex text-center justify-content-between bg-light border">
-<!--                                 <form method="post" action="." class="cart">
-                                    {% csrf_token %}
-                                    <div class="d-flex align-items-center mb-4 pt-2">
-                                        <div class="input-group quantity mr-3" style="width: 130px;">
-                                            <div class="input-group-btn">
-                                                <button class="btn btn-primary btn-minus" name="submit" value="Menos">
-                                                <i class="fa fa-minus"></i>
-                                                </button>
-                                            </div>
-                                            {{form.quantity}}
-                                            <div class="input-group-btn">
-                                                <button class="btn btn-primary btn-plus" name="submit" value="Mas">
-                                                    <i class="fa fa-plus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        {{form.product_slug}}
-                                        <input type="submit" class="btn btn-primary px-3" value="Carrito" name="submit" alt="{{p.product_slug}}" />
-                                    </div>
-                                    </form> -->
-                                    <!-- <button class="btn btn-primary px-3" value="Add To Cart" name="submit" alt="Add To Cart"><i class="fa fa-shopping-cart mr-1"></i> Al carrito</button> -->
-                                    <a href="{{p.get_absolute_url}}" class="btn btn-sm text-secondary p-2"><i class="fas fa-shopping-cart text-secondary mr-1"></i>Comprar ahora</a>
-                                    <!-- <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a> -->
+<!--                                 <a href="{{p.get_absolute_url}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a> -->
+                                <form method="post" action="." class="cart">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="product_slug" value="{{ p.slug }}" />
+                                        <button type="submit" name="submit" value="Comprar" class="btn btn-secondary my-2 py-0 text-light" name="submit" alt="Add To Cart">
+                                            <i class="fas fa-shopping-cart text-secondary mr-1"></i>
+                                            Comprar
+                                        </button>
+<!--                                         <button type="submit" name="submit" value="Comprar" class="btn btn-block btn-primary fa fa-shopping-cart my-2 py-2" name="submit" alt="Add To Cart"/> -->
+                                        <a href="{{p.get_absolute_url}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a>
+                                </form>
                             </div>
                         </div>
                     </div>

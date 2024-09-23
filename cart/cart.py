@@ -5,12 +5,24 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from cart import cart
 from stores.models import Product_Sales
+from registration.models import Profile
 
 import decimal
 import random
 
 # not needed yet but we will later
 CART_ID_SESSION_KEY = 'cart_id'
+SESSION_DELIVERY = 'delivery'
+
+# Pedir el delivery  por defecto envio habana pk = 3
+def get_delivery(request, delivery='3'):
+    if request.session.get(SESSION_DELIVERY,'') == '':
+        request.session[SESSION_DELIVERY] = delivery
+    return request.session[SESSION_DELIVERY]
+
+# Asignar el delivery por defecto envio habana pk = 3
+def set_delivery(request, delivery='3'):
+    request.session[SESSION_DELIVERY] = delivery
 
 # get the current user's cart id, sets new one if blank
 def _cart_id(request):
@@ -33,31 +45,29 @@ def get_cart_items(request):
 def get_stores(request):
     return Store.objects.all()
 
-def get_Product_Store(request):
-    postdata = request.POST.copy()
-    product_slug = postdata.get('product_slug','')
+def get_Product_Store(request, product_slug, dely='3'):
     p = get_object_or_404(Product, slug=product_slug)    
     products_stores = Product_Sales.objects.filter(product=p)
-    dely = postdata['delivery_type']
     s = get_object_or_404(Store, pk=dely)
     for ps in products_stores:
         if ps.store.slug == s.slug:
             return ps
     return 0
 
-# add an item to the cart
-def add_to_cart(request):
-    postdata = request.POST.copy()
-    # get product slug from post data, return blank if empty
-    product_slug = postdata.get('product_slug','')
-    # get quantity added, return 1 if empty
-    quantity = postdata.get('quantity',1)
-    delivery = postdata.get('delivery_type',1)
-    # fetch the product or return a missing page error
-    p = get_object_or_404(Product, slug=product_slug)
-    # fetch the delivery or return a missing page error
+def delivery_Store(request):
+    delivery = get_delivery(request)
     s = get_object_or_404(Store, pk=delivery)
-    #get products in cart
+    return s
+    
+def delivery_name(request):
+    delivery = get_delivery(request)
+    s = get_object_or_404(Store, pk=delivery)
+    return s.name
+
+# add an item to the cart
+def add_to_cart(request, p_slug, quantity=1):
+    postdata = request.POST.copy()
+    p = get_object_or_404(Product, slug=p_slug)
     cart_products = get_cart_items(request)
     product_in_cart = False
     # check to see if item is already in cart
@@ -71,14 +81,13 @@ def add_to_cart(request):
         ci = CartItem()
         ci.product = p
         ci.quantity = quantity
-        ci.delivery = s
         ci.cart_id = _cart_id(request)
         ci.save()
-    ps = get_Product_Store(request)
-    ps.reserved = ps.reserved + int(quantity)
-    ps.available = ps.available - int(quantity)
-    ps.save()
-    #ps.updateAvailable(ps,quantity)
+    delivery = cart.get_delivery(request)
+    if p.set_reserved(quantity):
+        p.save()
+        return True
+    return False 
 
 # returns the total number of items in the user's cart
 def cart_distinct_item_count(request):
@@ -94,37 +103,58 @@ def update_cart(request):
     quantity = postdata['quantity']
     cart_item = get_single_item(request, item_id)
     if cart_item:
-        if int(quantity) > 0:
+        if int(quantity) != cart_item.quantity:
+            dif = int(quantity) - cart_item.quantity
             cart_item.quantity = int(quantity)
+            cart_item.product.set_reserved(dif)
+            cart_item.product.save()
             cart_item.save()
         else:
             remove_from_cart(request)
 
-# remove a single item from cart
+# remove a single item from cart Rvisar porue ya actulice productos por otra parte creo
 def remove_from_cart(request):
     postdata = request.POST.copy()
     item_id = postdata['item_id']
+    quantity = postdata['quantity']
     cart_item = get_single_item(request, item_id)
     if cart_item:
+        prod = cart_item.product
+        prod.set_reserved(int(quantity))
+        prod.save()
         cart_item.delete()
 
 # gets the total cost for the current cart
 def cart_subtotal(request):
     cart_total = decimal.Decimal('0.00')
     cart_products = get_cart_items(request)
+    user = request.user
+    MND = 'USD'
+    if (user.is_authenticated):
+        profile = get_object_or_404(Profile, user = user)
+        MND = profile.MONEY_TYPE[profile.money_type][1] 
     for cart_item in cart_products:
-        cart_total += cart_item.product.price * cart_item.quantity
+            cart_total += cart_item.product.get_price(MND) * cart_item.quantity
     return cart_total
 
 def cart_delivery_price(request):
     cart_delivery = decimal.Decimal('0.00')
     cart_products = get_cart_items(request)
     stores = get_stores(request)
+    MND = 'USD'
+    user = request.user
+    if (user.is_authenticated):
+        profile = get_object_or_404(Profile, user = user)
+        MND = profile.MONEY_TYPE[profile.money_type][1]
     for s in stores:
-        for cart_item in cart_products:
-            if s == cart_item.delivery:
-                cart_delivery = cart_delivery + decimal.Decimal(s.price)
-                break
+        if s == cart.delivery_Store(request):
+            if MND == 'USD':
+                cart_delivery = cart_delivery + decimal.Decimal(s.price_usd)
+            elif MND == 'CUP':
+                cart_delivery = cart_delivery + decimal.Decimal(s.price_cup)
+            else:
+                cart_delivery = cart_delivery + decimal.Decimal(s.price_mlc)
+            break
     return cart_delivery
 
 def is_empty(request):
@@ -132,4 +162,5 @@ def is_empty(request):
 
 def empty_cart(request):
     user_cart = get_cart_items(request)
+    request.session[SESSION_DELIVERY] = ''    
     user_cart.delete()

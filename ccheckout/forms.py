@@ -3,7 +3,7 @@ from .models import Order
 import datetime
 import re
 
-def cc_expire_years():
+""" def cc_expire_years():
     current_year = datetime.datetime.now().year
     years = range(current_year, current_year+12)
     return [(str(x),str(x)) for x in years]
@@ -23,7 +23,7 @@ CARD_TYPES = (('Mastercard','Mastercard'),
               ('AMEX','AMEX'),
               ('Discover','Discover'),)
 
-""" def delivery_names():
+ """""" def delivery_names():
     return DeliveryType.objects.all()
     orders_types
     DELIVERY_TYPES = []
@@ -39,21 +39,6 @@ def strip_non_numbers(data):
     non_numbers = re.compile('\D')
     return non_numbers.sub('', data)
 
-    # Gateway test credit cards won't pass this validation
-    """ def cardLuhnChecksumIsValid(card_number):
-    checks to make sure that the card passes a luhn mod-10 checksum
-    sum = 0
-    num_digits = len(card_number)
-    oddeven = num_digits & 1
-    for count in range(0, num_digits):
-        digit = int(card_number[count])
-        if not (( count & 1 ) ^ oddeven ):
-            digit = digit * 2
-        if digit > 9:
-            digit = digit - 9
-        sum = sum + digit
-    return ( (sum % 10) == 0 ) """
-
 class CheckoutForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CheckoutForm, self).__init__(*args, **kwargs)
@@ -63,33 +48,7 @@ class CheckoutForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        exclude = ('status','ip_address','user','transaction_id','delivery_price')
-
-    """     name = forms.CharField(required=True,
-                           widget=forms.TextInput(attrs={'placeholder':'Escribe tu nombre', 'class': 'form-control'})) """
-
-    """     DELIVERY_TYPES = DeliveryType.objects.all()
-    for dely in DELIVERY_TYPES:
-        delivery_slug = dely.name_id
-        CARD_TYPES[delivery_slug] = delivery_slug """
-    """ delivery_type = forms.CharField(widget=forms.Select(choices=CARD_TYPES))
- 
-    delivery_type = forms.ModelChoiceField(empty_label='Seleccione tipo de consulta',
-                                           queryset=DeliveryType.objects.all(),
-                                           error_messages={"required": "Opción requerida",
-                                                           "invalid_choice": "El tipo de consulta que seleccionó no es válido",
-                                                           },) """
-
-    """     credit_card_number = forms.CharField()
-    credit_card_type = forms.CharField(widget=forms.Select(choices=CARD_TYPES))
-    credit_card_expire_month = forms.CharField(widget=forms.Select(choices=cc_expire_months()))
-    credit_card_expire_year = forms.CharField(widget=forms.Select(choices=cc_expire_years()))
-    credit_card_cvv = forms.CharField() 
-    def clean_credit_card_number(self):
-        cc_number = self.cleaned_data['credit_card_number']
-        stripped_cc_number = strip_non_numbers(cc_number)
-        if not cardLuhnChecksumIsValid(stripped_cc_number):
-            raise forms.ValidationError('The credit card you entered is invalid.') """
+        exclude = ('status','ip_address','user','transaction_id','delivery_price', 'pay_url', 'delivery', 'store_name')
 
     def clean_phone(self):
         phone = self.cleaned_data['phone']
@@ -98,3 +57,47 @@ class CheckoutForm(forms.ModelForm):
             raise forms.ValidationError('Entre un número de teléfono válido con el código del área.(ejemplo.555-555-5555)')
         return self.cleaned_data['phone']
     
+
+class CachForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(CachForm, self).__init__(*args, **kwargs)
+        # override default attributes
+        for field in self.fields:
+            self.fields[field].widget.attrs['size'] = '30'
+
+    class Meta:
+        model = Order
+        fields = ['delivery_name', 'delivery_phone']
+
+    def clean_phone(self):
+        phone = self.cleaned_data['phone']
+        stripped_phone = strip_non_numbers(phone)
+        if len(stripped_phone) < 10:
+            raise forms.ValidationError('Entre un número de teléfono válido con el código del área.(ejemplo.555-555-5555)')
+        return self.cleaned_data['phone']
+
+class PagarForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(PagarForm, self).__init__(*args, **kwargs)
+        # override default attributes
+        for field in self.fields:
+            self.fields[field].widget.attrs['size'] = '30'
+
+    class Meta:
+        model = Order
+        exclude = ('status','ip_address','user','delivery_price', 'pay_url', 'delivery', 'store_name', 'payment_city', 'currency', 'payment_postCode')
+
+    def clean_phone(self):
+        phone = self.cleaned_data['phone']
+        stripped_phone = strip_non_numbers(phone)
+        if len(stripped_phone) < 10:
+            raise forms.ValidationError('Entre un número de teléfono válido con el código del área.(ejemplo.555-555-5555)')
+        return self.cleaned_data['phone']
+    
+class UpdateStatusForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(UpdateStatusForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Order
+        fields = ['status']

@@ -9,7 +9,6 @@ class Page(models.Model):
         verbose_name="Fecha de creación")
     updated = models.DateTimeField(auto_now=True, 
         verbose_name="Fecha de edición")
-    """ RichTextField(blank=False, null=False, verbose_name="Contenido") """
 
     class Meta:
         verbose_name = "página"
