@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+{% load catalog_filters %}
+
+{% block content %}
+
+   <!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-2">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+        <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: sans-serif;"> Entrega de producto </h4>
+    </div>
+</div>
+  <!-- Page Header End -->
+
+    <!-- Shop Detail Start -->
+    <div class="container-fluid py-5">
+        <div class="row px-xl-5">
+            <div class="col-lg-6 pb-3">
+                <img class="w-100 h-100" src="{{store.get_image_url}}" alt="{{image}}">
+            </div>
+            <div class="col-lg-6 pb-8">
+                <h3 class="font-weight-semi-bold">{{ store.name }}</h3>
+                <br>
+                <h4 class="font-weight-semi-bold mb-4">Horario: </h4>
+                <h5 class="font-weight-semi-bold mb-4"> {{ hours }} </h5>
+                <h4 class="mb-4"> Dirección:</h4>
+                <h5 class="font-weight-semi-bold mb-4"> {{ address }} </h5>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="container-fluid bg-secondary mb-2">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 60px">
+            <h2 class="text-red font-weight-semi-bold text-uppercase mb-2">Productos en este punto de venta</h2>
+        </div>
+    </div>
+
+    <div class="container-fluid bg-purple-300 mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+            <div class="container-fluid pt-5">
+                <div class="row px-xl-5 pb-3">
+                    {% for p in store.products %}
+                    <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                        <div class="card product-item border-1 mb-2">
+                            <div class="card-header product-img position-relative text-center overflow-hidden bg-transparent border p-0">
+                                <img class="img-fluid w-10" src="{{p.product.get_image_url}}" alt="{{p.product.get_image_url}}">
+                            </div>
+                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                                <h6 class="text-truncate mb-3">{{ p.product.name }}</h6>
+                                <div class="d-flex justify-content-center">
+                                    {% if MND == 'USD'%}    
+                                        <h6 class="text-red" style="font-family: sans-serif;"> {{p.product.price_base|currency}} USD</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                    {% endif %}
+                                    {% if MND == 'CUP'%}    
+                                        <h6 class="text-red" style="font-family: sans-serif;"> {{p.product.price_cup|currency}} CUP</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                    {% endif %}
+                                    {% if MND == 'MLC'%}    
+                                        <h6 class="text-red" style="font-family: sans-serif;"> {{p.product.price_mlc|currency}} MLC</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex justify-content-between bg-light border">
+                                <a href="{{p.product.get_absolute_url}}" class="btn btn-sm text-red p-0"><i class="fas fa-eye text-red mr-1"></i>Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+    <!-- Shop Detail End -->
+

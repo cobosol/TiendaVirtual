@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{% load static %}
+{% load catalog_filters %}
+
+{% block content %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-secondary mb-2">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+            <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: sans-serif;">Productos a comprar</h4>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+<div class="container-fluid pt-6">
+    <div class="row px-xl-6">
+        <div id = "Tabla productos" class="col-lg-9 table-responsive mb-5">
+            {% if messages and cart_items %}
+        <ul class="messages list-group mb-3">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }} list-group-item list-group-item-primary"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+            <table class="table table-bordered text-center mb-0">
+                <thead class="bg-primary text-light">
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th width="20%">Cantidad</th>
+<!--                         <th>Cambiar cantidad</th> -->
+<!--                         <th>Entrega</th> -->
+                        <th>Importe</th>
+                        <th class="bg-red">Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody class="justify-content-start">
+                    {% if cart_items %}
+                    {% for item in cart_items %}
+                    <tr>
+                        <td class="text-md-left" >
+                            <img src="{{ item.product.get_image_url }}" alt="" style="width: 30px;"> 
+                            <a href="{{ item.get_absolute_url }}" class="cart">{{ item.name }}</a>
+                        </td>
+                        <td class="align-middle">
+                            {% if MND == 'USD' %}
+                              {{ item.price_USD|currency }} USD
+                            {% elif MND == 'CUP' %}
+                              {{ item.price_CUP|currency }} CUP
+                            {% else %}
+                              {{ item.price_MLC|currency }} MLC
+                            {% endif %}
+                        </td>
+                        <form method="post" action="." class="cart">
+                        {% csrf_token %}
+                        <td class="align-middle">
+                            <div class="input-group quantity mx-auto" style="width: 120px;">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-primary btn-minus" name="minus">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input type="text" name="quantity" class="form-control form-control-sm bg-secondary text-center" value="{{ item.quantity }}">
+<!--                                 <input type="text" name="quantity" value="{{ item.quantity }}" id="quantity" size="2" class="quantity" maxlength="5" /> -->
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-primary btn-plus" name="plus" >
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <input type="hidden" name="item_id" value="{{ item.id }}" />
+                        </td>
+<!--                         <td class="align-middle">
+                            <input type="submit" name="submit" value="Cambiar" class="btn btn-block btn-primary my-2 py-2"/>
+                        </td> -->
+                        </form>
+<!--                         <td>
+                            {{ item.delivery.name }}
+                        </td> -->
+                        <td class="align-middle">
+                            {% if MND == 'USD' %}
+                              {{ item.total_USD|currency }} USD
+                            {% elif MND == 'CUP' %}
+                              {{ item.total_CUP|currency }} CUP
+                            {% else %}
+                              {{ item.total_MLC|currency }} MLC
+                            {% endif %}
+                        </td>
+                        <td class="align-middle">
+                            <form method="post" action="." class="cart">
+                                {% csrf_token %}
+                                <input type="hidden" name="item_id" value="{{ item.id }}" />
+                                <input type="hidden" name="quantity" value="{{ item.quantity }}" />
+                                <input type="submit" name="submit" value="X" style="font-family: sans-serif;" class="btn btn-block btn-secondary font-weight-bold my-2 py-2"/>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="6" style="height:30px;">
+                            No tiene productos a pagar.
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+            {% if cart_items %}
+            <div id="Forma de entrega" class="row px-xl-12">
+                <form method="post" action="." class="cart">
+                    {% csrf_token %}
+                    <div id="Texto" class="col-lg-12">
+                        <p><h6 class="font-weight-semi-bold text-primary" style="font-family:sans-serif ;">Seleccione forma de entrega</h6></p>                       
+                    </div>
+                    <div id="Choice" class="col-lg-2"> 
+                        {{form.delivery_type}}
+                    </div>
+                    <div id="Actualizar" class="col-lg-12">
+                        <input type="submit" name="submit" value="Actualizar Factura" class="btn btn-block btn-primary my-2 py-2"/>
+                    </div>    
+                </form>
+                <div id="Info entrega" class="col-lg-6">
+                    <p><h6 class="font-weight-medium text-dark" style="font-family: sans-serif;">La recogida en los puntos de venta no incluye costo adicional.</h6></p>
+                </div> 
+            </div> 
+            {% endif %}
+        </div>
+
+        <div id = "Total a pagar" class="col-lg-3">
+            <div class="card border-secondary mb-5">
+                <div class="card-header bg-primary border-0">
+                    <h4 class="font-weight-semi-bold m-0 text-light" style="font-family: sans-serif;">A pagar</h4>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-3 pt-1">
+                        <h6 class="font-weight-medium" style="font-family: sans-serif;">Subtotal:{{ cart_item_count }}</h6>
+                        <h6 class="font-weight-medium" style="font-family: sans-serif;"> {{ cart_subtotal|currency }}</h6>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        {% if envio %}
+                            <h6 class="font-weight-medium" style="font-family: sans-serif;">Envío</h6>
+                            <h6 class="font-weight-medium" style="font-family: sans-serif;"> {{ cart_delivery|currency }}</h6>
+                        {% else %}
+                            <h6 class="font-weight-medium" style="font-family: sans-serif;">Recogida en</h6>
+                            <h6 class="font-weight-medium" style="font-family: sans-serif;">{{ cart_delivery|currency }}</h6>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3 pt-1">
+                        <a href="{{st.get_absolute_url}}" class="text-dark font-weight-medium mb-0 mr-3" style="font-family: sans-serif;">{{ delivery_name }}:</a>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer border-secondary bg-transparent">
+                    <div class="d-flex justify-content-between mt-2">
+                        <h6 class="font-weight-bold" style="font-family: sans-serif;">Total:</h6>
+                        <h6 class="font-weight-bold" style="font-family: sans-serif;">{{ cart_total|currency }}</h6>
+                    </div>
+                    <form method="post" action="." class="cart">
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-block btn-primary my-2 py-2" name="submit" value="Ir a pagar" alt="Checkout" />
+                        {% if vendedor %}
+                        {% if MND == 'USD' or MND == 'CUP'%}
+                        <input type="submit" class="btn btn-block btn-primary my-2 py-2" name="submit" value="Confirmar pago" alt="Efectivo" />
+                        {% endif %}
+                        {% endif %}
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Cart End -->
+
+{% endblock %}

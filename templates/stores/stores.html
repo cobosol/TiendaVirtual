@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+   <!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-2">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+        <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: sans-serif;"> Formas de entrega de productos </h4>
+    </div>
+</div>
+  <!-- Page Header End -->
+
+  <div class="row px-xl-5 pb-3">
+    {% for s in stores %}
+    <div class="col-lg-4 col-md-6 pb-1">
+        <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
+            <img class="w-100 h-100" src="{{s.get_image_url}}" alt="{{image}}">
+        </div>
+        <div class="col-lg-8 pb-8">
+            <h4 class="text-primary font-weight-semi-bold" style="font-family: sans-serif;">{{ s.name }}</h4>
+            <br>
+            <h4 class="text-primary font-weight-semi-bold mb-4" style="font-family: sans-serif;">Horario: </h4>
+            <h6 class="font-weight-semi-bold mb-4" style="font-family: sans-serif;"> {{ s.hours }} </h6>
+            <h4 class="text-primary font-weight-semi-bold mb-4" style="font-family: sans-serif;"> Dirección:</h4>
+            <h6 class="font-weight-semi-bold mb-4" style="font-family: sans-serif;"> {{ s.address }} </h6>
+            <h4 class="text-primary font-weight-semi-bold mb-4" style="font-family: sans-serif;"> Costo:</h4>
+            <h6 class="font-weight-semi-bold mb-4" style="font-family: sans-serif;">$ {{ s.price_usd }} USD</h6>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}
+
+    <!-- Shop Detail End -->
+

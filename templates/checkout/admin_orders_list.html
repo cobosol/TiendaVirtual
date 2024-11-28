@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+{% load catalog_filters %}
+
+{% block content %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-secondary mb-2">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+            <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: roboto;">Lista de órdenes generadas</h4>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+
+<div class="container-fluid pt-6">
+    <div class="row px-xl-6">
+        <div class="col-lg-12 table-responsive mb-5">
+            <table class="table table-bordered text-center mb-0">
+                <thead class="bg-primary text-light">
+                    <tr>
+                        <th>Id</th>
+                        <th>Estado</th>
+                        <th>Importe</th>
+                        <th>Fecha</th>
+                        <th>Factura </th>
+                    </tr>
+                </thead>
+                <tbody class="align-middle text-primary">
+                    {% if orders %}
+                    {% for order in orders %}
+                    <tr>
+                        <td class="align-middle">
+                                {{ order.id }}
+                        </td>
+                        <td class="align-middle">
+                            {{ order.statusS }}
+                        </td>
+                        <td class="align-middle">
+                            {{ order.total|currency }}      
+                        </td>
+                        <td class="align-middle">
+                            {{ order.date|date:"d/m/y" }}
+                        </td>
+                        <td class="align-middle">
+                            <form action="." method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="order_id" value="{{ order.id }}" /> 
+                                <input type="submit" name="submit" class="btn btn-block btn-primary my-2 py-2" value="Factura" />
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="6" style="height:30px;">
+                            No tiene productos comprados.
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+            <div class="card border-secondary mb-5">
+                <div class="card-header bg-primary border-0">
+                    <h4 class="font-weight-semi-bold m-0 text-light" style="font-family: sans-serif;">Total a pagar</h4>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-3 pt-1">
+                        <h6 class="font-weight-medium" style="font-family: sans-serif;">Subtotal:{{ cart_item_count }}</h6>
+                        <h6 class="font-weight-medium" style="font-family: sans-serif;">$ {{ cart_subtotal }}</h6>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <h6 class="font-weight-medium" style="font-family: sans-serif;">Envío</h6>
+                        <h6 class="font-weight-medium" style="font-family: sans-serif;">$ {{ cart_delivery }}</h6>
+                    </div>
+                </div>
+                <div class="card-footer border-secondary bg-transparent">
+                    <div class="d-flex justify-content-between mt-2">
+                        <h5 class="font-weight-bold" style="font-family: sans-serif;">Total:{{ cart_item_count }}</h5>
+                        <h5 class="font-weight-bold" style="font-family: sans-serif;">{{ cart_total }}</h5>
+                    </div>
+                    <form method="post" action="." class="cart">
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-block btn-primary my-2 py-2" name="submit" value="Pagar" alt="Checkout" />
+                    </form>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</div>
+
+<!-- Cart End -->
+
+{% endblock %}

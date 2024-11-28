@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+    {{ form.media }} 
+{% endblock %}
+
+<title>Muhia - Admininstración</title>
+
+{% block content %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-secondary mb-2">
+      <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+          <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: sans-serif;">Actualizar producto</h4>
+      </div>
+  </div>
+  <!-- Page Header End -->
+
+<!-- <section class="content-header">
+  <div class="content-header x_panel x_title">
+      <h2 class="mt-3" style="color:#036481; font-family: Lora, serif;">Producto</h2>
+  </div>
+</section> -->
+  
+  {% if messages %}
+  <ul class="messages list-group mb-3">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }} list-group-item list-group-item-primary"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <div class="container mt-3">
+    <div class="col-12">
+      <form method="post" enctype="multipart/form-data">
+        <!-- # Pasamos el 'csrf_token' de seguridad para poder crear un nuevo registro -->
+        {% csrf_token %}
+        {% load widget_tweaks %}
+        {% for hidden in form.hidden_fields %}
+          {{ hidden }}
+        {% endfor %}
+
+        <!-- {% for field in form.visible_fields %}
+          <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field|add_class:'form-control mb-3' }}
+
+            {% for error in field.errors %}
+              <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+        {% endfor %} -->
+
+        {{ form.as_p }}
+        
+         <!-- <div class="form-group">
+          <label for="title" class="txt_negrita">Nombre único</label>
+          {{ form.name|add_class:"form-control" }} 
+        </div>
+        <div class="form-group">
+          <label for="title" class="txt_negrita">Producto</label>
+          {{ form.gname|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+          <label for="title" class="txt_negrita">Presentación</label>
+          {{ form.presentation|add_class:"form-control" }} 
+        </div>
+        <div class="form-group">
+          <label for="title" class="txt_negrita">Código del producto</label>
+          {{ form.sku|add_class:"form-control" }} 
+        </div>
+        <div class="form-group">
+          <label for="title" class="txt_negrita">Precio</label>
+          {{ form.price|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+          <label for="title" class="txt_negrita">Precio viejo</label>
+          {{ form.old_price|add_class:"form-control" }} 
+        </div>
+        <div class="form-group">
+          <label for="activo" class="txt_negrita">Activo</label>
+          {{ form.is_active|add_class:"checkbox" }}  
+        </div>
+        <div class="form-group">
+          <label for="img" class="txt_negrita">Foto del producto</label>
+          {{ form.image|add_class:"form-control mb-3" }}
+        </div>
+        <div class="form-group">
+          <label for="img" class="txt_negrita">Cantidad del producto</label>
+          {{ form.count|add_class:"form-control mb-3" }} 
+        </div>
+        <div class="form-group">
+          <label for="img" class="txt_negrita">Reservados para comprar</label>
+          {{ form.reserved|add_class:"form-control mb-3" }} 
+        </div>
+        <div class="form-group">
+          <label for="img" class="txt_negrita">Ficha técnica del producto</label>
+          {{ form.prod_datasheet|add_class:"form-control mb-3" }} 
+        </div>
+        <div class="form-group">
+          <label for="title" class="txt_negrita">Palabras clave</label>
+          {{ form.meta_keywords|add_class:"form-control" }} 
+        </div>
+        <div class="form-group">
+          <label for="title" class="txt_negrita">Descripión clave</label>
+          {{ form.meta_description|add_class:"form-control" }} 
+        </div> -->
+        <button type="submit" class="btn btn-primary">Aceptar</button>
+        <a href="{% url 'productos'  %}" type="submit" class="btn btn-primary">Cancelar</a>
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

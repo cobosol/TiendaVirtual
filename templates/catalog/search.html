@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% load static %}
+{% load catalog_filters %}
+
+{% block content %}
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-secondary mb-2">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+            <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: sans-serif;">Resultados de la búsqueda</h4>
+            <h6 class="text-center mb-3" style="font-family: sans-serif;">Las fotos de los productos son referenciales</h6>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-purple-300 mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+            <div class="container-fluid pt-0">
+<!--               <ul class="messages list-group mb-3">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }} list-group-item list-group-item-primary"{% endif %}>{{ message }}</li>
+                {% endfor %}
+              </ul> -->
+                <div class="row px-xl-0 pb-0">
+                    {% if productSearch %}
+                    {% for p in productSearch %}
+                    {% if p.count > 0 %}
+                    <div class="col-lg-2 col-md-6 col-sm-12 pb-0 text-primary">
+                        <div class="card product-item border-0 mb-2 text-primary">
+                            <a href="{{p.get_absolute_url}}">
+                            <div class="card-header text-center product-img position-relative overflow-hidden bg-transparent border p-0">
+                                <img width="80%" height="80%" class="img-fluid w-8" src="{{p.get_image_url}}" alt="{{ p.image }}">
+                            </div>
+                            <div class="card-body border-left border-right text-primary text-center p-0 pt-4 pb-3">
+                                <h6 class="mb-3 text-primary" style="font-family: sans-serif;">{{ p.gname }}</h6>
+                                <h6 class="mb-3 text-primary" style="font-family: sans-serif;">{{ p.presentation }}</h6>
+                                {% if MND == 'USD' %}
+                                  <div class="d-flex justify-content-center">
+                                    <h6 class="text-dark" style="font-family: sans-serif;"> {{p.price_base|currency}} USD</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                  </div>
+                                {% elif MND == 'CUP' %}
+                                  <div class="d-flex justify-content-center">
+                                    {% if p.available_CUP %}
+                                      <h6 class="text-dark" style="font-family: sans-serif;"> {{p.price_cup|currency}} CUP</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                    {% else %}
+                                    <h6 class="text-dark" style="font-family: sans-serif;"> No disponible en esta moneda </h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                    {% endif %}
+                                  </div>
+                                {% else %}
+                                  <div class="d-flex justify-content-center">
+                                    {% if p.available_MLC %}
+                                    <h6 class="text-dark" style="font-family: sans-serif;"> {{p.price_mlc|currency}} MLC</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                    {% else %}
+                                    <h6 class="text-dark" style="font-family: sans-serif;"> No disponible en esta moneda </h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                    {% endif %}
+                                  </div>
+                                {% endif %}
+                            </div>
+                            </a>
+                            <div class="card-footer d-flex text-center justify-content-between bg-light border">
+<!--                                 <a href="{{p.get_absolute_url}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a> -->
+                                <form method="post" action="." class="cart">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="product_slug" value="{{ p.slug }}" />
+                                        <button type="submit" name="submit" value="Comprar" class="btn btn-secondary my-2 py-0 text-light" name="submit" alt="Add To Cart">
+                                            <i class="fas fa-shopping-cart text-secondary mr-1"> Comprar</i>
+                                        </button>
+<!--                                         <button type="submit" name="submit" value="Comprar" class="btn btn-block btn-primary fa fa-shopping-cart my-2 py-2" name="submit" alt="Add To Cart"/> -->
+                                        <a href="{{p.get_absolute_url}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    {% else %}
+                    <h6 class="text-center mb-3" style="font-family: sans-serif;">En este momento no tenemos productos disponibles relacionados con su búsqueda.</h6>
+                    <h6 class="text-center mb-3" style="font-family: sans-serif;">Puede contactarnos para más información.</h6>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        <!-- Ofertas del día. Todos los más vedidos -->
+        <div class="container-fluid bg-primary mb-2">
+          <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 60px">
+              <h2 class="text-light font-weight-semi-bold text-uppercase mb-0" style="font-family: sans-serif;">Hoy le ofrecemos</h2>
+              <h6 class="text-light align-items-center justify-content-center mb-3" style="font-family: sans-serif;">Las fotos de los productos son referenciales</h6>
+          </div>
+      </div>
+      <div class="container-fluid bg-purple-300 mb-5">
+          <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+              <div class="container-fluid pt-5">
+                  <div class="row px-xl-5 pb-3">
+                      {% if products %}
+                      {% for p in products %}
+                      {% if p.is_active %}
+                      {% if not p.is_feedstock %}
+                      {% if p.count > 0 %}
+                      {% if p.presentation == "A granel" %}
+                      {% if vendedor %}
+                      <div class="col-lg-2 col-md-6 col-sm-12 pb-1">
+                          <div class="card product-item border-1 mb-1">
+                              <div class="card-header product-img position-relative text-center overflow-hidden bg-transparent border p-0">
+                                  <img width="80%" height="80%" class="img-fluid w-8" src="{{p.get_image_url}}" alt="{{p.get_image_url}}">
+                              </div>
+                              <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                                  <h6 class="text-center mb-3" style="font-family: sans-serif;">{{ p.gname }}</h6>
+                                  <h6 class="text-center mb-3" style="font-family: sans-serif;">{{ p.presentation }}</h6>
+                                  <div class="d-flex justify-content-center">
+                                  {% if MND == 'USD'%}    
+                                      <h6 class="text-red" style="font-family: sans-serif;"> {{p.price_base|currency}} USD</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                  {% endif %}
+                                  {% if MND == 'CUP'%}
+                                     
+                                      <h6 class="text-red" style="font-family: sans-serif;"> {{p.price_cup|currency}} CUP</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                  {% endif %}
+                                  {% if MND == 'MLC'%}    
+                                      <h6 class="text-red" style="font-family: sans-serif;"> {{p.price_mlc|currency}} MLC</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                  {% endif %}
+                                  </div> 
+                                  <div class="card-footer d-flex justify-content-center text-center bg-secondary border text-light">
+                                      <form method="post" action="." class="cart">
+                                          {% csrf_token %}
+                                          <input type="hidden" name="product_slug" value="{{ p.slug }}" />
+                                          <button type="submit" name="submit" value="Comprar" class="btn btn-secondary my-1 py-0 text-light" name="submit" alt="Add To Cart">
+                                              <i class="fas fa-shopping-cart text-secondary mr-0"> Comprar</i>
+                                          </button>
+                                          <a href="{{p.get_absolute_url}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a>
+                                      </form>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      {% endif %}
+                      {% else %}
+                      <div class="col-lg-2 col-md-6 col-sm-12 pb-1">
+                          <div class="card product-item border-1 mb-1">
+                              <div class="card-header product-img position-relative text-center overflow-hidden bg-transparent border p-0">
+                                  <img width="80%" height="80%" class="img-fluid w-8" src="{{p.get_image_url}}" alt="{{p.get_image_url}}">
+                              </div>
+                              <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                                  <h6 class="text-center mb-3" style="font-family: sans-serif;">{{ p.gname }}</h6>
+                                  <h6 class="text-center mb-3" style="font-family: sans-serif;">{{ p.presentation }}</h6>
+                                  <div class="d-flex justify-content-center">
+                                  {% if MND == 'USD'%}    
+                                      <h6 class="text-red" style="font-family: sans-serif;"> {{p.price_base|currency}} USD</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                  {% endif %}
+                                  {% if MND == 'CUP'%}
+                                     
+                                      <h6 class="text-red" style="font-family: sans-serif;"> {{p.price_cup|currency}} CUP</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                  {% endif %}
+                                  {% if MND == 'MLC'%}    
+                                      <h6 class="text-red" style="font-family: sans-serif;"> {{p.price_mlc|currency}} MLC</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                  {% endif %}
+                                  </div> 
+                                  <div class="card-footer d-flex justify-content-center text-center bg-secondary border text-light">
+                                      <form method="post" action="." class="cart">
+                                          {% csrf_token %}
+                                          <input type="hidden" name="product_slug" value="{{ p.slug }}" />
+                                          <button type="submit" name="submit" value="Comprar" class="btn btn-secondary my-1 py-0 text-light" name="submit" alt="Add To Cart">
+                                              <i class="fas fa-shopping-cart text-secondary mr-0"> Comprar</i>
+                                          </button>
+                                          <a href="{{p.get_absolute_url}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a>
+                                      </form>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      {% endif %}
+                      {% endif %}
+                      {% endif %}
+                      {% endif %}
+                      {% endfor %}
+                      {% else %}
+                        <h6 class="text-red" style="font-family: sans-serif;"> No tenemos para la venta en línea. Pero puede contactarnos y recibir más información.</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                      {% endif %}
+  
+                  </div>
+              </div>
+          </div>
+      </div>
+
+
+    {% endblock %}
+
+    <!-- Shop End -->
+
+
+    

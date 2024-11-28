@@ -1,0 +1,176 @@
+{% load static %}
+{% load catalog_filters %}
+<html>
+
+<head>
+    <style>
+        @page {
+            /* Configuracion general de la hoja */
+            /* size: a4 landscape; */
+            size: a4; 
+            margin: 2cm, 2cm, 2cm, 2cm;
+
+        }
+
+        th,
+        th {
+            font-size: 8px;
+            font-weight: bold;
+        }
+
+        td {
+            font-size: 8px;
+            padding: 2px;
+            word-wrap: break-word,
+        }
+
+        .first-td {
+            font-size: 8px;
+            padding: 1px;
+            word-wrap: break-word,
+        }
+
+        .table-info-td {
+            font-size: 6px;
+            padding: 0.8px;
+            word-wrap: break-word,
+        }
+
+        #descripcion_cargas {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+            font-size: 1px;
+        }
+
+        #footer_content label{
+            font-size: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <img src="{{request.scheme}}://{{request.get_host}}{% static '/img/criminal.jpg' %}" /> !-->
+
+    <table border="1">
+        <tbody>
+            <tr>
+                <td rowspan="2" style="width: 100px; height: 40px;">
+                    <img style="height: 100%; width: 100%;" src="images/IsologoPMuhia.png" />
+                </td>
+                <td class="header-td">
+                    <h1 style="text-align: left; font-size: 10px; margin-left: 125px;">PRODUCCIONES MUHIA SRL. No. {{data.id_order}}</h1> 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h1 style="text-align: left; font-size: 10px; margin-left: 170px;">Fecha de facturación: {{data.date|date:"d/m/Y" }}</h1> 
+                </td>                
+            </tr>
+        </tbody>
+    </table>
+    <h1 style="text-align: center; font-size: 10px; "> VENTA ONLINE</h1>
+    <table border="1" style="border-collapse: collapse;">
+        <tbody>
+            <tr>
+                <td colspan="3" style="text-align: center;" class="first-td"><strong>DATOS DEL CLIENTE</strong></td>
+            </tr>
+            <tr>
+                <td class="first-td"><strong>Nombre:</strong>{{data.first_name}} {{data.last_name}}</td>
+                <td class="first-td"><strong>email:</strong>{{data.email}}</td>
+                <td class="first-td"><strong>Teléfono:</strong>{{data.phone}}</td>
+            </tr>
+            <tr>
+                <td class="first-td" colspan="3"><strong>Dirección:</strong>{{data.address}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr>
+    <table border="1" style="border-collapse: collapse;">
+        <tbody>
+            <tr>
+                <td colspan="3" style="text-align: center;" class="first-td"><strong>DATOS DE LA ENTREGA</strong></td>
+            </tr>
+            <tr>
+                <td class="first-td"><strong>Nombre:</strong>{{data.delivery_name}}</td>
+                <td class="first-td"><strong>Carnet de identidad:</strong>{{data.CI}}</td>
+                <td class="first-td"><strong>Teléfono:</strong>{{data.phone}}</td>
+            </tr>
+            <tr>
+                <td class="first-td" colspan="3"><strong>Dirección 1:</strong>{{data.delivery_add1}}</td>
+            </tr>
+            <tr>
+                <td class="first-td" colspan="3"><strong>Dirección 2:</strong>{{data.delivery_add2}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr>
+    <table border="1" style="border-collapse: collapse; text-align: center;">
+        <tbody>
+            <tr>
+                <td colspan="4" style="text-align: center;" class="first-td"><br><strong>DETALLES DE LA FACTURA</strong></td>
+            </tr>
+            <tr>
+                <td class="table-info-td" style="width: 100px;"><strong>Nombre</strong></td>
+                <td class="table-info-td" style="width: 100px;"><strong>Precio</strong></td>
+                <td class="table-info-td" style="width: 100px;"><strong>Cantidad</strong></td>
+                <td class="table-info-td" style="width: 100px;"><strong>Forma de entrega</strong></td>
+                <td class="table-info-td" style="width: 125px;"><strong>Importe</strong></td>
+            </tr>
+            {% for item in orders %}
+            <tr>
+                <td class="table-info-td" style="width: 100px;"> {{ item.name }} </td>
+                <td class="table-info-td" style="width: 100px;"> {{ item.price|currency }} </td>
+                <td class="table-info-td" style="width: 100px;"> {{ item.quantity }} </td>
+                <td class="table-info-td" style="width: 100px;"> {{ item.store_name }} </td>
+                <td class="table-info-td" style="width: 125px;"> {{ item.total|currency }} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+
+    <table border="0" style="border-collapse: collapse;">
+        <tbody>
+            <tr>
+                <td class="first-td"><strong> ENVÍO {{data.delivery_price}} {% if data.currency == 'USD' %} USD {% elif data.currency == 'MLC'%} MLC {% else %} CUP {% endif %}</strong></td>
+                <td class="first-td"><strong>IMPORTE TOTAL: {{data.importe}} {% if data.currency == 'USD'%} USD {% elif data.currency == 'MLC'%} MLC {% else %} CUP {% endif %}</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr>
+    <table border="0" style="border-collapse: collapse;">
+        <tbody>
+            <tr>
+                <td class="first-td" colspan="2">
+                    <strong>ENTREGADO POR</strong><br>
+                    Nombre y apellidos <br>
+                    Carnet de identidad<br>
+                    Fecha
+                </td>
+                <td class="first-td" colspan="2">
+                    <strong>RECIBIDO POR</strong><br>
+                    Nombre y apellidos <br>
+                    Carnet de identidad<br>
+                    Fecha
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div style="page-break-after: always;"><span style="display: none;">&nbsp;</span></div>
+    <div id="footer_content">
+        <label>Tienda Virtual MUHIA. Desarrollado por Cobosis</label>
+    </div>
+    
+    {% for item in data.order_items %}
+        {{ item.name }}
+        {{ item.price|currency }}>
+        {{ item.quantity }}
+        {{ item.total|currency }}    
+    {% endfor %}
+
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<title>Muhia - Gestión de productos</title>
+
+
+{% block content %}
+{% if request.user.is_superuser or request.user.is_staff%}
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-secondary mb-2">
+      <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+          <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: sans-serif;">Contenidos a actualizar</h4>
+      </div>
+  </div>
+  <!-- Page Header End -->
+<!-- <section class="content-header">   
+	<div class="content-header x_panel x_title">
+        <div class="x_title bold">
+            <h2 style="color:rgb(36,72,88); font-family: Lora, serif;">Tipos de contenidos</h2>
+        </div>
+    </div>
+</section> -->
+
+<div class="container mt-3">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Paginación -->
+        <table class="table table-bordered text-center mb-0">
+          <thead class="bg-primary text-light">
+            <tr>
+              <th>Nombre del tipo de contenido</th>
+              <th>Descripción del tipo de contenido</th>
+            </tr>
+          </thead>
+          <tbody class="h5" >
+            <tr>
+                <td><a class="nav-link" href="{% url 'productos'  %}">Productos</a></td>
+                <td> Productos en catálogo de MUHIA</td>
+            </tr>
+            <tr>
+              <td><a class="nav-link" href="{% url 'productos_almacen'  %}">Productos por almacén</a></td>
+              <td>Inventarios de productos en cada almacén</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

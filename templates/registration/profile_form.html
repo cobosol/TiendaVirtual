@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Perfil{% endblock %}
+{% block content %}
+
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-2">
+  <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+      <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: sans-serif;"> Perfil de usuario </h4>
+  </div>
+</div>
+<!-- Page Header End -->
+
+
+<style>.errorlist{color:red;} label{display:none}</style>
+<main role="main">
+  <div class="container">
+    <form action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row mt-3">
+      <div id="avatar" class="col col-md-5 mx-auto mb-4 col-lg-5 pb-0">
+          <div class="col-md-12">
+            {% if request.user.profile.avatar %}
+              <img width="200" height="200" src="{{request.user.profile.get_avatar_url}}" alt="{{request.user.profile.get_avatar_url}}">
+            <!--   <h6 class="text-dark font-weight-semi-bold mb-3" style="font-family: roboto;">Foto del perfil</h6> -->
+<!--                <img src="{{request.user.profile.avatar.url}}" class="img-fluid"> -->
+<!--               <p class="mt-1">¿Borrar? <input type="checkbox" id="avatar-clear" name="avatar-clear" /></p> -->
+            {% else %}
+              <img src="{% static 'images/Profile/silueta.jpg' %}" class="img-fluid">
+            {% endif %}
+            <h3 class="text-dark font-weight-semi-bold mb-3" style="font-family: sans-serif;">{{request.user.username}}</h3>
+            <h6 class="text-dark font-weight-semi-bold mb-3" style="font-family: sans-serif;">Cambiar foto</h6>
+            <input type="file" name="avatar" class="form-control-file btn-block mt-3" id="id_avatar">
+            <br>
+            <h6 class="text-dark font-weight-semi-bold mb-3" style="font-family: sans-serif;">Correo electrónico</h6>
+            <input type="email" value="{{request.user.email}}" class="form-control mt-3" readonly>
+            <p class="mt-3">
+              Si desea editar tu correo electrónico haz clic <a href="{% url 'profile_email' %}">aquí</a>.<br>
+            </p>
+            <p class="mt-3">
+              Si quieres cambiar tu contraseña haz clic <a style="text-emphasis;" href="{% url 'password_change' %}">aquí</a>.
+            </p>
+          </div>
+      </div>
+      <div id="datos" class="col col-md-7 mx-auto mb-5 col-lg-7 pb-1">
+          <!-- Formulario -->
+            <h3 >{{request.user.first_name}} {{request.user.last_name}}</h3>    
+            <h1> </h1>
+            <!-- <h6 class="text-dark font-weight-semi-bold mb-3" style="font-family: roboto;">Resumen biográfico</h6> -->
+            {{ form.bio }}
+            <h1></h1>
+<!--             <h6 class="text-dark font-weight-semi-bold mb-3" style="font-family: roboto;">Sitio web personal</h6> -->
+            {{ form.link }}
+            <h1></h1>
+            <h6 class="text-dark mb-3" style="font-family: sans-serif;">Número de identidad</h6>
+            {{ form.cid }}
+            <br>
+            <h6 class="text-dark mb-3" style="font-family: sans-serif;">Número de teléfono</h6>
+            {{ form.phone }}
+            <br>
+            Formato: XXXXXXXXXX
+            <br>
+            <br>
+            <h6 class="text-dark mb-3" style="font-family: sans-serif;">Número de teléfono para WhatsApp</h6>
+            {{ form.ws }}
+            <br>
+            Formato: XXXXXXXXXX
+            <br>
+            <br>
+<!--             <h6 class="text-dark font-weight-semi-bold mb-3" style="font-family: roboto;">Seleccione a continuación la moneda de pago para nuestros productos. </h6>
+            {{ form.money_type }}
+            <br> -->
+            <br>
+            <h6 class="text-primary mb-3" style="font-family: sans-serif;">Si está interesado en ser distribuidor de nuestros productos, colaborar en la producción o tener su propia línea de productos utilizando nuestras materias primas de primera calidad, seleccione a continuación la opción correpondiente y llene la información que sigue. </h6>
+            <h6 class="text-dark font-weight-semi-bold mb-3" style="font-family: sans-serif;"> Si aún no tiene contrato con nosotros, escríbanos.</h6>  
+            <h6 class="text-dark mb-3" style="font-family: sans-serif;">Tipo de usuario en nuestra plataforma</h6>
+            {{ form.client_type }}
+            <br>
+            <br>
+            <br>
+            <h6 class="text-primary font-weight-semi-bold mb-3" style="font-family: sans-serif;">Código REEUP</h6>
+            {{ form.reeup }}
+            <br>
+            <h6 class="text-primary font-weight-semi-bold mb-3" style="font-family: sans-serif;">Código NIT</h6>
+            {{ form.nit }}
+            <br>
+            <h6 class="text-primary font-weight-semi-bold mb-3" style="font-family: sans-serif;">Dirección legal</h6>
+            {{ form.address }}
+            <br>
+            <h6 class="text-primary font-weight-semi-bold mb-3" style="font-family: sans-serif;">Agencia bancaria</h6>
+            {{ form.agency }}
+            <br>
+            <h6 class="text-primary font-weight-semi-bold mb-3" style="font-family: sans-serif;">Número de contrato</h6>
+            {{ form.contract }}
+            <br>
+            <input type="submit" class="btn btn-primary btn-block mt-3" value="Actualizar">
+      </div>
+      </div>
+    </form>
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+  {% load static %}
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+
+  {% block title %}Contacto{% endblock %}
+
+{% block content %}    
+     <!-- Page Header Start -->
+     <div class="container-fluid bg-primary mb-2">
+      <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+          <h1 class="text-light font-weight-semi-bold mb-3" style="font-family: sans-serif;">Contáctenos</h1>
+      </div>
+  </div>
+  <!-- Page Header End -->
+
+      {% if 'ok'  in request.GET %}
+        <p> <b> Su mensaje se ha enviado correctamente </b></p>
+      {% endif %}
+      <form action="." method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+<!--           <label> Nombre * </label> -->
+          <div class="input-group">
+            {{form.name}}
+          </div>
+        </div>
+        <div class="form-group">
+<!--           <label> Correo * </label> -->
+          <div class="input-group">
+            {{form.email}}
+          </div>
+        </div>
+        <div class="form-group">
+<!--           <label> Mensaje * </label> -->
+          <div class="input-group">
+            {{form.content}}
+          </div>
+        </div>  
+        <div class="text-center">
+          <input type="submit" class="btn btn-primary btn-block py-2" value="Enviar">
+        </div>
+      </form>
+    </section>
+
+{% endblock %}

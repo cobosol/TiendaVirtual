@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<title>Muhia - Admininstración</title>
+
+{% block content %}
+<!-- <section class="content-header">
+  <div class="content-header x_panel x_title">
+      <h2 class="mt-3" style="color:#036481; font-family: Lora, serif;">Imágenes promocionales del encabezado de la página principal (Banners).</h2>
+      
+  </div>
+</section> -->
+  
+  <!-- Page Header Start -->
+    <div class="container-fluid bg-secondary mb-2">
+      <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+          <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: roboto;">Incluir producto en un almacén</h4>
+      </div>
+  </div>
+  <!-- Page Header End -->
+
+
+  {% if messages %}
+  <ul class="messages list-group mb-3">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }} list-group-item list-group-item-primary"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <div class="container mt-3">
+    <div class="col-12">
+      <form method="post" enctype="multipart/form-data">
+        <!-- # Pasamos el 'csrf_token' de seguridad para poder crear un nuevo registro -->
+        {% csrf_token %}
+        {% load widget_tweaks %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Aceptar</button>
+        <a href="./" type="submit" class="btn btn-primary">Cancelar</a>
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

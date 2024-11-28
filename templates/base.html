@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+{% load static %}
+{% load catalog_tags %}
+{% load pages_extras %}
+{% get_page_list as page_list %}
+
+<head>
+    <meta charset="utf-8">
+    <title>Tienda Virtual MUHIA</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="MUHIA" name="keywords">
+    <meta content="Tienda Virtual MUHIA" name="description">
+
+    <!-- Favicon -->
+    <link href="/static/img/Favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Encabezado -->
+    <section id="top_presentacion">
+        <nav class="navbar navbar-expand-lg bg-light navbar-light">
+            <div class="col-lg-2 text-center d-none d-lg-block">
+                <div class="d-inline-flex align-items-center">
+                    <img class="flex-grow-2 text-center" id="logo" src={% static "img/LogoStrech.png" %} width="50%" href="https://produccionesmuhia.ca"></a>
+                </div>
+            </div>
+            <div class="col-lg-3 d-lg-block">
+                <form method="post" action=".">
+                    {% csrf_token %}    
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="producto" placeholder="Buscar productos">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent text-primary">
+                                <button type="submit" name="submit" value="Buscar" alt="Buscar">
+                                    <i class="fas fa-search text-secondary mr-0"> </i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-6">
+                <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>                        
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                        <div class="navbar-nav mr-auto py-0">
+                            <a href="/" class="nav-item nav-link text-primary" style="font-family: sans-serif;">Tienda</a>
+                            <a href="https://produccionesmuhia.ca" class="nav-item nav-link text-primary" target="_blank" style="font-family: sans-serif;">Nosotros</a>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle text-primary" data-toggle="dropdown" style="font-family: sans-serif;">Compras</a>
+                                <div class="dropdown-menu rounded-0 m-0">   
+                                    <a href="/tiendas/" style="font-family: sans-serif;"><i class="dropdown-item">Entregas</i></a>
+                                    <a href="/carrito/carrito/" style="font-family: sans-serif;"><i class="dropdown-item">Carrito</i></a>
+                                    {% if request.user.is_authenticated %}
+                                    <a href="/compra/compras/" style="font-family: sans-serif; text-primary"><i class="dropdown-item">Compras realizadas</i></a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle text-primary" data-toggle="dropdown" style="font-family: sans-serif;">Políticas</a>
+                                <div class="dropdown-menu rounded-0 m-0">
+                                    {% for page in page_list %}
+                                    <a href="{% url 'page' page.id %}" style="font-family: sans-serif; text-primary"><i class="dropdown-item">{{page.title}}</i></a> 
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% if request.user.is_staff %}
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle text-primary" data-toggle="dropdown" style="font-family: sans-serif;">Administración</a>
+                                <div class="dropdown-menu rounded-0 m-0">
+                                    <a href="{% url 'admin_orders_list' %}" style="font-family: sans-serif;"><i class="dropdown-item">Seguir órdenes de compra</i></a>
+                                    <a href="{% url 'gestion' %}" style="font-family: sans-serif; text-primary"><i class="dropdown-item">Gestionar productos</i></a>
+                                    <a href="{% url 'banners' %}" style="font-family: sans-serif; text-primary"><i class="dropdown-item">Gestionar banners</i></a>
+                                    <a href="{% url 'precios' %}" style="font-family: sans-serif; text-primary"><i class="dropdown-item">Gestionar precio</i></a>
+                                    <a href="/accounts/profile/admin/" style="font-family: sans-serif; text-primary"><i class="dropdown-item">Gestionar perfil</i></a>        
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                            {% if not request.user.is_authenticated %}
+                                <a href="{% url 'login' %}" class="nav-item nav-link text-primary" style="font-family: sans-serif;">Entrar / </a>
+                                <a href="{% url 'signup' %}" class="nav-item nav-link text-primary" style="font-family: sans-serif;">Registrarse</a>
+                            {% else %}
+                                <a href="{% url 'profile' %}" class="nav-item nav-link  text-primary" style="font-family: sans-serif;">Perfil</a>
+                                <a href="{% url 'logout' %}" class="nav-item nav-link text-primary" style="font-family: sans-serif;">Salir</a>
+                            {% endif %}
+                    </div>
+                </nav>
+            </div>
+            <div class="col-lg-1 d-none d-lg-block text-lg-right">
+                <div class="d-xl-flex d-none d-md-flex>
+                    <a href="/carrito/carrito/">
+                        <span class="fas fa-shopping-cart text-secondary"> {% cart_box request %} </span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </section>
+
+    <!-- Topbar Start -->
+<!--     <div class="container-fluid">
+        <div class="row bg-primary py-2 px-xl-5">
+        </div>
+    </div> -->
+    <!-- Topbar End -->
+
+    <!-- Contenido -->
+    <div class="container-fluid mb-5">
+        <div class="row border-top px-xl-1">
+
+            <!-- Zona vertical izquierda -->
+            <div class="col-lg-2 d-none d-lg-block text-light"> 
+                <!-- Menu productos-->
+                <div class="Productos row border-top px-xl-1">
+                    <a class="btn btn-primary shadow-none d-flex align-items-center justify-content-between bg-red text-light w-60" data-toggle="collapse" href="#navbar-vertical" style="height: 60px; margin-top: -1px; padding: 0 30px;">
+                        <h6 class="m-0 text-light" style="font-family: sans-serif;">NUESTROS PRODUCTOS</h6>
+                        <i class="fa fa-angle-down text-light"></i>
+                    </a>
+                    <nav class="collapse show navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0" id="navbar-vertical">
+                        <div class="navbar-nav w-100 overflow-hidden" style="height: 100%">
+                            {% for c in active_categories %}
+                                {% if not c.is_feedstock %}
+                                    <a href= "{{c.get_absolute_url}}" class="nav-item nav-link text-primary" style="font-family: sans-serif;">{{c.name}}</a> <br> 
+                                    <br />
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </nav>
+                </div>
+                <!-- Menu materias primas-->
+                {% if MND == 'USD' or MND == 'MLC'%}
+                <div class="Materias_Primas row border-top px-xl-1">
+                <a class="btn btn-primary shadow-none d-flex align-items-center justify-content-between bg-red text-light w-60" data-toggle="collapse" href="#navbar-vertical1" style="height: 60px; margin-top: -1px; padding: 0 30px;">
+                    <h6 class="m-0 text-light" style="font-family: sans-serif;">MATERIAS PRIMAS</h6>
+                    <i class="fa fa-angle-down text-light"></i>
+                </a>
+                <nav class="collapse show navbar navbar-vertical1 navbar-light align-items-start p-0 border border-top-0 border-bottom-0" id="navbar-vertical1">
+                    <div class="navbar-nav w-100 overflow-hidden" style="height: 100%">
+                        {% for c in active_categories %}
+                        {% if c.is_feedstock %}
+                            <a href= "{{c.get_absolute_url}}" class="nav-item nav-link text-primary" style="font-family: sans-serif;">{{c.name}}</a> <br> 
+                            <br />
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </nav>
+                </div>
+                {% endif %}
+                <div class="row border-top px-xl-1">
+<!--                     <img class="flex-grow-2" id="Imagen" src={% static "img/muhia.png" %} width="100%" href="https://produccionesmuhia.ca"></a> -->
+                </div>
+            </div>
+            <!-- Contenido específico --> 
+            <div class="col-lg-10 d-lg-block text-primary">
+            {% block content %} 
+            {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+
+    <div class="container-fluid " style="background: #153d50;">
+        <div class="row">
+            <div class="col-lg-6 col-md-12 ">
+                <h2 class="font-weight-semi-bold" style="font-family: sans-serif; color: #ffffff; text-align: start;  padding-top: 3%;">Nuestra ubicación</h2>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14675.616494042462!2d-82.31276216197121!3d23.137179497406784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88cd7f00754e9305%3A0x68c9f36a0eeba950!2sProducciones%20MUHIA!5e0!3m2!1ses!2scu!4v1726631789230!5m2!1ses!2scu" width="100%" height="70%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div class="col-lg-6 col-md-12" style="padding-left: 25%; padding-top: 3%;">
+                <h2 class="font-weight-bold mb-4" style="font-family: sans-serif; color: #ffffff;">Contáctenos</h2>
+                <ul style="font-family: Roboto, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; list-style: none; line-height: 150%; margin: 0; padding: 0%; color: #ffffff;">
+                    <li class="mb-2"><i class="fa fa-envelope text-red-50 mr-3"></i><a class="text-light xfont-weight-semi-bold" style="text-decoration: none;" href=" ">comercial@produccionesmuhia.ca</a></li>
+                    <li class="mb-2"><i class="fa fa-phone text-red-50 mr-3"></i></a> Atención al cliente: +53 5 988 0481</li>
+                    <li class="mb-2"><i class="fa fa-phone text-red-50 mr-3"></i></a> Asistencia informática: +53 5 988 0455</li>
+                    <li class="mb-2"><i class="fa fa-envelope text-red-50 mr-3"></i><a class="text-light xfont-weight-semi-bold" style="text-decoration: none;" href="/contacto/">Envíe sus comentarios</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container-fluid row" style="background-color: #153d50;">
+            <div class="col-lg-6 d-lg-block">
+                <nav id="enlaces_interes" class="navbar navbar-light navbar-expand-lg navbar-collapse" style="text-align: end; background: #153d50; border-color: #153d50; vertical-align: middle;padding-top: 0px; padding-bottom: 0px; padding-left: 0%;">
+                <!--     <a class="nav-link" style="font-family:roboto; text-decoration: none; color: #ffffff;" href="#"><strong>Enlaces de ínteres:</a></strong> -->
+                    <a class="nav-link" style="font-family:sans-serif; text-decoration: none; color: #ffffff; border-right-style: double;" href="https://produccionesmuhia.ca">Nosotros</a>    
+                    {% for page in page_list %}
+                        <a class="nav-link" style="font-family:sans-serif; text-decoration: none; color: #ffffff; border-right-style: double;" href="{% url 'page' page.id %}">{{page.title}}</a>    
+<!--                         <a class="text-light mb-2" href="{% url 'page' page.id %}" style="font-family: sans-serif;"><i class="fa fa-angle-right mr-2"></i>{{page.title}}</a> -->
+                    {% endfor %}
+                </nav>
+            </div>
+            <div class="col-lg-6">
+                <nav id="cintillo_redes" class="navbar navbar-light navbar-expand-lg navbar-collapse"  style="text-align: end; background: #153d50;border-color: #153d50; padding-left: 60%;">
+                    <a class="nav-link" style="font-family:sans-serif; text-decoration: none; color: #ffffff;" href="#">Búscanos en:</a>
+                    <a id="instagram" class="instagram" href="https://www.instagram.com/muhia_producciones/" target="_blank" style="width: 2em; vertigal-align: middle;">
+                        <svg class="bi bi-instagram" xmlns="http://www.w3.org/2000/svg" width="6em" height="4em" viewBox="5 0 24 24" href="https://www.instagram.com/muhia_cuba/" style="color:white; max-width: 32px;font-size: 20px;max-height: 24px;">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 7C9.23858 7 7 9.23858 7 12C7 14.7614 9.23858 17 12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7ZM9 12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12Z" fill="currentColor"></path>
+                            <path d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z" fill="currentColor"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M5 1C2.79086 1 1 2.79086 1 5V19C1 21.2091 2.79086 23 5 23H19C21.2091 23 23 21.2091 23 19V5C23 2.79086 21.2091 1 19 1H5ZM19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" fill="currentColor"></path>
+                        </svg>
+                    </a>
+                    <a id="face" class="facebook" href="https://www.facebook.com/profile.php?id=61559488611749" target="_blank" style="color:#153d50; width: 1.5em; vertical-align: middle;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" fill="#ffffff" viewBox="0 0 16 16" class="bi bi-facebook text-light facebook" href="https://www.facebook.com/produccionesmuhia" style="max-width: 24px;font-size: 18px;max-height: 24px;">
+                            <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"></path>
+                        </svg>
+                    </a>
+                </nav>
+            </div>
+        </div>
+        <div class="row border-top border-light mx-xl-5 py-2">
+        </div>
+            <div class="position-relative justify-content-center text-center col-md-10 px-xl-0">
+                <p class="mb-md-0 text-light" style="font-family: sans-serif;">
+                    &copy; <a class="text-light font-weight-semi-bold" href="#">Producciones MUHIA</a>. Todos los derechos reservados.                  
+                    </br>
+                    <a class="text-light font-weight-semi-bold" href="#">CoBosi</a>.
+                    <a class = "text-light"> <small>V_1.0 2024 </small></a>
+                </p>
+            </div>
+<!--         </div> -->
+        </div>
+    </div> 
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/lib/easing/easing.min.js"></script>
+    <script src="/static/lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="/static/mail/jqBootstrapValidation.min.js"></script>
+    <script src="/static/mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="/static/js/main.js"></script>
+</body>
+
+</html>

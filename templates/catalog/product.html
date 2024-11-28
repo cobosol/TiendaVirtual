@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load static %}
+{% load catalog_filters %}
+
+<title>Producto</title>
+
+{% block content %}
+
+<div class="container-fluid bg-secondary mb-2">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 60px">
+        <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: sans-serif;">Detalles del producto</h4>
+    </div>
+</div>
+<!-- Page Header End -->
+
+
+    <!-- Shop Detail Start -->
+    <div class="container-fluid py-2">
+        <div class="row px-xl-5">
+            <div id="imagen" class="col-lg-3 pb-0 card-header product-img position-relative text-md-left overflow-hidden bg-transparent p-0">
+                <h5 class="font-weight-semi-bold" style="font-family: sans-serif;">{{ p.gname }} {{ p.presentation }}</h5>
+                <img width="220" height="320" src="{{p.get_image_url}}" alt="{{p.get_image_url}}">
+<!--                 <div class="d-flex mb-4">
+                    <p class="text-dark font-weight-medium mb-0 mr-3" style="font-family: roboto;">Ficha Técnica:</p>
+                    <a href="{{ p.get_file_url }}" target="_blank"> {{ p.gname }} </a>
+                </div> -->
+                <div class="d-flex mb-4">
+                    <p class="text-dark font-weight-medium mb-0 mr-3" style="font-family: sans-serif;">Categorí{{ categories.count|pluralize:"a,as" }}:</p>
+                    {% for c in categories %}
+                        <p class="m-0" style="font-family: sans-serif;"><a href="{{ c.get_absolute_url }}" style="font-family: sans-serif;">{{ c.name }}</a></p>
+                        {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div id="detalles" class="col-lg-5 pb-1">
+                <div>
+                    <h6 class="font-weight-semi-bold text-primary" style="font-family: sans-serif;">Precios</h6>
+                    <table class="table table-bordered text-center mb-0 border-0" style="font-family: sans-serif;">
+                        <thead class="bg-primary text-light">
+                            <tr>
+                                <th>Moneda</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody class="align-middle">
+                            <tr>
+                                <td class="align-middle">
+                                    USD
+                                </td>
+                                <td class="align-middle">
+                                    {{ p.price_base|currency }}
+                                </td>
+                            </tr>
+<!--                             <tr>
+                                <td class="align-middle">
+                                    CUP
+                                </td>
+                                <td class="align-middle">
+                                    {{ p.price_cup|currency }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="align-middle">
+                                    MLC
+                                </td>
+                                <td class="align-middle">
+                                    {{ p.price_mlc|currency }}
+                                </td>
+                            </tr> -->
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h6 class="font-weight-semi-bold text-primary" style="font-family: sans-serif;">Formas de pago:</h6>
+                    <h6 class="text-primary" style="font-family: sans-serif;">* En nuestros <a href="/tiendas/" style="font-family: sans-serif;"><i class="font-weight-semi-bold text-primary">Puntos de venta</i></a> 
+                        puede pagar en CUP, MLC, por transferencia o en efectivo. Estamos para servirle.</h6>
+                    <h6 class="text-primary" style="font-family: sans-serif;">* Si desea ser: <br> 
+                        -<i class="font-weight-semi-bold text-primary">Distribuidor</i> de nuestros productos o hacer compras al mayor. <br>
+                        -<i class="font-weight-semi-bold text-primary">Productor</i> utilizando nuestras materias primas. <br>
+                        Le brindamos asesoramiento y beneficios económicos. <br>
+                        Acceda a su <a href="/accounts/profile/" style="font-family: sans-serif;"><i class="font-weight-semi-bold text-primary">Perfil personal</i></a> 
+                        y especifique los datos que allí se solicitan o <a href="/contacto/" style="font-family: sans-serif;"><i class="font-weight-semi-bold text-primary">Contáctenos</i></a>.</h6>
+                </div>                 
+            <!--     <h4 class="mb-4" style="font-family: roboto;">Producto de: {{ p.brand }} </h4> -->
+            </div>
+            <div id="opciones_compra" class="col-lg-4 pb-0">
+                <div>
+                    <h6 class="font-weight-semi-bold text-primary" style="font-family: sans-serif;">Disponibilidad</h6>
+                    <table class="table table-bordered text-center mb-0 border-0" style="font-family: sans-serif;">
+                        <thead class="bg-primary text-light">
+                            <tr>
+                                <th>Forma de entrega</th>
+                                <th>Disponibles</th>
+                            </tr>
+                        </thead>
+                        <tbody class="align-middle">
+                            {% for ps in products_stores %}
+                            <tr>
+                                <td class="align-middle">
+                                    <a href="{{ps.store.get_absolute_url}}" class="text-dark font-weight-medium mb-0 mr-3" style="font-family: sans-serif;">{{ ps.store.name }}:</a>
+                                </td>
+                                <td class="align-middle">
+                                    {% if ps.available > 0%}
+                                        {{ ps.available }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+               <div class="row px-xl-12 justify-content-center">
+                <form method="post" action="." class="cart">
+                    {% csrf_token %}
+                    <input type="hidden" name="product_slug" value="{{ p.slug }}" />
+                    <button type="submit" name="submit" value="Comprar" class="btn btn-secondary my-2 py-0 text-light" name="submit" alt="Add To Cart">
+                        <i class="fas fa-shopping-cart text-secondary mr-1"></i>
+                        Comprar
+                    </button>
+                </form>
+                </div> 
+                <div class="row px-xl-12 justify-content-left">
+                    <h6 class="font-weight-medium mb-4" style="font-family: sans-serif; text-primary"> Usted puede ajustar cantidad del producto y forma de entrega en el carrito. </h6>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row px-xl-5">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }} text-red">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <p>
+                <h6 class="font-weight-semi-bold mb-4"> Descripción: </h6>{{p.description|safe}}
+                <br> 
+            </p>
+        </div>
+    </div>
+
+{% endblock %}
+
+    <!-- Shop Detail End -->
+

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<title>Muhia - Admininstración</title>
+
+
+{% block content %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-secondary mb-2">
+      <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+          <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: sans-serif;">Eliminar producto</h4>
+      </div>
+  </div>
+  <!-- Page Header End -->
+  
+  {% if messages %}
+  <ul class="messages list-group mb-3">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }} list-group-item list-group-item-primary"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <div class="container mt-3">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Paginación -->
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th width="35%">Nombre</th>
+              <th>Imagen</th>
+              <th>Activo</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+          <!-- Recorremos los objetos o registros que tenemos en nuestra tabla 'jugos' y los listamos -->
+          {% for elem in object_list %}
+            <tr>
+              <td>{{ elem.name }}</td>
+              <td><img src="media/{{elem.image}}" alt="{{elem.image}}" class="img-fluid" width="7%"></td>
+              <td>{% if elem.is_activ %} Si {% else %} No {% endif %}</td>
+              <td>
+                <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o jugo desde la misma tabla HTML -->                        
+                <form method="POST" action="eliminar/{{elem.id}}">
+                  {% csrf_token %}
+                  <div class="btn-group">
+                    <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros o jugos -->
+                    <a href="detalle/{{elem.id}}" title="Ver" type="button" class="btn btn-success">Ver </a>
+                    <a href="editar/{{elem.id}}" title="Editar" type="button" class="btn btn-primary">Editar </a>
+                    <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                      Eliminar
+                    </button>
+                  </div>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+          <script type="text/javascript">
+            function eliminar() {
+              var x = confirm("¿Está seguro de que desea eliminar el objeto seleccionado?");
+              if (x)
+                return true;
+              else
+                return false;
+            }
+          </script>
+          </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

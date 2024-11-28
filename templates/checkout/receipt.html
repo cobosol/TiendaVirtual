@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load catalog_filters %}
+{% block content %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-secondary mb-2">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+            <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: sans-serif;">Detalles de la orden de compra</h4>
+            <!-- <div class="d-inline-flex">
+                <h4 class="text-secondary font-weight-semi-bold text-uppercase mb-3" style="font-family: roboto;">{{ c.name }}</h4>
+            </div> -->
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+<h6 class="text-dark font-weight-semi-bold mb-3" style="font-family: sans-serif;">{{user}} su orden ha sido registrada correctamente!<br /><br />
+    Su número de orden es: {{ order.id }}</h6> <br/>
+<!-- <h6 class="text-dark font-weight-semi-bold mb-3" style="font-family: roboto;">Su número de transacción bancaria es: {{ order.transaction_id }}</h6> -->    
+<table id="receipt">
+    <caption style="font-family: sans-serif;"> Gracias por su compra!!!!</caption>
+    <thead>
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Cantidad</th>
+            <th class="right" scope="col">Total</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <td colspan="4" class="right" style="height:30px;">
+                Envío: {{ order.delivery_price|currency }} <br>
+                Valor Total: {{ order.total|currency }} {{ order.currency }}
+            </td>
+        </tr>
+    </tfoot>
+    <tbody>
+        {% for item in order_items %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.price|currency }}</td>
+            <td>{{ item.quantity }}</td>
+            <td class="right">{{ item.total|currency }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+    <form action="." method="post">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-block btn-primary my-2 py-2" value="Factura" class="submit" />
+    </form>
+
+<!--     <form action="." method="post">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-block btn-primary my-2 py-2" value="Nota" class="submit" />
+    </form> -->
+
+    {% endblock %}

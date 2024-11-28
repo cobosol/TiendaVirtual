@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Iniciar sesión{% endblock %}
+{% block content %}
+
+  <!-- Page Header Start -->
+    <div class="container-fluid bg-secondary mb-2">
+      <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+          <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: sans-serif;"> Entrar </h4>
+      </div>
+  </div>
+  <!-- Page Header End -->
+
+<style>.errorlist{color:red;}</style>
+<main role="main">
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col-md-9 mx-auto mb-5">
+        {% if 'register' in request.GET %}
+        <p style="color:green;">
+          Usuario registrado correctamente, ya puedes identificarte.
+        </p>
+        {% endif %}
+        <form action="" method="post">{% csrf_token %}
+          <!-- <h3 class="mb-4">Iniciar sesión</h3> -->
+          {% if form.non_field_errors %}
+            <p style="color:red">Usuario o contraseña incorrectos, prueba de nuevo.</p>
+          {% endif %}
+          <p>
+            <input type="text" name="username" autofocus maxlength="254" required
+              id="id_username" class="form-control" placeholder="Nombre de usuario"/>
+          </p>
+          <p>
+            <input type="password" name="password" required
+              id="id_password" class="form-control" placeholder="Contraseña"/>
+          </p>
+          <p><input type="submit" class="btn btn-primary btn-block" value="Acceder"></p>
+        </form>
+        <p>
+          ¿Ha olvidado su clave? Puede restaurarla <a href="{% url 'password_reset' %}">aquí</a>.
+        </p>
+        <p>
+          ¿No tiene cuenta? Puede registrarse <a href="{% url 'signup' %}">aquí</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

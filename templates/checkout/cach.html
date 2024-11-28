@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+{% load checkout_tags %}
+{% load catalog_filters %}
+{% block content %}
+
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-secondary mb-2">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+            <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: sans-serif;">Datos para la venta</h4>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+{% if error_message %}
+<ul class="errorlist">
+    <li>{{ error_message }}</li>
+</ul>
+{% endif %}
+
+<div class="row px-xl-6">
+    <div id="Info de contacto" class="col-lg-9">
+    <form action="." method="post">
+    {% csrf_token %}
+    <fieldset class="checkout">
+        <legend style="font-family: sans-serif;">Información para la entrega</legend>
+        <table>
+            {% form_table_row form.delivery_name %}
+            {% form_table_row form.delivery_phone %}
+        </table>
+    </fieldset>
+    <table>
+    <tr>
+        {% if cobra_efectivo %}
+        <td class="first-td"><strong>
+            <th colspan="2">
+                <input type="submit" name="submit" value="Confirmar pago" class="btn btn-block btn-primary my-0 py-0"/>
+            </th>
+        </td>
+        {% endif %}
+    </tr>
+    </table>
+    </form>
+    </div>
+    <div id = "Total a pagar" class="col-lg-3">
+    <div class="card border-secondary mb-5">
+        <div class="card-header bg-primary border-0">
+            <h4 class="font-weight-semi-bold m-0 text-light" style="font-family: sans-serif;">A pagar</h4>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-3 pt-1">
+                <h6 class="font-weight-medium" style="font-family: sans-serif;">Subtotal:{{ cart_item_count }}</h6>
+                <h6 class="font-weight-medium" style="font-family: sans-serif;">{{ cart_subtotal|currency }}</h6>
+            </div>
+            <div class="d-flex justify-content-between">
+                {% if envio %}
+                    <h6 class="font-weight-medium" style="font-family: sans-serif;">Envío</h6>
+                    <h6 class="font-weight-medium" style="font-family: sans-serif;">$ {{ cart_delivery }}</h6>
+                {% else %}
+                    <h6 class="font-weight-medium" style="font-family: sans-serif;">Recogida en</h6>
+                    <h6 class="font-weight-medium" style="font-family: sans-serif;">$ {{ cart_delivery }}</h6>
+            </div>
+            <div class="d-flex justify-content-between mb-3 pt-1">
+                <a href="{{st.get_absolute_url}}" class="text-dark font-weight-medium mb-0 mr-3" style="font-family: sans-serif;">{{ st_name }}:</a>
+            </div>
+            {% endif %}
+        </div>
+        <div class="card-footer border-secondary bg-transparent">
+            <div class="d-flex justify-content-between mt-2">
+                <h6 class="font-weight-bold" style="font-family: sans-serif;">Total: </h6>
+                <br>
+                {% if MND == "CUP" %}
+                <h6 class="font-weight-bold" style="font-family: sans-serif;">{{ cart_total|currency }} CUP</h6>
+                {% else %}
+                <h6 class="font-weight-bold" style="font-family: sans-serif;">{{ cart_total|currency }} USD</h6>
+                {% endif %}
+            </div>
+        </div>
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+            <a href="/carrito/carrito/" style="font-family: sans-serif;"><i class="fas fa-shopping-cart text-secondary mr-1"></i>Volver al carrito</a>
+            <h4 class="text-secondary  bg-primary mb-2" style="font-family: sans-serif;"></h4>
+        </div>
+    </div>
+    </div>
+</div>
+
+<div class="row px-xl-5">
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }} text-red">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
+{% endblock %}

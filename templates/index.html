@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+{% load static %}
+{% load catalog_filters %}
+
+{% block content %}
+
+    <div id="header-carousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            {% for banner in banners %}
+            {% if banner.is_active %}
+            {% if banner.main %}
+            <div class="carousel-item active" style="height: 100%;">
+                <img class="img-fluid" src="{{ banner.image.url }}" alt="{{banner.image}}">
+                <div class="d-flex flex-column align-items-center justify-content-center">
+                    <div class="p-1" style="max-width: 600px;">
+                                                            <!-- <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order</h4>
+                                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Fashionable Dress</h3> -->
+                           <!--          <a href="" class="btn btn-light py-2 px-3">Comprar</a> -->                                
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="carousel-item" style="height: 100%;">
+                <img class="img-fluid" src="{{ banner.image.url }}" alt="{{banner.image}}">
+                <div class="d-flex flex-column align-items-center justify-content-center">
+                    <div class="p-1" style="max-width: 600px;">
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
+                        <div class="btn btn-dark" style="width: 45px; height: 45px;">
+                            <span class="carousel-control-prev-icon mb-n2"></span>
+                        </div>
+        </a>
+        <a class="carousel-control-next" href="#header-carousel" data-slide="next">
+                        <div class="btn btn-dark" style="width: 45px; height: 45px;">
+                            <span class="carousel-control-next-icon mb-n2"></span>
+                        </div>
+        </a>
+    </div>
+
+    <!-- Offer Start -->
+    <div class="container-fluid offer pt-5">
+        <div class="row px-xl-4">
+            <div class="col-md-6 pb-3">
+                <div class="position-relative text-center text-md-right text-white mb-2 py-5 px-5" style="background-color: #5caab6;">
+                    <img class="image1" src="/static/img/offer-1.webp" alt="">
+                    <div class="position-relative" style="z-index: 0;">
+                        <h6 class="text-uppercase text-light mb-4" style="text-shadow: 5px 3px 7px black;">Ahorre hasta un 20%</h6>
+                        <h4 class="mb-4 font-weight-semi-bold text-light" style="text-shadow: 5px 3px 7px black;">Combos "Flor de Cuba"</h4>
+                        <a href="/catalogo/categoria/combos/" class="btn btn-outline-primary py-md-2 px-md-3" style="text-shadow: 5px 3px 7px #f3b75c;">Compre ahora</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 pb-4">
+                <div class="position-relative text-center text-md-left text-white mb-2 py-5 px-5" style="background-color: #5caab6;">
+                    <img class="image2" src="/static/img/offer-2.webp" alt="">
+                    <div class="position-relative" style="z-index: 0;">
+                        <h6 class="text-uppercase text-light mb-4" style="text-shadow: 5px 3px 7px black;">Complete 100 USD y se lo llevamos</h6>
+                        <h4 class="mb-4 font-weight-semi-bold text-light" style="text-shadow: 5px 3px 7px black;"> Gratis hasta su casa </h4>
+                        <a href="/tiendas/" class="btn btn-outline-primary text-light py-md-2 px-md-3" style="text-shadow: 3px 1px 2px #f3b75c;">Tipos de entrega</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Offer End -->
+    </div> 
+                <!-- Featured Start -->
+                <div class="container-fluid pt-5">
+                    <div class="row px-xl-5 pb-3">
+                        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                                <h1 class="fa fa-check text-primary m-0 mr-3"></h1>
+                                <a href="https://produccionesmuhia.ca" target="_blank" >
+                                    <h5 class="font-weight-semi-bold m-0">Calidad garantizada</h5>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                                <h1 class="fa fa-shipping-fast text-primary m-0 mr-2"></h1>
+                                <a href="/tiendas/" target="_blank">
+                                    <h5 class="font-weight-semi-bold m-0">Envíos y puntos de venta</h5>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                                <h1 class="fas fa-exchange-alt text-primary m-0 mr-3"></h1>
+                                <a href="/pagina/3/" target="_blank">
+                                    <h5 class="font-weight-semi-bold m-0">Política de devoluciones</h5>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                                <h1 class="fa fa-phone-volume text-primary m-0 mr-3"></h1>
+                                <a href="/contacto/" target="_blank">
+                                    <h5 class="font-weight-semi-bold m-0">Soporte y comunicación</h5>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Featured End -->
+             <!--    
+    </div>
+    </div> -->
+
+    <!-- Navbar End -->
+
+    <!-- Ofertas mayoristas. -->
+
+
+    <!-- Ofertas del día. Todos los activos -->
+    <div class="container-fluid bg-primary mb-2">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 60px">
+            <h2 class="text-light font-weight-semi-bold text-uppercase mb-0" style="font-family: sans-serif;">Hoy le ofrecemos</h2>
+            <h6 class="text-light align-items-center justify-content-center mb-3" style="font-family: sans-serif;">Las fotos de los productos son referenciales</h6>
+        </div>
+    </div>
+    <div class="container-fluid bg-purple-300 mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+            <div class="container-fluid pt-5">
+                <div class="row px-xl-5 pb-3">
+                    {% if products %}
+                    {% for p in products %}
+                    {% if p.is_active %}
+                    {% if not p.is_feedstock %}
+                    {% if p.count > 0 %}
+                    {% if p.presentation == "A granel" %}
+                    {% if vendedor %}
+                    <div class="col-lg-2 col-md-6 col-sm-12 pb-1">
+                        <div class="card product-item border-1 mb-1">
+                            <div class="card-header product-img position-relative text-center overflow-hidden bg-transparent border p-0">
+                                <img width="80%" height="80%" class="img-fluid w-8" src="{{p.get_image_url}}" alt="{{p.get_image_url}}">
+                            </div>
+                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                                <h6 class="text-center mb-3" style="font-family: sans-serif;">{{ p.gname }}</h6>
+                                <h6 class="text-center mb-3" style="font-family: sans-serif;">{{ p.presentation }}</h6>
+                                <div class="d-flex justify-content-center">
+                                {% if MND == 'USD'%}    
+                                    <h6 class="text-red" style="font-family: sans-serif;"> {{p.price_base|currency}} USD</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                {% endif %}
+                                {% if MND == 'CUP'%}
+                                   
+                                    <h6 class="text-red" style="font-family: sans-serif;"> {{p.price_cup|currency}} CUP</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                {% endif %}
+                                {% if MND == 'MLC'%}    
+                                    <h6 class="text-red" style="font-family: sans-serif;"> {{p.price_mlc|currency}} MLC</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                {% endif %}
+                                </div> 
+                                <div class="card-footer d-flex justify-content-center text-center bg-secondary border text-light">
+                                    <form method="post" action="." class="cart">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="product_slug" value="{{ p.slug }}" />
+                                        <button type="submit" name="submit" value="Comprar" class="btn btn-secondary my-1 py-0 text-light" name="submit" alt="Add To Cart">
+                                            <i class="fas fa-shopping-cart text-secondary mr-0"> Comprar</i>
+                                        </button>
+                                        <a href="{{p.get_absolute_url}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% else %}
+                    <div class="col-lg-2 col-md-6 col-sm-12 pb-1">
+                        <div class="card product-item border-1 mb-1">
+                            <div class="card-header product-img position-relative text-center overflow-hidden bg-transparent border p-0">
+                                <img width="80%" height="80%" class="img-fluid w-8" src="{{p.get_image_url}}" alt="{{p.get_image_url}}">
+                            </div>
+                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                                <h6 class="text-center mb-3" style="font-family: sans-serif;">{{ p.gname }}</h6>
+                                <h6 class="text-center mb-3" style="font-family: sans-serif;">{{ p.presentation }}</h6>
+                                <div class="d-flex justify-content-center">
+                                {% if MND == 'USD'%}    
+                                    <h6 class="text-red" style="font-family: sans-serif;"> {{p.price_base|currency}} USD</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                {% endif %}
+                                {% if MND == 'CUP'%}
+                                   
+                                    <h6 class="text-red" style="font-family: sans-serif;"> {{p.price_cup|currency}} CUP</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                {% endif %}
+                                {% if MND == 'MLC'%}    
+                                    <h6 class="text-red" style="font-family: sans-serif;"> {{p.price_mlc|currency}} MLC</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                {% endif %}
+                                </div> 
+                                <div class="card-footer d-flex justify-content-center text-center bg-secondary border text-light">
+                                    <form method="post" action="." class="cart">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="product_slug" value="{{ p.slug }}" />
+                                        <button type="submit" name="submit" value="Comprar" class="btn btn-secondary my-1 py-0 text-light" name="submit" alt="Add To Cart">
+                                            <i class="fas fa-shopping-cart text-secondary mr-0"> Comprar</i>
+                                        </button>
+                                        <a href="{{p.get_absolute_url}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+                    {% else %}
+                      <h6 class="text-red" style="font-family: sans-serif;"> No tenemos para la venta en línea. Pero puede contactarnos y recibir más información.</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Próxima venta -->
+<!-- 
+    <div class="container-fluid bg-primary mb-2">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 60px">
+            <h2 class="text-light font-weight-semi-bold text-uppercase mb-2" style="font-family: sans-serif;">Próximamente a su disposición</h2>
+            <h5 class="text-light font-weight-semi-bold text-uppercase mb-2" style="font-family: sans-serif;">Precio referencial</h5>
+        </div>
+    </div>
+
+    <div class="container-fluid bg-purple-300 mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+            <div class="container-fluid pt-5">
+                <div class="row px-xl-5 pb-3">
+                    {% for p in products %}
+                    {% if p.is_featured %}
+                    <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                        <div class="card product-item border-1 mb-2">
+                            <div class="card-header product-img position-relative text-center overflow-hidden bg-transparent border p-0">
+                                <img width="80%" height="80%" class="img-fluid w-10" src="{{p.get_image_url}}" alt="{{p.get_image_url}}">
+                            </div>
+                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                                <h6 class="text-truncate mb-3" style="font-family: sans-serif;">{{ p.name }}</h6>
+                                <div class="d-flex justify-content-center">
+                                    <h6 class="text-red" style="font-family: sans-serif;">$ {{p.price_usd}} USD</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                </div>
+                                <div class="card-footer d-flex justify-content-center text-center bg-secondary border">
+                                   <!-- <a href="#" class="btn btn-sm text-secondary p-0"><i class="fas fa-eye text-secondary mr-1"></i>Detalles</a>
+                                 <a href="" class="btn btn-sm text-red p-0"><i class="fas fa-shopping-cart text-red mr-1"></i>Muy pronto</a> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+
+{% endblock %}
