@@ -192,6 +192,7 @@ def show_checkout(request, template_name='checkout/checkout.html'):
 
 @login_required
 def cach(request, template_name='checkout/cach.html'):
+    MND = 'USD'
     if cart.is_empty(request):
         cart_url = reverse('show_cart')
         return HttpResponseRedirect(cart_url)
@@ -200,7 +201,6 @@ def cach(request, template_name='checkout/cach.html'):
         if postdata['submit'] == 'Confirmar pago':
             form = CachForm(postdata)
             if form.is_valid():
-                MND = 'USD'
                 user = request.user
                 profile = get_object_or_404(Profile, user = user)
                 MND = profile.MONEY_TYPE[profile.money_type][1]
@@ -231,7 +231,7 @@ def cach(request, template_name='checkout/cach.html'):
     page_title = 'Cach'
     cobra_efectivo = False
     cart_subtotal = round(cart.cart_subtotal(request), 2)
-    cart_delivery = cart.cart_delivery_price(request, cart_subtotal)
+    cart_delivery = cart.cart_delivery_price(request, cart_subtotal, MND)
     cart_total = cart_subtotal + cart_delivery
     st_name = cart.delivery_Store(request).name
     envio = False
@@ -245,6 +245,7 @@ def cach(request, template_name='checkout/cach.html'):
 # El view de la página de pago nacional
 @login_required
 def pagar(request, template_name='checkout/pagar.html'):
+    MND = 'USD'
     if cart.is_empty(request):
         cart_url = reverse('show_cart')
         return HttpResponseRedirect(cart_url)
@@ -253,7 +254,6 @@ def pagar(request, template_name='checkout/pagar.html'):
         if postdata['submit'] == 'Efectuar pago':
             form = PagarForm(postdata)
             if form.is_valid():
-                MND = 'USD'
                 user = request.user
                 profile = get_object_or_404(Profile, user = user)
                 MND = profile.MONEY_TYPE[profile.money_type][1]
@@ -276,7 +276,7 @@ def pagar(request, template_name='checkout/pagar.html'):
     page_title = 'Transfermovil'
     cobra_efectivo = False
     cart_subtotal = round(cart.cart_subtotal(request), 2)
-    cart_delivery = cart.cart_delivery_price(request, cart_subtotal)
+    cart_delivery = cart.cart_delivery_price(request, cart_subtotal, MND)
     cart_total = cart_subtotal + cart_delivery
     st_name = cart.delivery_Store(request).name
     envio = False

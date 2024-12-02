@@ -78,10 +78,11 @@ class Product(models.Model):
     sku = models.CharField(max_length=50, 
                            help_text='Código específico del producto.', 
                            verbose_name = "Código")
-    price = models.ForeignKey(Price, on_delete = models.PROTECT, blank=True, null=True, verbose_name="Precios del producto")
+    price = models.ForeignKey(Price, on_delete = models.PROTECT, blank=True, null=True, verbose_name="Configuración de precios del producto")
     price_base = models.DecimalField(max_digits=9,decimal_places=2, default = 0.00, verbose_name = "Precio USD")
     old_price = models.DecimalField(max_digits=9,decimal_places=2, blank=True, default=0.00, verbose_name = "Precio viejo")
     is_feedstock = models.BooleanField(default=False, verbose_name = "Materia prima")
+    available_online = models.BooleanField(default=True, verbose_name = "Disponible para venta online")
     available_CUP = models.BooleanField(default=True, verbose_name = "Disponible en CUP")
     available_MLC = models.BooleanField(default=True, verbose_name = "Disponible en MLC")    
     image = models.ImageField(upload_to="Productos", null=True, blank=True,
@@ -94,7 +95,7 @@ class Product(models.Model):
     """ Próxima venta """
     is_featured = models.BooleanField(default=False, verbose_name = "Próxima venta")
     """ Descuento por cantidad """
-    has_discount = models.BooleanField(default=False, verbose_name = "Descuento por cantidad")
+    #has_discount = models.BooleanField(default=False, verbose_name = "Descuento por cantidad")
     """ Ficha del producto """
     prod_datasheet = models.FileField(blank=True, null=True, upload_to=generate_path, validators=[valid_extension],
                                       verbose_name="Ficha técnica")

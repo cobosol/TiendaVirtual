@@ -38,6 +38,10 @@ def show_cart(request, template_name="cart/cart.html"):
                 quantity = cart.update_cart(request)
                 form = DeliveryForm(request, postdata)
                 #form.delivery_type = profile.prefered_store
+            elif postdata['submit'] == 'Buscar':
+                productSearch = postdata['producto']
+                url = '/catalogo/productos/' + productSearch + '/'
+                return HttpResponseRedirect(url)
             elif postdata['submit'] == 'Ir a pagar':
                 if request.user.is_authenticated:
                     if MND == 'USD':
@@ -60,7 +64,11 @@ def show_cart(request, template_name="cart/cart.html"):
             elif postdata['submit'] == 'Confirmar pago':
                 url = reverse('efectivo')
                 return HttpResponseRedirect(url)
-            elif postdata['submit'] == 'Actualizar Factura':
+            elif postdata['submit'] == 'Buscar':
+                productSearch = postdata['producto']
+                url = '/catalogo/productos/' + productSearch + '/'
+                return HttpResponseRedirect(url)
+            elif postdata['submit'] == 'Actualizar entrega':
                 form = DeliveryForm(request, postdata)
                 form.delivery_type = postdata['delivery_type']
                 delivery = postdata['delivery_type']
@@ -79,7 +87,7 @@ def show_cart(request, template_name="cart/cart.html"):
     #st = cart.delivery_Store(request)    
     page_title = 'Shopping Cart'
     cart_subtotal = cart.cart_subtotal(request)
-    cart_delivery = cart.cart_delivery_price(request, cart_subtotal)
+    cart_delivery = cart.cart_delivery_price(request, cart_subtotal, MND)
     delivery_name = str(cart.delivery_name(request))
     #deli = cart.get_delivery(request)
     envio = False

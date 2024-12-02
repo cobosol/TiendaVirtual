@@ -10,6 +10,7 @@ from registration.forms import UpdateProfileAdminForm
 
 def index_view(request, template_name="index.html"):
     products = Product.objects.all()
+    bestsellers = Product.objects.filter(is_bestseller=True)
     banners = Banner.objects.all()
     if not products.exists() or not banners.exists():
         return HttpResponseRedirect('https://testtienda.produccionesmuhia.ca/admin')
@@ -31,15 +32,12 @@ def index_view(request, template_name="index.html"):
                 if request.session.test_cookie_worked():
                     request.session.delete_test_cookie()
             elif postdata['submit'] == 'Buscar':
-                print("Entro a submit Buscar")
-                print(postdata)
                 productSearch = postdata['producto']
                 url = '/catalogo/productos/' + productSearch + '/'
-                print(url)
                 return HttpResponseRedirect(url)
         except Exception:
                 print("Error en el envío de información")
-    return render(request, 'index.html', {'products':products, 'banners':banners, 'vendedor':vendedor, 'profile':profile})
+    return render(request, 'index.html', {'products':products, 'banners':banners, 'bestsellers':bestsellers, 'vendedor':vendedor, 'profile':profile})
 
 """ def file_not_found_404(request):
     page_title = 'Page Not Found'

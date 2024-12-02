@@ -12,3 +12,10 @@ class Price(models.Model):
     is_active = models.BooleanField(default=False, verbose_name = "Actual")
     updated = models.DateTimeField(auto_now=True)
     
+    def get_min_delivery_free(self, MND='USD'):
+        if MND == 'CUP':
+            return self.min_delivery_free*self.change_usd_cup
+        if MND == 'MLC':
+            return self.min_delivery_free*self.change_usd_mlc
+        return self.min_delivery_free
+

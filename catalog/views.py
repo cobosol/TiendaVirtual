@@ -35,11 +35,24 @@ def index(request, template_name="index.html"):
     return render(request, template_name, context)
 
 def show_search(request, productSearch, template_name="catalog/search.html"):
-    print(productSearch)
-    productSearch = Product.objects.filter(name__search=productSearch)
-    if productSearch:
-        print("encontré alguno")
-    products = Product.objects.filter(is_bestseller=True)
+    productSearch = Product.objects.filter(meta_keywords__icontains=productSearch)
+    products = Product.objects.filter(is_active=True)
+    if request.method == 'POST':
+        try:
+            postdata = request.POST.copy()
+            if postdata['submit'] == 'Comprar': 
+                product_slug = postdata.get('product_slug','')
+                if cart.add_to_cart(request, product_slug):
+                    if request.session.test_cookie_worked():
+                        request.session.delete_test_cookie()
+                else:
+                    messages.info(request,"No hay disponibilidad del producto")       
+            elif postdata['submit'] == 'Buscar':
+                productSearch = postdata['producto']
+                url = '/catalogo/productos/' + productSearch + '/'
+                return HttpResponseRedirect(url) 
+        except Exception:
+            print("Error al adicionar al carrito")
     return render(request, template_name, locals())    
 
 def show_category(request, category_slug, template_name="catalog/category.html"):
@@ -50,6 +63,10 @@ def show_category(request, category_slug, template_name="catalog/category.html")
     meta_description = c.meta_description
     cart_items = cart.get_cart_items(request)
     product = get_object_or_404(Product, pk=1)
+    vendedor = False
+    if (request.user.is_authenticated):
+        if request.user.groups.filter(name__in=['vendedores']):
+            vendedor = True
     # Add to cart
     if request.method == 'POST':
         try:
@@ -101,6 +118,10 @@ def show_product(request, product_slug, template_name="catalog/product.html"):
     meta_description = p.meta_description
     quantity = 1
     delivery = 1
+    vendedor = False
+    if (request.user.is_authenticated):
+        if request.user.groups.filter(name__in=['vendedores']):
+            vendedor = True
     if request.method == 'POST':
         try:
             postdata = request.POST.copy()
@@ -148,7 +169,7 @@ class actualizar_producto(SuccessMessageMixin, UpdateView):
     form = ProductForm
     fields = ('name', 'gname', 'presentation', 'brand', 'sku', 'price', 'price_base', 'old_price', 
               'image', 'is_active', 'is_bestseller', 'is_featured', 'prod_datasheet', 'description', 
-                'is_feedstock', 'available_CUP', 'available_MLC',
+                'is_feedstock', 'available_online', 'available_CUP', 'available_MLC',
               'meta_keywords', 'meta_description', 'categories')
     success_message = "Se ha actualizado correctamente el producto."
 

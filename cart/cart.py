@@ -204,14 +204,14 @@ def cart_subtotal(request):
         messages.info(request, text)
     return cart_total
 
-def cart_delivery_price(request, amount):
+def cart_delivery_price(request, amount, MND):
     price = Price.objects.filter(is_active=True)[0] # Capturo la configración de precio actual
     cart_delivery = decimal.Decimal('0.00')
-    if amount >= price.min_delivery_free:
+    if amount >= price.get_min_delivery_free(MND):
         return cart_delivery 
     else:
         if amount > 0:
-            falta = price.min_delivery_free - amount
+            falta = price.get_min_delivery_free(MND) - amount
             c = round(falta, 2)
             text = "Le faltan $" + str(c) + " del monto total, para acceder a nuestra oferta de envío gratis."
             messages.info(request, text)

@@ -1,0 +1,212 @@
+{% load static %}
+{% load catalog_filters %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-purple-300 mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+            <div class="container-fluid pt-0">
+<!--               <ul class="messages list-group mb-3">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }} list-group-item list-group-item-primary"{% endif %}>{{ message }}</li>
+                {% endfor %}
+              </ul> -->
+                <div class="row px-xl-0 pb-0">
+                    {% if products %}
+                     {% for p in products %}
+                       {% if MND == 'USD' %}
+                        {% if vendedor == True %}
+                          <div class="col-lg-2 col-md-6 col-sm-12 pb-0 text-primary">
+                            <div class="card product-item border-0 mb-2 text-primary">
+                                <div class="card-header text-center product-img position-relative overflow-hidden bg-transparent border p-0">
+                                  <img width="80%" height="80%" class="img-fluid w-8" src="{{p.get_image_url}}" alt="{{ p.image }}">
+                                </div>
+                                <div class="card-body border-left border-right text-primary text-center p-0 pt-4 pb-3">
+                                  <h6 class="mb-3 text-primary" style="font-family: sans-serif;">{{ p.gname }}</h6>
+                                  <h6 class="mb-3 text-primary" style="font-family: sans-serif;">{{   p.presentation }}</h6>
+                                  {% if p.old_price != 0 %}
+                                    <div class="d-flex justify-content-center">
+                                      <h6 class="text-muted ml-2"> <del> {{p.old_price|currency}} USD</del> </h6>
+                                    </div>
+                                    <h6 class="text-red" style="font-family: sans-serif;"> Nuevo precio </h6>
+                                    <h6 class="text-dark" style="font-family: sans-serif;"> {{p.price_base|currency}} USD</h6>
+                                  {% else %}
+                                    <h6 class="text-dark" style="font-family: sans-serif;"> {{p.price_base|currency}} USD</h6>
+                                  {% endif%}
+                                </div>
+                              <div class="card-footer d-flex text-center justify-content-between bg-light border">
+                                {% if p.count > 0 %}
+                                <form method="post" action="." class="cart">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="product_slug" value="{{ p.slug }}" />
+                                        <button type="submit" name="submit" value="Comprar" class="btn btn-outline-primary my-2 py-0 text-light" name="submit" alt="Add To Cart">
+                                            <i class="fas fa-shopping-cart text-secondary mr-1"> Comprar</i>
+                                        </button>
+<!--                                         <button type="submit" name="submit" value="Comprar" class="btn btn-block btn-primary fa fa-shopping-cart my-2 py-2" name="submit" alt="Add To Cart"/> -->
+                                        <a href="{{p.get_absolute_url}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a>
+                                </form>
+                                {% else %}
+                                   <h6 class="text-red text-center" style="font-family: sans-serif;"> AGOTADO </h6>                               
+                                {% endif %}
+                              </div>
+                            </div>
+                          </div>
+                        {% elif p.available_online %}
+                        <div class="col-lg-2 col-md-6 col-sm-12 pb-0 text-primary">
+                          <div class="card product-item border-0 mb-2 text-primary">
+                            <a href="{{p.get_absolute_url}}">
+                              <div class="card-header text-center product-img position-relative overflow-hidden bg-transparent border p-0">
+                                <img width="80%" height="80%" class="img-fluid w-8" src="{{p.get_image_url}}" alt="{{ p.image }}">
+                              </div>
+                              <div class="card-body border-left border-right text-primary text-center p-0 pt-4 pb-3">
+                                <h6 class="mb-3 text-primary" style="font-family: sans-serif;">{{ p.gname }}</h6>
+                                <h6 class="mb-3 text-primary" style="font-family: sans-serif;">{{ p.presentation }}</h6>
+                                <div class="d-flex justify-content-center">
+                                  <h6 class="text-dark" style="font-family: sans-serif;"> {{p.price_base|currency}} USD</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                                </div>
+                              </div>
+                            </a>
+                            <div class="card-footer d-flex text-center justify-content-between bg-light border">
+<!--                                 <a href="{{p.get_absolute_url}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a> -->
+                              <form method="post" action="." class="cart">
+                                      {% csrf_token %}
+                                      <input type="hidden" name="product_slug" value="{{ p.slug }}" />
+                                      <button type="submit" name="submit" value="Comprar" class="btn btn-outline-primary my-2 py-0 text-light" name="submit" alt="Add To Cart">
+                                          <i class="fas fa-shopping-cart text-secondary mr-1"> Comprar </i>
+                                      </button>
+<!--                                         <button type="submit" name="submit" value="Comprar" class="btn btn-block btn-primary fa fa-shopping-cart my-2 py-2" name="submit" alt="Add To Cart"/> -->
+                                      <a href="{{p.get_absolute_url}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                        {% endif %}                  
+                       {% elif MND == 'CUP' %}
+                        {% if vendedor == True and p.available_CUP %}
+                         <div class="col-lg-2 col-md-6 col-sm-12 pb-0 text-primary">
+                         <div class="card product-item border-0 mb-2 text-primary">
+                           <a href="{{p.get_absolute_url}}">
+                             <div class="card-header text-center product-img position-relative overflow-hidden bg-transparent border p-0">
+                               <img width="80%" height="80%" class="img-fluid w-8" src="{{p.get_image_url}}" alt="{{ p.image }}">
+                             </div>
+                             <div class="card-body border-left border-right text-primary text-center p-0 pt-4 pb-3">
+                               <h6 class="mb-3 text-primary" style="font-family: sans-serif;">{{ p.gname }}</h6>
+                               <h6 class="mb-3 text-primary" style="font-family: sans-serif;">{{ p.presentation }}</h6>
+                               <div class="d-flex justify-content-center">
+                                 <h6 class="text-dark" style="font-family: sans-serif;"> {{p.price_cup|currency}} CUP</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                               </div>
+                             </div>
+                           </a>
+                           <div class="card-footer d-flex text-center justify-content-between bg-light border">
+<!--                                 <a href="{{p.get_absolute_url}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a> -->
+                             <form method="post" action="." class="cart">
+                                     {% csrf_token %}
+                                     <input type="hidden" name="product_slug" value="{{ p.slug }}" />
+                                     <button type="submit" name="submit" value="Comprar" class="btn btn-outline-primary my-2 py-0 text-light" name="submit" alt="Add To Cart">
+                                         <i class="fas fa-shopping-cart text-secondary mr-1"> Comprar</i>
+                                     </button>
+<!--                                         <button type="submit" name="submit" value="Comprar" class="btn btn-block btn-primary fa fa-shopping-cart my-2 py-2" name="submit" alt="Add To Cart"/> -->
+                                     <a href="{{p.get_absolute_url}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a>
+                             </form>
+                           </div>
+                         </div>
+                         </div>
+                        {% elif p.available_online and p.available_CUP %}
+                         <div class="col-lg-2 col-md-6 col-sm-12 pb-0 text-primary">
+                       <div class="card product-item border-0 mb-2 text-primary">
+                         <a href="{{p.get_absolute_url}}">
+                           <div class="card-header text-center product-img position-relative overflow-hidden bg-transparent border p-0">
+                             <img width="80%" height="80%" class="img-fluid w-8" src="{{p.get_image_url}}" alt="{{ p.image }}">
+                           </div>
+                           <div class="card-body border-left border-right text-primary text-center p-0 pt-4 pb-3">
+                             <h6 class="mb-3 text-primary" style="font-family: sans-serif;">{{ p.gname }}</h6>
+                             <h6 class="mb-3 text-primary" style="font-family: sans-serif;">{{ p.presentation }}</h6>
+                             <div class="d-flex justify-content-center">
+                               <h6 class="text-dark" style="font-family: sans-serif;"> {{p.price_cup|currency}} CUP</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                             </div>
+                           </div>
+                         </a>
+                         <div class="card-footer d-flex text-center justify-content-between bg-light border">
+<!--                                 <a href="{{p.get_absolute_url}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a> -->
+                           <form method="post" action="." class="cart">
+                                   {% csrf_token %}
+                                   <input type="hidden" name="product_slug" value="{{ p.slug }}" />
+                                   <button type="submit" name="submit" value="Comprar" class="btn btn-outline-primary my-2 py-0 text-light" name="submit" alt="Add To Cart">
+                                       <i class="fas fa-shopping-cart text-secondary mr-1"> Comprar</i>
+                                   </button>
+<!--                                         <button type="submit" name="submit" value="Comprar" class="btn btn-block btn-primary fa fa-shopping-cart my-2 py-2" name="submit" alt="Add To Cart"/> -->
+                                   <a href="{{p.get_absolute_url}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a>
+                           </form>
+                         </div>
+                       </div>
+                         </div>
+                        {% endif %}
+                       {% else %} <!-- Moneda MLC -->
+                        {% if vendedor == True and p.available_MLC %}
+                         <div class="col-lg-2 col-md-6 col-sm-12 pb-0 text-primary">
+                       <div class="card product-item border-0 mb-2 text-primary">
+                         <a href="{{p.get_absolute_url}}">
+                           <div class="card-header text-center product-img position-relative overflow-hidden bg-transparent border p-0">
+                             <img width="80%" height="80%" class="img-fluid w-8" src="{{p.get_image_url}}" alt="{{ p.image }}">
+                           </div>
+                           <div class="card-body border-left border-right text-primary text-center p-0 pt-4 pb-3">
+                             <h6 class="mb-3 text-primary" style="font-family: sans-serif;">{{ p.gname }}</h6>
+                             <h6 class="mb-3 text-primary" style="font-family: sans-serif;">{{ p.presentation }}</h6>
+                             <div class="d-flex justify-content-center">
+                               <h6 class="text-dark" style="font-family: sans-serif;"> {{p.price_mlc|currency}} MLC</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                             </div>
+                           </div>
+                         </a>
+                         <div class="card-footer d-flex text-center justify-content-between bg-light border">
+<!--                                 <a href="{{p.get_absolute_url}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a> -->
+                           <form method="post" action="." class="cart">
+                                   {% csrf_token %}
+                                   <input type="hidden" name="product_slug" value="{{ p.slug }}" />
+                                   <button type="submit" name="submit" value="Comprar" class="btn btn-outline-primary my-2 py-0 text-light" name="submit" alt="Add To Cart">
+                                       <i class="fas fa-shopping-cart text-secondary mr-1"> Comprar</i>
+                                   </button>
+<!--                                         <button type="submit" name="submit" value="Comprar" class="btn btn-block btn-primary fa fa-shopping-cart my-2 py-2" name="submit" alt="Add To Cart"/> -->
+                                   <a href="{{p.get_absolute_url}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a>
+                           </form>
+                         </div>
+                       </div>
+                         </div>
+                        {% elif p.available_online and p.available_MLC %}
+                         <div class="col-lg-2 col-md-6 col-sm-12 pb-0 text-primary">
+                       <div class="card product-item border-0 mb-2 text-primary">
+                       <a href="{{p.get_absolute_url}}">
+                         <div class="card-header text-center product-img position-relative overflow-hidden bg-transparent border p-0">
+                           <img width="80%" height="80%" class="img-fluid w-8" src="{{p.get_image_url}}" alt="{{ p.image }}">
+                         </div>
+                         <div class="card-body border-left border-right text-primary text-center p-0 pt-4 pb-3">
+                           <h6 class="mb-3 text-primary" style="font-family: sans-serif;">{{ p.gname }}</h6>
+                           <h6 class="mb-3 text-primary" style="font-family: sans-serif;">{{ p.presentation }}</h6>
+                           <div class="d-flex justify-content-center">
+                             <h6 class="text-dark" style="font-family: sans-serif;"> {{p.price_mlc|currency}} MLC</h6><h6 class="text-muted ml-2"><!-- <del>$ {{p.old_price}}</del> --></h6>
+                           </div>
+                         </div>
+                       </a>
+                       <div class="card-footer d-flex text-center justify-content-between bg-light border">
+<!--                                 <a href="{{p.get_absolute_url}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a> -->
+                         <form method="post" action="." class="cart">
+                                 {% csrf_token %}
+                                 <input type="hidden" name="product_slug" value="{{ p.slug }}" />
+                                 <button type="submit" name="submit" value="Comprar" class="btn btn-outline-primary my-2 py-0 text-light" name="submit" alt="Add To Cart">
+                                     <i class="fas fa-shopping-cart text-secondary mr-1"> Comprar</i>
+                                 </button>
+<!--                                         <button type="submit" name="submit" value="Comprar" class="btn btn-block btn-primary fa fa-shopping-cart my-2 py-2" name="submit" alt="Add To Cart"/> -->
+                                 <a href="{{p.get_absolute_url}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-dark mr-1"></i>Detalles</a>
+                         </form>
+                       </div>
+                     </div>
+                         </div>
+                        {% endif %}
+                       {% endif %}  
+                      {% endfor %}
+                    {% else %}
+                    <h6 class="text-center mb-3" style="font-family: sans-serif;">En este momento no tenemos productos disponibles en este apartado.</h6>
+                    <h6 class="text-center mb-3" style="font-family: sans-serif;">Puede contactarnos para más información.</h6>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
