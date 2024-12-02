@@ -25,7 +25,7 @@ stores/migrations
 
 tienda/__pycache__/
 tienda/migrations
-tienda/settings
+tienda/settings.py
 tienda/.got
 
 
