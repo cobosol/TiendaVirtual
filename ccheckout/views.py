@@ -104,6 +104,7 @@ def hit(request):
 # El view de la página de pago
 @login_required
 def show_checkout(request, template_name='checkout/checkout.html'):
+    MND = 'USD'
     if cart.is_empty(request):
         cart_url = reverse('show_cart')
         return HttpResponseRedirect(cart_url)
@@ -179,7 +180,7 @@ def show_checkout(request, template_name='checkout/checkout.html'):
     page_title = 'Checkout'
     cobra_efectivo = False
     cart_subtotal = cart.cart_subtotal(request)
-    cart_delivery = cart.cart_delivery_price(request, cart_subtotal)
+    cart_delivery = cart.cart_delivery_price(request, cart_subtotal, MND)
     cart_total = cart_subtotal + cart_delivery
     st_name = cart.delivery_Store(request).name
     envio = False
