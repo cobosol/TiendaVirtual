@@ -6,6 +6,9 @@ from stores.models import Store, Product_Sales
 import decimal
 from utils.models import Price
 
+# Crear una clase delivery que incluya todas las definiciones de los envios.
+# El municipio con los precios (diccionario), descuentos por monto...
+
 class Order(models.Model):
     # each individual status
     SUBMITTED = 0
@@ -77,8 +80,8 @@ class Order(models.Model):
     price = models.ForeignKey(Price, on_delete = models.PROTECT, blank = True, null=True, verbose_name="Valores para el cálculo del Precio de la compra")
 
     # payment info
-    payment_name = models.CharField(max_length=50, verbose_name = "Nombre del titular de la tarjeta", null = True, blank = True)
-    payment_phone = models.CharField(max_length=20, verbose_name = "Teléfono del titular")
+    payment_name = models.CharField(max_length=50, verbose_name = "Nombre del titular", null = True, blank = True)
+    payment_phone = models.CharField(max_length=20, verbose_name = "Teléfono móvil")
     payment_email = models.EmailField(max_length=50, verbose_name = "Correo electrónico")
     payment_city = models.CharField(max_length=20, verbose_name = "Ciudad del banco", help_text="Ciudad del banco de la tarjeta")
     payment_postCode = models.CharField(max_length=20, verbose_name = "Código Postal")
@@ -298,7 +301,7 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT, verbose_name = "Producto")
-    quantity = models.IntegerField(default=1, verbose_name = "Cantidad")
+    quantity = models.DecimalField(max_digits=9,decimal_places=2,default=1.00, verbose_name = "Cantidad")
     price = models.DecimalField(max_digits=9,decimal_places=2, verbose_name = "Precio")
     order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name = "Orden")
     store_name = models.CharField(max_length=250, default="Envío Habana", verbose_name = "Forma de entrega")
@@ -313,6 +316,7 @@ class OrderItem(models.Model):
                 porciento = 1-price.whole_discount/100
                 precio = decimal.Decimal('0.00')
                 precio = self.price * decimal.Decimal(porciento)
+                print(self.quantity)
                 return self.quantity * precio
             else:
                 return self.quantity * self.price

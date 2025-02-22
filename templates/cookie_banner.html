@@ -1,0 +1,45 @@
+<!-- templates/cookie_banner.html -->
+<div id="cookie-banner" style="display: none; position: fixed; bottom: 0; left: 0; width: 100%; background-color: #f0f0f0; padding: 10px; text-align: center; z-index: 1000;" class="bg-primary text-light">
+    <p>En nuestra tienda utilizamos cookies para mejorar tu experiencia.
+      <a href="/pagina/2/" class="text-secondary">Leer más</a>
+      <button id="accept-cookies" class="btn btn-primary">Aceptar</button>
+    </p>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const cookieBanner = document.getElementById('cookie-banner');
+      const acceptButton = document.getElementById('accept-cookies');
+
+      function setCookie(name, value, days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        const expires = "expires=" + date.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/";
+      }
+
+      function getCookie(name) {
+        const cookieName = name + "=";
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          let cookie = cookies[i];
+          while (cookie.charAt(0) === ' ') {
+            cookie = cookie.substring(1);
+          }
+          if (cookie.indexOf(cookieName) === 0) {
+            return cookie.substring(cookieName.length, cookie.length);
+          }
+        }
+        return null;
+      }
+
+      if (getCookie('cookies_accepted') !== 'true') {
+        cookieBanner.style.display = 'block';
+      }
+
+      acceptButton.addEventListener('click', function() {
+        setCookie('cookies_accepted', 'true', 365);
+        cookieBanner.style.display = 'none';
+      });
+    });
+  </script>

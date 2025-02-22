@@ -7,7 +7,11 @@
    <!-- Page Header Start -->
 <div class="container-fluid bg-secondary mb-2">
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+        {% if store.name == 'Envío Habana' %}
+        <h4 class="text-primary font-weight-semi-bold" style="font-family: sans-serif;"> Entregas a domicilio</h4>
+        {% else %}
         <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: sans-serif;"> Entrega de producto </h4>
+        {% endif %}
     </div>
 </div>
   <!-- Page Header End -->
@@ -19,12 +23,29 @@
                 <img class="w-100 h-100" src="{{store.get_image_url}}" alt="{{image}}">
             </div>
             <div class="col-lg-6 pb-8">
-                <h3 class="font-weight-semi-bold">{{ store.name }}</h3>
+                {% if store.name == 'Envío Habana' %}
+                <h4 class="text-primary font-weight-semi-bold mb-4" style="font-family: sans-serif;">Horario de entregas: </h4>
+                <h6 class="font-weight-semi-bold mb-4" style="font-family: sans-serif;"> {{ store.hours }} </h6>
+                <h4 class="text-primary font-weight-semi-bold mb-4" style="font-family: sans-serif;"> Dirección:</h4>
+                <h6 class="font-weight-semi-bold mb-4" style="font-family: sans-serif;"> Ud la especifica en los datos de la compra.</h6>
+                <h4 class="text-primary font-weight-semi-bold mb-4" style="font-family: sans-serif;"> Costo:</h4>
+                <h6 class="font-weight-semi-bold mb-4" style="font-family: sans-serif;">Desde $ 3.00 USD hasta $ 15.00 USD, dependiendo de la zona de entrega.</h6>
+                {% else %}
+                <h4 class="text-primary font-weight-semi-bold" style="font-family: sans-serif;">{{ store.name }}</h4>
+                <br>
+                <h4 class="text-primary font-weight-semi-bold mb-4" style="font-family: sans-serif;">Horario de recogida: </h4>
+                <h6 class="font-weight-semi-bold mb-4" style="font-family: sans-serif;"> {{ store.hours }} </h6>
+                <h4 class="text-primary font-weight-semi-bold mb-4" style="font-family: sans-serif;"> Dirección:</h4>
+                <h6 class="font-weight-semi-bold mb-4" style="font-family: sans-serif;"> {{ store.address }} </h6>
+                <h4 class="text-primary font-weight-semi-bold mb-4" style="font-family: sans-serif;"> Costo:</h4>
+                <h6 class="font-weight-semi-bold mb-4" style="font-family: sans-serif;">$ {{ store.price_usd }} USD</h6>
+                {% endif %}
+<!--                 <h3 class="font-weight-semi-bold">{{ store.name }}</h3>
                 <br>
                 <h4 class="font-weight-semi-bold mb-4">Horario: </h4>
                 <h5 class="font-weight-semi-bold mb-4"> {{ hours }} </h5>
                 <h4 class="mb-4"> Dirección:</h4>
-                <h5 class="font-weight-semi-bold mb-4"> {{ address }} </h5>
+                <h5 class="font-weight-semi-bold mb-4"> {{ address }} </h5> -->
             </div>
         </div>
     </div>
@@ -32,7 +53,7 @@
 
     <div class="container-fluid bg-secondary mb-2">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 60px">
-            <h2 class="text-red font-weight-semi-bold text-uppercase mb-2">Productos en este punto de venta</h2>
+            <h2 class="text-primary font-weight-semi-bold text-uppercase mb-2">Productos en este punto de venta</h2>
         </div>
     </div>
 

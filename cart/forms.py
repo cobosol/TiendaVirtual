@@ -4,26 +4,60 @@ import datetime
 import re
 from django.shortcuts import render, redirect, get_object_or_404
 from registration.models import Profile
+from cart.models import DeliveryInfo
 
-class DeliveryForm(forms.Form):    
+class DeliveryForm(forms.ModelForm):
+    def __init__(self, request=None, *args, **kwargs):
+        super(DeliveryForm, self).__init__(*args, **kwargs)
+        # override default attributes
+
+    class Meta:
+        model = DeliveryInfo
+        fields = ['storeDelivery', 'deliveryZone']
+
+""" class DeliveryForm(forms.Form): 
+    
+    # each individual substate
+    GUANABACOA = 0
+    HABANADELESTE = 1
+    CERRO = 2
+    COTORRO = 3
+    DIEZDEOCTUBRE = 4
+    HABANAVIEJA = 5
+    CENTROHABANA = 6
+    SANMIGUEL = 7
+    BOYEROS = 8
+    MARIANAO = 9
+    LALISA = 10
+    PLAZA = 11
+    PLAYA = 12
+    REGLA = 13
+    ARROYO = 14
+
+    # set of possible order statuses
+    SUBSTATE = ((GUANABACOA,'Guanabacoa'),
+                      (HABANADELESTE,'La Habana del Este'),
+                      (CERRO,'Cerro'),
+                      (COTORRO,'Cotorro'),
+                      (DIEZDEOCTUBRE,'Diez de Octubre'),
+                      (HABANAVIEJA,'La Habana Vieja'),
+                      (CENTROHABANA, 'Centro Habana'),
+                      (SANMIGUEL, 'San Miguel del Padrón'),
+                      (BOYEROS,'Boyeros'),
+                      (MARIANAO,'Marianao'),
+                      (LALISA,'La Lisa'),
+                      (PLAZA,'Plaza de la Revolución'),
+                      (PLAYA, 'Playa'),
+                      (REGLA, 'Regla'),
+                      (ARROYO, 'Arroyo Naranjo'),
+                      )
+       
     #prefered_store = 3
     delivery_type = forms.ModelChoiceField(queryset=Store.objects.all())
+    delivery_substate = forms.ModelChoiceField(empty_label='Zona de envío', limit_choices_to=SUBSTATE)
 
     def __init__(self, request=None, *args, **kwargs):
         super(DeliveryForm, self).__init__(*args, **kwargs)
-        """ self.request = request
-        user = request.user
-        print("Entró al init")
-        if (user.is_authenticated):
-            profile = get_object_or_404(Profile, user = user)
-            store = profile.prefered_store    
-            if store:
-                print(store.name)
-                print(store.pk)
-                self.fields['prefered_store'] = store.pk
-                self.fields['delivery_type'] = store
-            else:
-                print("No hay store") """
 
 
 
@@ -32,4 +66,4 @@ class DeliveryForm(forms.Form):
         if self.request:
             if not self.request.session.test_cookie_worked():
                 raise forms.ValidationError("Debe habilitar las cookies.")
-        return self.cleaned_data
+        return self.cleaned_data  """

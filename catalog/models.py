@@ -126,11 +126,13 @@ class Product(models.Model):
     
     @property        
     def price_cup(self):
-        return self.price_base * self.price.change_usd_cup
+        price_actual = Price.objects.filter(is_active=True)[0]
+        return self.price_base * price_actual.change_usd_cup
         
     @property
     def price_mlc(self):
-        return self.price_base * self.price.change_usd_mlc
+        price_actual = Price.objects.filter(is_active=True)[0]
+        return self.price_base * price_actual.change_usd_mlc
     
     @property
     def get_file_url(self):

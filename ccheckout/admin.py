@@ -12,7 +12,7 @@ class OrderAdmin(admin.ModelAdmin):
     search_fields = ('delivery_email', 'delivery_ci', 'delivery_name', 'id','transaction_id')
     inlines = [OrderItemInline,]
     fieldsets = (('Comprador', {'fields': ('user','status','payment_email','payment_phone', 'pay_url')}),
-                 ('Entrega', {'fields':('delivery_name','delivery_address_1','delivery_address_2','delivery_state', 'delivery_price')})
+                 ('Entrega', {'fields':('delivery_name','delivery_address_2','delivery_state', 'delivery_price')})
                  )
 
 admin.site.register(Order, OrderAdmin)

@@ -13,6 +13,7 @@
 
 <div class="row px-xl-5 pb-3">
     {% for c in active_categories %}
+    {% if c.get_product_count > 0 %}
     <div class="col-lg-4 col-md-6 pb-1">
         <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
             <p class="text-right" style="font-family: sans-serif;">{{c.get_product_count}} Productos</p>
@@ -22,6 +23,7 @@
             <h5 class="font-weight-semi-bold m-0" style="font-family: sans-serif;">{{c.name}}</h5>
         </div>
     </div>
+    {% endif %}
     {% endfor %}
 </div>
 {% endblock %}

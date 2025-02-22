@@ -4,6 +4,7 @@ from stores.models import Store
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from cart import cart
+from cart.models import DeliveryInfo
 from stores.models import Product_Sales, Store
 from registration.models import Profile
 from utils.models import Price
@@ -24,22 +25,31 @@ def get_delivery(request, delivery='3'):
             profile = get_object_or_404(Profile, user = user)
             #print(profile.prefered_store)
             store = profile.prefered_store
-            print(store.pk)
-            request.session[SESSION_DELIVERY] = str(store.pk)
+            if (store):
+                set_delivery(request, str(store.pk))
+            else:
+                set_delivery(request, str(3))
         else:
-           request.session[SESSION_DELIVERY] = delivery 
+           set_delivery(request, delivery)
+           #request.session[SESSION_DELIVERY] = delivery
+    try:
+        deliveryInfo = get_object_or_404(DeliveryInfo, client=request.user)
+    except:
+        deliveryInfo = DeliveryInfo()
+        deliveryInfo.client = request.user
+        deliveryInfo.storeDelivery = get_object_or_404(Store, pk=delivery)
+        deliveryInfo.deliveryZone = 0
+        deliveryInfo.save() 
     return request.session[SESSION_DELIVERY]
 
 # Asignar el delivery por defecto envio habana pk = 3
-def set_delivery(request, delivery='3'):
-    """ if request.user.is_authenticated:
-        user = request.user
-        profile = get_object_or_404(Profile, user = user)
-        print(profile.prefered_store)
-        store = profile.prefered_store
-        print(store)
-        delivery = str(store.pk) """
+def set_delivery(request, delivery, zone=0):
     request.session[SESSION_DELIVERY] = delivery
+    deliveryInfo = get_object_or_404(DeliveryInfo, client=request.user)
+    deliveryInfo.deliveryZone = zone
+    deliveryInfo.save()
+
+
 
 # get the current user's cart id, sets new one if blank
 def _cart_id(request):
@@ -65,7 +75,7 @@ def verify_cart_items(request):
         disp = item.product.count - item.product.reserved
         if item.quantity >= disp:
             text = "Ya no hay esa disponibilidad para el producto {}.".format(item.product.name)
-            messages.info(request, text)
+            messages.warning(request, text)
             return False
     return True
 
@@ -103,31 +113,45 @@ def delivery_name(request):
 
 # add an item to the cart
 def add_to_cart(request, p_slug, quantity=1):
-    postdata = request.POST.copy()
-    p = get_object_or_404(Product, slug=p_slug)
-    cart_products = get_cart_items(request)
-    product_in_cart = False
-    # check to see if item is already in cart
-    for cart_item in cart_products:
-        if cart_item.product.id == p.id:
-            # update the quantity if found
-            if not cart_item.augment_quantity(quantity):
-                messages.info(request, "No hay más disponibilidad del producto")
-            product_in_cart = True
-    if not product_in_cart: #
-        # create and save a new cart item
-        if p.count >= int(quantity):
-            ci = CartItem()
-            ci.product = p
-            ci.quantity = quantity
-            ci.cart_id = _cart_id(request)
-            ci.save()
-            delivery = cart.get_delivery(request)
-            p.save()
-            return True
+    if request.user.is_authenticated:
+        """ messages.warning(request, "Advertencia")
+        messages.error(request, "Error")
+        messages.info(request, "Info")
+        messages.success(request, "Exito") """
+        postdata = request.POST.copy()
+        p = get_object_or_404(Product, slug=p_slug)
+        cart_products = get_cart_items(request)
+        product_in_cart = False
+        # check to see if item is already in cart
+        for cart_item in cart_products:
+            if cart_item.product.id == p.id:
+                # update the quantity if found
+                if not cart_item.augment_quantity(quantity):
+                    messages.warning(request, "No hay más disponibilidad del producto")
+                else:
+                    messages.success(request, f"Incrementó la cantidad del producto {p.name} en el carrito")
+                product_in_cart = True
+        if not product_in_cart: #
+            # create and save a new cart item
+            if p.count >= decimal.Decimal(quantity):
+                ci = CartItem()
+                ci.product = p
+                ci.quantity = quantity
+                ci.cart_id = _cart_id(request)
+                ci.save()
+                delivery = cart.get_delivery(request)
+                p.save()
+                messages.success(request, "Producto adicionado correctamente al carrito")
+                return True
+            else:
+                messages.warning(request, "No existe esa disponibilidad del producto")
+                return False
         else:
-            #messages.info(request, "No existe esa disponibilidad del producto")
-            return False
+            return True
+    else:
+        messages.error(request, "Debe estar autenticado para efectuar compras")
+        url = '/accounts/login/'
+        return HttpResponseRedirect(url)       
 
 # returns the total number of items in the user's cart
 def cart_distinct_item_count(request):
@@ -138,23 +162,58 @@ def get_single_item(request, item_id):
 
 # update quantity for single item
 def update_cart(request):
-    postdata = request.POST.copy()
-    item_id = postdata['item_id']
-    quantity = postdata['quantity']
-    cart_item = get_single_item(request, item_id)
-    if cart_item:
-        if int(quantity) != cart_item.quantity:
-            #dif = int(quantity) - cart_item.quantity
-            if cart_item.product.count >= int(quantity):
-                cart_item.quantity = int(quantity)
-                #cart_item.product.save()
-                cart_item.save()
-            else:
-                text = "No existe esa cantidad del producto {}.".format(cart_item.product.name)
-                messages.info(request, text)
-    if int(quantity) <= 0:
-        remove_from_cart(request)
-    return cart_item.quantity
+    if request.user.groups.filter(name__in=['vendedores', 'comercial']):
+        postdata = request.POST.copy()
+        item_id = postdata['item_id']
+        quantity = postdata['quantity']
+        cart_item = get_single_item(request, item_id)
+        if cart_item:
+            try:
+                if decimal.Decimal(quantity) != decimal.Decimal(cart_item.quantity):
+                    #dif = int(quantity) - cart_item.quantity
+                    if cart_item.product.count >= decimal.Decimal(quantity):
+                        cart_item.quantity = decimal.Decimal(quantity)
+                        #cart_item.product.save()
+                        cart_item.save()
+                    else:
+                        text = "No existe esa cantidad del producto {}.".format(cart_item.product.name)
+                        messages.warning(request, text)
+                        return False
+            except:
+                text = "Error en el formato de la cantidad del producto {}.".format(cart_item.product.name)
+                messages.error(request, text)
+                return False
+        try:
+            if decimal.Decimal(quantity) <= 0:
+                remove_from_cart(request)
+            return cart_item.quantity
+        except:
+            text = "Error al eliminar del carrito el producto {}.".format(cart_item.product.name)
+            messages.info(request, text)
+    else:
+        postdata = request.POST.copy()
+        item_id = postdata['item_id']
+        quantity = postdata['quantity']
+        int_quantity = int(quantity)
+        if int(quantity) - int_quantity == 0:
+            cart_item = get_single_item(request, item_id)
+            if cart_item:
+                if int(quantity) != cart_item.quantity:
+                    #dif = int(quantity) - cart_item.quantity
+                    if cart_item.product.count >= int(quantity):
+                        cart_item.quantity = int(quantity)
+                        #cart_item.product.save()
+                        cart_item.save()
+                    else:
+                        text = "No existe esa cantidad del producto {}.".format(cart_item.product.name)
+                        messages.info(request, text)
+            if int(quantity) <= 0:
+                remove_from_cart(request)
+            return cart_item.quantity
+        else:
+            text = "La cantidad debe ser un número entero"
+            print(text)
+            messages.info(request, text)
 
 # remove a single item from cart Rvisar porue ya actulice productos por otra parte creo
 def remove_from_cart(request):
@@ -171,6 +230,7 @@ def remove_from_cart(request):
 # gets the total cost for the current cart
 def cart_subtotal(request):
     cart_total = decimal.Decimal('0.00')
+    print("A llamar a Price en cart_subtotal")
     price = Price.objects.filter(is_active=True)[0] # Capturo la configración de precio actual
     cart_products = get_cart_items(request)
     user = request.user
@@ -206,6 +266,15 @@ def cart_subtotal(request):
 
 def cart_delivery_price(request, amount, MND):
     price = Price.objects.filter(is_active=True)[0] # Capturo la configración de precio actual
+    user = request.user
+    try:
+        deliveryObj = get_object_or_404(DeliveryInfo, client=user)
+    except:
+        deliveryObj = DeliveryInfo()
+        deliveryObj.client = request.user
+        deliveryObj.storeDelivery = get_object_or_404(Store, pk=3)
+        deliveryObj.deliveryZone = 0
+        deliveryObj.save()
     cart_delivery = decimal.Decimal('0.00')
     if amount >= price.get_min_delivery_free(MND):
         return cart_delivery 
@@ -218,14 +287,14 @@ def cart_delivery_price(request, amount, MND):
     cart_products = get_cart_items(request)
     stores = get_stores(request)
     MND = 'USD'
-    user = request.user
     if (user.is_authenticated):
         profile = get_object_or_404(Profile, user = user)
         MND = profile.MONEY_TYPE[profile.money_type][1]
     for s in stores:
         if s == cart.delivery_Store(request):
             if MND == 'USD':
-                cart_delivery = cart_delivery + decimal.Decimal(s.price_usd)
+                if s.price_usd > 0:
+                    cart_delivery = cart_delivery + deliveryObj.calculate_deliveryHabana()
             elif MND == 'CUP':
                 cart_delivery = cart_delivery + decimal.Decimal(s.price_cup)
             else:

@@ -10,6 +10,7 @@ urlpatterns = [
     path("categoria/<category_slug>/", views.show_category, name='catalog_category'),
     path("producto/<product_slug>/", views.show_product, name='catalog_product'),
     path("productos/<productSearch>/", views.show_search, name='product_search'),
+    path("todos/", views.show_all_active, name='all_products'),
     path('gestion/', views.i_admin, name='gestion'),
     path('productos/', gestion_productos.as_view( template_name="catalog/products_admin.html"), name='productos'),
     path('productos/eliminar/<int:pk>', eliminar_producto.as_view(), name='eliminar_producto'),

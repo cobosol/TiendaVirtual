@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     path("", views.show_checkout, name='checkout'),
     path("pagar/", views.pagar, name='pagar'),
+    path("reservar/", views.reserve, name='reservar'),
     path("transfer/", views.transfer, name='transfer'), 
     path("efectivo/", views.cach, name='efectivo'),    
     path("recibo/", views.receipt, name='checkout_receipt'),

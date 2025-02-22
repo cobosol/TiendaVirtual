@@ -46,7 +46,9 @@ def show_search(request, productSearch, template_name="catalog/search.html"):
                     if request.session.test_cookie_worked():
                         request.session.delete_test_cookie()
                 else:
-                    messages.info(request,"No hay disponibilidad del producto")       
+                    messages.info(request,"No hay disponibilidad del producto o debe estar autenticado")    
+                    url = '/accounts/login/'
+                    return HttpResponseRedirect(url)     
             elif postdata['submit'] == 'Buscar':
                 productSearch = postdata['producto']
                 url = '/catalogo/productos/' + productSearch + '/'
@@ -55,19 +57,8 @@ def show_search(request, productSearch, template_name="catalog/search.html"):
             print("Error al adicionar al carrito")
     return render(request, template_name, locals())    
 
-def show_category(request, category_slug, template_name="catalog/category.html"):
-    c = get_object_or_404(Category, slug=category_slug)
-    products = c.product_set.all()
-    page_title = c.name
-    meta_keywords = c.meta_keywords
-    meta_description = c.meta_description
-    cart_items = cart.get_cart_items(request)
-    product = get_object_or_404(Product, pk=1)
-    vendedor = False
-    if (request.user.is_authenticated):
-        if request.user.groups.filter(name__in=['vendedores']):
-            vendedor = True
-    # Add to cart
+def show_all_active(request, template_name="catalog/allActive.html"):
+    products = Product.objects.filter(is_active=True)
     if request.method == 'POST':
         try:
             postdata = request.POST.copy()
@@ -77,7 +68,42 @@ def show_category(request, category_slug, template_name="catalog/category.html")
                     if request.session.test_cookie_worked():
                         request.session.delete_test_cookie()
                 else:
-                    messages.info(request,"No hay disponibilidad del producto")       
+                    messages.info(request,"No hay disponibilidad del producto o debe estar autenticado")    
+                    url = '/accounts/login/'
+                    return HttpResponseRedirect(url)     
+            elif postdata['submit'] == 'Buscar':
+                productSearch = postdata['producto']
+                url = '/catalogo/productos/' + productSearch + '/'
+                return HttpResponseRedirect(url) 
+        except Exception:
+            print("Error al adicionar al carrito")
+    return render(request, template_name, locals())
+
+
+def show_category(request, category_slug, template_name="catalog/category.html"):
+    c = get_object_or_404(Category, slug=category_slug)
+    products = c.product_set.all()
+    page_title = c.name
+    meta_keywords = c.meta_keywords
+    meta_description = c.meta_description
+    cart_items = cart.get_cart_items(request)
+    product = get_object_or_404(Product, pk=1)
+    """ vendedor = False
+    if (request.user.is_authenticated):
+        if request.user.groups.filter(name__in=['vendedores']):
+            vendedor = True """
+    # Add to cart
+    if request.method == 'POST':
+        try:
+            postdata = request.POST.copy()
+            if postdata['submit'] == 'Comprar': 
+                print("Comprar")
+                product_slug = postdata.get('product_slug','')
+                if cart.add_to_cart(request, product_slug):
+                    if request.session.test_cookie_worked():
+                        request.session.delete_test_cookie()
+                else: 
+                    messages.error(request, "Ocurrió un error al adicionar al carrito")       
             elif postdata['submit'] == 'Buscar':
                 productSearch = postdata['producto']
                 url = '/catalogo/productos/' + productSearch + '/'
@@ -112,6 +138,7 @@ def get_Product_Store(postdata, products_stores):
 def show_product(request, product_slug, template_name="catalog/product.html"):
     p = get_object_or_404(Product, slug=product_slug)    
     products_stores = Product_Sales.objects.filter(product=p)
+    stores = Store.objects.all()
     categories = p.categories.all()
     page_title = p.name
     meta_keywords = p.meta_keywords
@@ -125,9 +152,15 @@ def show_product(request, product_slug, template_name="catalog/product.html"):
     if request.method == 'POST':
         try:
             postdata = request.POST.copy()
-            if postdata['submit'] == 'Comprar': 
-                product_slug = postdata.get('product_slug','')
-                flag = cart.add_to_cart(request, product_slug)
+            if postdata['submit'] == 'Comprar':
+                product_slug = postdata.get('product_slug','') 
+                if not cart.add_to_cart(request, product_slug):
+                    url = '/accounts/login/'
+                    flag = False
+                    return HttpResponseRedirect(url)  
+                else:
+                    flag = True
+                #flag = cart.add_to_cart(request, product_slug)
                 if request.session.test_cookie_worked():
                     request.session.delete_test_cookie()
                 url = reverse('show_cart')
@@ -141,7 +174,6 @@ def show_product(request, product_slug, template_name="catalog/product.html"):
     request.session.set_test_cookie()
     return render(request, template_name, locals())
 
-#@method_decorator(superuser_only)
 def i_admin(request):
     return render(request, "catalog/gestion.html", {})
 
@@ -152,7 +184,7 @@ class gestion_productos(ListView):
 class crear_producto(SuccessMessageMixin, CreateView):
     model = Product
     form = ProductForm
-    fields = ('name', 'gname', 'presentation', 'brand', 'sku', 'price', 'price_base', 'old_price', 
+    fields = ('name', 'gname', 'presentation', 'brand', 'sku', 'price_base', 'old_price', 
               'image', 'is_active', 'is_bestseller', 'is_featured', 'prod_datasheet', 'description', 
               'is_feedstock', 'available_CUP', 'available_MLC',
               'meta_keywords', 'meta_description', 'categories')
@@ -167,7 +199,7 @@ class detal_producto(DetailView):
 class actualizar_producto(SuccessMessageMixin, UpdateView):
     model = Product
     form = ProductForm
-    fields = ('name', 'gname', 'presentation', 'brand', 'sku', 'price', 'price_base', 'old_price', 
+    fields = ('name', 'gname', 'presentation', 'brand', 'sku', 'price_base', 'old_price', 
               'image', 'is_active', 'is_bestseller', 'is_featured', 'prod_datasheet', 'description', 
                 'is_feedstock', 'available_online', 'available_CUP', 'available_MLC',
               'meta_keywords', 'meta_description', 'categories')
@@ -197,7 +229,6 @@ def gestion_productos_almacen(request, template_name="catalog/productos_almacen_
     try:
         if request.method == 'POST':
             postdata = request.POST.copy()
-            print(postdata)
             if postdata['submit'] == 'Ver':
                 form = SelectStoreForm(request, postdata)
                 form.selected_store = postdata['selected_store']

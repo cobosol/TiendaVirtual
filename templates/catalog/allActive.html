@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% load catalog_filters %}
+
+{% block content %}
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-secondary mb-2">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">
+            <h4 class="text-primary font-weight-semi-bold mb-3" style="font-family: sans-serif;">Todos nuestros productos activos</h4>
+            <h6 class="text-center mb-3" style="font-family: sans-serif;">Las fotos de los productos son referenciales</h6>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    {% include 'catalog/catalog_template.html' with products=products %}
+</div>
+
+
+    {% endblock %}
+
+    <!-- Shop End -->
+
+
+    

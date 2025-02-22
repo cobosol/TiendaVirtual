@@ -46,23 +46,23 @@
     <!-- Offer Start -->
     <div class="container-fluid offer pt-5">
         <div class="row px-xl-4">
-            <div class="col-md-6 pb-3">
+            <div class="col-md-6 pb-0">
                 <div class="position-relative text-center text-md-right text-white mb-2 py-5 px-5" style="background-color: #5caab6;">
-                    <img class="image1" src="/static/img/offer-1.webp" alt="">
+                    <img class="image1" src="{{offer1.image.url}}" alt="">
                     <div class="position-relative" style="z-index: 0;">
-                        <h6 class="text-uppercase text-light mb-4" style="text-shadow: 5px 3px 7px black;">Ahorre hasta un 20%</h6>
-                        <h4 class="mb-4 font-weight-semi-bold text-light" style="text-shadow: 5px 3px 7px black;">Combos "Flor de Cuba"</h4>
-                        <a href="/catalogo/categoria/combos/" class="btn btn-outline-primary py-md-2 px-md-3" style="text-shadow: 5px 3px 7px #f3b75c;">Compre ahora</a>
+                        <h6 class="text-uppercase text-light mb-4" style="text-shadow: 5px 3px 7px black;">{{offer1.title}}</h6>
+                        <h4 class="mb-4 font-weight-semi-bold text-light" style="text-shadow: 5px 3px 7px black;">{{offer1.mainText}}</h4>
+                        <a href="{{offer1.butonLink}}" class="btn btn-outline-primary text-light py-md-2 px-md-3" style="text-shadow: 5px 3px 7px #f3b75c;">{{offer1.button}}</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 pb-4">
                 <div class="position-relative text-center text-md-left text-white mb-2 py-5 px-5" style="background-color: #5caab6;">
-                    <img class="image2" src="/static/img/offer-2.webp" alt="">
+                    <img class="image2" src="{{offer2.image.url}}" alt="">
                     <div class="position-relative" style="z-index: 0;">
-                        <h6 class="text-uppercase text-light mb-4" style="text-shadow: 5px 3px 7px black;">Complete 100 USD y se lo llevamos</h6>
-                        <h4 class="mb-4 font-weight-semi-bold text-light" style="text-shadow: 5px 3px 7px black;"> Gratis hasta su casa </h4>
-                        <a href="/tiendas/" class="btn btn-outline-primary text-light py-md-2 px-md-3" style="text-shadow: 3px 1px 2px #f3b75c;">Tipos de entrega</a>
+                        <h6 class="text-uppercase text-light mb-4" style="text-shadow: 5px 3px 7px black;">{{offer2.title}}</h6>
+                        <h4 class="mb-4 font-weight-semi-bold text-light" style="text-shadow: 5px 3px 7px black;"> {{offer2.mainText}} </h4>
+                        <a href="{{offer2.butonLink}}" class="btn btn-outline-primary text-light py-md-2 px-md-3" style="text-shadow: 5px 3px 7px #f3b75c;">{{offer2.button}}</a>
                     </div>
                 </div>
             </div>
@@ -124,8 +124,9 @@
             <h6 class="text-light align-items-center justify-content-center mb-3" style="font-family: sans-serif;">Las fotos de los productos son referenciales</h6>
         </div>
     </div>
-
+    
     {% include 'catalog/catalog_template.html' with products=bestsellers %}
+
     
     <!-- <div class="container-fluid bg-purple-300 mb-5">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
@@ -257,7 +258,5 @@
             </div>
         </div>
     </div> -->
-
-
 
 {% endblock %}

@@ -13,12 +13,6 @@
     </div>
     <!-- Page Header End -->
 
-{% if error_message %}
-<ul class="errorlist">
-    <li>{{ error_message }}</li>
-</ul>
-{% endif %}
-
 <div class="row px-xl-6">
     <div id="Info de contacto" class="col-lg-9">
     <form action="." method="post">
@@ -130,16 +124,6 @@
         </div>
     </div>
     </div>
-</div>
-
-<div class="row px-xl-5">
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li class="{{ message.tags }} text-red">{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
 </div>
 
 {% endblock %}

@@ -92,6 +92,23 @@ class PagarForm(forms.ModelForm):
         if len(stripped_phone) < 10:
             raise forms.ValidationError('Entre un número de teléfono válido con el código del área.(ejemplo.555-555-5555)')
         return self.cleaned_data['phone']
+
+class ReserveForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ReserveForm, self).__init__(*args, **kwargs)
+        # override default attributes
+        """ for field in self.fields:
+            self.fields[field].widget.attrs['size'] = '30' """
+
+    class Meta:
+        model = Order
+        exclude = ('status','ip_address','user','transaction_id','delivery_price', 'pay_url', 'delivery', 'store_name', 'payment_city', 'delivery_state', 'currency', 'payment_postCode')
+    def clean_phone(self):
+        phone = self.cleaned_data['phone']
+        stripped_phone = strip_non_numbers(phone)
+        if len(stripped_phone) < 10:
+            raise forms.ValidationError('Entre un número de teléfono válido con el código del área.(ejemplo.555-555-5555)')
+        return self.cleaned_data['phone']
     
 class UpdateStatusForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

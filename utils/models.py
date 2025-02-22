@@ -1,5 +1,16 @@
 from django.db import models
 
+""" def not_other_active():
+    try:
+        all_prices = Price.objects.all()
+        if all_prices:
+            for price in all_prices:
+                price.is_active = False
+        return True
+    except:
+        return False """
+
+
 class Price(models.Model):
     #usd = models.DecimalField(max_digits=9,decimal_places=2, default = 0.00, verbose_name = "Precio base USD")
     change_usd_cup = models.IntegerField(default = 120, verbose_name="Cambio USD a CUP")
@@ -12,6 +23,11 @@ class Price(models.Model):
     is_active = models.BooleanField(default=False, verbose_name = "Actual")
     updated = models.DateTimeField(auto_now=True)
     
+    """def __init__(self):
+         if not_other_active():
+            self.is_active = True 
+      pass"""
+
     def get_min_delivery_free(self, MND='USD'):
         if MND == 'CUP':
             return self.min_delivery_free*self.change_usd_cup
@@ -19,3 +35,8 @@ class Price(models.Model):
             return self.min_delivery_free*self.change_usd_mlc
         return self.min_delivery_free
 
+    def __unicode__(self):
+        return str(self.updated.date())
+    
+    def __str__(self):
+        return str(self.updated.date())
