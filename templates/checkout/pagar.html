@@ -115,10 +115,10 @@
             <div class="d-flex justify-content-between mt-2">
                 <h6 class="font-weight-bold" style="font-family: sans-serif;">Total: </h6>
                 <br>
-                {% if MND == "CUP" %}
-                <h6 class="font-weight-bold" style="font-family: sans-serif;">{{ cart_total|currency }} CUP</h6>
+                {% if MND == 'CUP' %} 
+                    <h6 class="font-weight-bold" style="font-family: sans-serif;">{{ cart_total|currency }} CUP</h6>
                 {% else %}
-                <h6 class="font-weight-bold" style="font-family: sans-serif;">{{ cart_total|currency }} MLC</h6>
+                    <h6 class="font-weight-bold" style="font-family: sans-serif;">{{ cart_total|currency }} MLC</h6>
                 {% endif %}
             </div>
         </div>

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load catalog_filters %}
+{% load l10n %}
 
 {% block content %}
 
@@ -15,20 +16,20 @@
 <div class="container-fluid pt-6">
     <div class="row px-xl-6">
         <div id = "Tabla productos" class="col-lg-9 table-responsive mb-5">
-            {% if messages and cart_items %}
+     <!--        {% if messages and cart_items %}
         <ul class="messages list-group mb-3">
             {% for message in messages %}
             <li{% if message.tags %} class="{{ message.tags }} list-group-item list-group-item-primary"{% endif %}>{{ message }}</li>
             {% endfor %}
         </ul>
-        {% endif %}
+        {% endif %} -->
             <table class="table table-bordered text-center mb-0">
                 <thead class="bg-primary text-light">
                     <tr>
                         <th>Producto</th>
                         <th>Precio</th>
                         <th width="20%">Cantidad</th>
-<!--                         <th>Cambiar cantidad</th> -->
+                        <!-- <th>Cambiar cantidad</th> -->
 <!--                         <th>Entrega</th> -->
                         <th>Importe</th>
                         <th class="bg-red">Eliminar</th>
@@ -51,19 +52,27 @@
                               {{ item.price_MLC|currency }} MLC
                             {% endif %}
                         </td>
+                        {% if vendedor == 'True' or comercial == 'True' %}
+                        <td class="align-middle">
+                            <form id="decimalCant" method="post" action="." class="cart">
+                                {% csrf_token %}
+                                <input type="hidden" name="item_id" value="{{ item.id }}" />
+                                <input type="text" name="quantity" class="form-control form-control-sm bg-secondary text-center" value="{{ item.quantity|unlocalize }}">
+                            </form>
+                        </td>
+                        {% else %}
                         <form method="post" action="." class="cart">
-                        {% csrf_token %}
                         <td class="align-middle">
                             <div class="input-group quantity mx-auto" style="width: 120px;">
                                 <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-minus" name="minus">
+                                    <button class="btn btn-sm btn-primary btn-minus" name="submit">
                                         <i class="fa fa-minus"></i>
                                     </button>
                                 </div>
-                                <input type="text" name="quantity" class="form-control form-control-sm bg-secondary text-center" value="{{ item.quantity }}">
+                                    <input type="text" name="quantity" class="form-control form-control-sm bg-secondary text-center" value="{{ item.int_quantity }}">
 <!--                                 <input type="text" name="quantity" value="{{ item.quantity }}" id="quantity" size="2" class="quantity" maxlength="5" /> -->
                                 <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-plus" name="plus" >
+                                    <button class="btn btn-sm btn-primary btn-plus" name="submit" >
                                         <i class="fa fa-plus"></i>
                                     </button>
                                 </div>
@@ -74,6 +83,7 @@
                             <input type="submit" name="submit" value="Cambiar" class="btn btn-block btn-primary my-2 py-2"/>
                         </td> -->
                         </form>
+                        {% endif %}
 <!--                         <td>
                             {{ item.delivery.name }}
                         </td> -->
@@ -110,10 +120,16 @@
                 <form method="post" action="." class="cart">
                     {% csrf_token %}
                     <div id="Texto" class="col-lg-12">
-                        <p><h6 class="font-weight-semi-bold text-primary" style="font-family:sans-serif ;">Seleccione forma de entrega</h6></p>                       
+                        <p><h6 class="font-weight-semi-bold text-primary" style="font-family:sans-serif ;">Cambiar forma de entrega</h6></p>                       
                     </div>
                     <div id="Choice" class="col-lg-2"> 
-                        {{form.delivery_type}}
+                        {{form.storeDelivery}}
+                    </div>
+                    <div id="Texto 2" class="col-lg-12">
+                        <p><h6 class="font-weight-semi-bold text-primary" style="font-family:sans-serif ;">Seleccione la zona de envío</h6></p>                       
+                    </div>
+                    <div id="Choice" class="col-lg-2"> 
+                        {{form.deliveryZone}}
                     </div>
                     <div id="Actualizar" class="col-lg-12">
                         <input type="submit" name="submit" value="Actualizar entrega" class="btn btn-block btn-primary my-2 py-2"/>
@@ -138,17 +154,20 @@
                     </div>
                     <div class="d-flex justify-content-between">
                         {% if envio %}
-                            <h6 class="font-weight-medium" style="font-family: sans-serif;">Envío</h6>
+                            <h6 class="font-weight-medium" style="font-family: sans-serif;">Envío: </h6>
                             <h6 class="font-weight-medium" style="font-family: sans-serif;"> {{ cart_delivery|currency }}</h6>
                         {% else %}
                             <h6 class="font-weight-medium" style="font-family: sans-serif;">Recogida en</h6>
                             <h6 class="font-weight-medium" style="font-family: sans-serif;">{{ cart_delivery|currency }}</h6>
                     </div>
                     <div class="d-flex justify-content-between mb-3 pt-1">
-                        <a href="{{st.get_absolute_url}}" class="text-dark font-weight-medium mb-0 mr-3" style="font-family: sans-serif;">{{ delivery_name }}:</a>
+                        <a href="{{st.get_absolute_url}}" class="text-dark font-weight-medium mb-0 mr-3" style="font-family: sans-serif;">{{ delivery_name }}</a>
                     </div>
                     {% endif %}
                 </div>
+                {% if envio%}
+                    <a href="{{st.get_absolute_url}}" class="text-dark font-weight-medium mb-0 mr-3" style="font-family: sans-serif;">{{ zone }}</a>
+                {% endif %}
                 <div class="card-footer border-secondary bg-transparent">
                     <div class="d-flex justify-content-between mt-2">
                         <h6 class="font-weight-bold" style="font-family: sans-serif;">Total:</h6>
@@ -156,7 +175,11 @@
                     </div>
                     <form method="post" action="." class="cart">
                         {% csrf_token %}
-                        <input type="submit" class="btn btn-block btn-primary my-2 py-2" name="submit" value="Ir a pagar" alt="Checkout" />
+                        {% if MND == 'USD' %}
+                            <input type="submit" class="btn btn-block btn-primary my-2 py-2" name="submit" value="Reservar" alt="Checkout" />
+                        {% else %}
+                            <input type="submit" class="btn btn-block btn-primary my-2 py-2" name="submit" value="Ir a pagar" alt="Checkout" />
+                        {% endif %}
                         {% if vendedor %}
                         {% if MND == 'USD' or MND == 'CUP'%}
                         <input type="submit" class="btn btn-block btn-primary my-2 py-2" name="submit" value="Confirmar pago" alt="Efectivo" />
@@ -173,4 +196,10 @@
 
 <!-- Cart End -->
 
+<script>
+    document.getElementById('decimalCant').addEventListener('submit', function(e) {
+        const cant = document.getElementById('quantity');
+        cant.value = cant.value.replace(/,/g,'.');
+    });
+</script>
 {% endblock %}

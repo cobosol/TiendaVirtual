@@ -5,7 +5,7 @@
 
 
 {% block content %}
-{% if request.user.is_superuser or request.user.is_staff%}
+{% if request.user.is_superuser or request.user.is_staff or vendedor == 'True' %}
     <!-- Page Header Start -->
     <div class="container-fluid bg-secondary mb-2">
       <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 100px">

@@ -2681,13 +2681,33 @@ fieldset:disabled a.btn {
   box-shadow: 0 0 0 0.2rem rgba(62, 62, 62, 0.5);
 }
 
+.image1 {
+  opacity: 0.6;
+}
+.image1:hover {
+  opacity: 0.6;
+}
+
+.image1:focus, .image1.focus {
+  opacity: 0.6;
+}
+
+.image2 {
+  opacity: 0.6;
+}
+
+.image2:hover {
+  opacity: 0.6;
+}
+
+
 .btn-outline-primary {
   color: #235265;
   border-color: #235265;
 }
 
 .btn-outline-primary:hover {
-  color: #212529;
+  color: #bee5eb;
   background-color: #235265;
   border-color: #235265;
 }
@@ -6123,6 +6143,12 @@ a.close.disabled {
   background-color: #b2b2b2 !important;
 }
 
+a.bg-offer:hover, a.bg-offer:focus,
+button.bg-offer:hover,
+button.bg-offer:focus {
+  background-color: #a269e9 !important;
+}
+
 a.bg-primary:hover, a.bg-primary:focus,
 button.bg-primary:hover,
 button.bg-primary:focus {
@@ -6140,7 +6166,7 @@ button.bg-secondary:focus {
 }
 
 .bg-success {
-  background-color: #28a745 !important;
+  background-color: #abdde9 !important;
 }
 
 a.bg-success:hover, a.bg-success:focus,
@@ -9658,3 +9684,41 @@ table#receipt{
   border-collapse:collapse;
 }
 
+.message-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  max-width: 300px;
+}
+
+.message {
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  color: white;
+  opacity: 0.95;
+  transition: opacity 0.3s ease;
+}
+
+.message-success {
+  background-color: #28a745;
+}
+
+.message-error {
+  background-color: #ffc107; /* #dc3545 */
+}
+
+.message-info {
+  background-color: #17a2b8;
+}
+
+.message-warning {
+  background-color: #ffc107;
+}
+
+.close {
+  float: rigth;
+  cursor: pointer;
+  margin-left: 15px;
+}

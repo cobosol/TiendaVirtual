@@ -16,11 +16,13 @@ from django.http import HttpResponse, Http404, JsonResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from registration.models import Profile
+from cart.models import DeliveryInfo
 import os, sys 
 from django.conf import settings
 from django.contrib.staticfiles import finders
 import json
 from django.utils.html import strip_tags
+import decimal
 
 def loadSecret():
     try:
@@ -105,6 +107,8 @@ def createPaymentCardsJSON(request, order_number):
         } 
     
     headers['Authorization'] = 'Bearer ' + creds["token"]   
+    print(headers)
+    print(payload)
 
     response = requests.request("POST", url, headers=headers, data=payload)
     return response
@@ -158,32 +162,43 @@ def create_order(request, transaction_id, usd = True, cach = False):
     profile = get_object_or_404(Profile, user = user) # Accedo a su perfil
     MND = profile.MONEY_TYPE[profile.money_type][1] # Saco el tipo de moneda del usuario
     results = {} # Crear variable para la respuesta
-    if cach: # Si se va a pagar en efectivo guardo la información de la Form para efectivo
-        checkout_form = CachForm(request.POST, instance=order)
+    if transaction_id == 2:
+        checkout_form = PagarForm(request.POST, instance=order)
         order = checkout_form.save(commit=False)
-        if usd: # Guardo el tipo de moneda en efectivo
-             order.currency = 'USD'
-        else:
-             order.currency = 'CUP'
-    else: # Si es pago por tarjeta
-        if usd: # Tarjetas internacionales
-            checkout_form = CheckoutForm(request.POST, instance=order)
-            order = checkout_form.save(commit=False) 
-            order.currency = 'USD'
-            order.delivery_price = store.price_usd
-        else: # tarjetas nacionales
-            pagar_form = PagarForm(request.POST, instance=order)
-            order = pagar_form.save(commit=False)
-            if MND == 'CUP': # Si el usuario tiene en su perfil moneda CUP
-                order.delivery_price = store.price_cup
+        order.currency = 'USD'
+        deliveryInfo = get_object_or_404(DeliveryInfo, client=request.user)
+        cart_subtotal = cart.cart_subtotal(request)
+        order.delivery_price = cart.cart_delivery_price(request, cart_subtotal, MND)
+        print(order.delivery_price)
+    else:
+        if cach: # Si se va a pagar en efectivo guardo la información de la Form para efectivo
+            checkout_form = CachForm(request.POST, instance=order)
+            order = checkout_form.save(commit=False)
+            if usd: # Guardo el tipo de moneda en efectivo
+                order.currency = 'USD'
+            else:
                 order.currency = 'CUP'
-            else: # Si tiene en su perfil MLC
-                order.delivery_price = store.price_mlc
-                order.currency = 'MLC'
+                order.delivery_price = store.price_cup
+        else: # Si es pago por tarjeta
+            if usd: # Tarjetas internacionales
+                checkout_form = CheckoutForm(request.POST, instance=order)
+                order = checkout_form.save(commit=False)
+                order.currency = 'USD'
+                deliveryInfo = get_object_or_404(DeliveryInfo, client=request.user)
+                order.delivery_price = deliveryInfo.calculate_deliveryHabana()
+            else: # tarjetas nacionales
+                pagar_form = PagarForm(request.POST, instance=order)
+                order = pagar_form.save(commit=False)
+                if MND == 'CUP': # Si el usuario tiene en su perfil moneda CUP
+                    order.delivery_price = store.price_cup
+                    order.currency = 'CUP'
+                else: # Si tiene en su perfil MLC
+                    order.delivery_price = store.price_mlc
+                    order.currency = 'MLC'
     #Lleno datos iguales para todo tipo de pago
     order.user = user
     order.transaction_id = transaction_id # Esto viene por parámetro
-    order.ip_address = request.META.get('REMOTE_ADDR') 
+    order.ip_address = request.META.get('REMOTE_ADDR')
     order.delivery = store
     order.store_name = store.name
     order.price = price2    
@@ -207,6 +222,8 @@ def create_order(request, transaction_id, usd = True, cach = False):
             oi.save()
         order.update_status(Order.SUBMITTED) 
         order.save()
+        print(order.delivery_price)
+        print(order.total)
         # all set, empty cart
         cart.empty_cart(request)
     # return the new order object
@@ -256,30 +273,27 @@ def export_pdf(request, id_orden):
     order = Order.objects.filter(id=id_orden)[0]
     data['order'] = order
     # Cargar el perfil del usurario
-    user_profile = Profile.objects.get(user=request.user)
-    data['first_name'] = request.user.first_name
-    data['last_name'] = request.user.last_name
+    user_profile = Profile.objects.get(user=order.user)
+    data['first_name'] = order.user.first_name
+    data['last_name'] = order.user.last_name
     data['date'] = order.date
-    data['email'] = order.payment_email
+    data['email'] = order.user.email
     data['phone'] = order.payment_phone
     data['address'] = user_profile.address
-    data['importe'] = order.total
+    data['importe'] = decimal.Decimal(order.total)
     data['delivery_name'] = order.delivery_name
     if order.delivery_street and order.delivery_apto and order.delivery_between:
         delivery_add1 = order.delivery_street + " " + order.delivery_apto + " entre " + order.delivery_between + ". " + order.SUBSTATE[order.delivery_substate][1] + ", " + order.delivery_state
         data['delivery_add1'] = delivery_add1
     else:
         data['delivery_add1'] = " "
-    print(order.delivery_street)
-    print(str(order.delivery_apto))
-    print(order.delivery_between)
-    print(order.SUBSTATE[order.delivery_substate][1])
-    print(order.delivery_state)
-    print(data['delivery_add1'])
     data['delivery_add2'] = order.delivery_address_2
     data['state'] = order._state
+    data['delivery_phone'] = order.delivery_phone
+    data['delivery_ws'] = order.delivery_ws
     data['CI'] = order.delivery_ci
-    data['delivery_price'] = order.delivery_price
+    data['delivery_price'] = decimal.Decimal(order.delivery_price)
+    data['currency'] = order.currency
     context = {'data': data, 'orders': orders, 'request': request,'qr':qr_generado}
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="factura.pdf"'

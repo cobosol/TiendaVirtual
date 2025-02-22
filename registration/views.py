@@ -87,24 +87,14 @@ def update_profile_admin2(request, template_name="registration/update_profile_ad
     if request.method == 'POST':
         try:
             postdata = request.POST.copy()
-            print(postdata)
             if postdata['submit'] == 'Actualizar':
-                print("Entró a Actualizar")
                 user = request.user
                 if (user.is_authenticated):
-                    print("Autenticado")
                     profile = get_object_or_404(Profile, user = user)
-                    print(profile.money_type)
-                    #form = UpdateProfileAdminForm(request.POST)
-                    print(int(postdata['money_type']))
                     profile.money_type = int(postdata['money_type'])
-                    print(profile.money_type)
                     store_pk = int(postdata['prefered_store'])
-                    print("Voy a buscar el Store")
                     profile.prefered_store =  get_object_or_404(Store, pk = store_pk) 
-                    print(profile.prefered_store)
                     profile.save()
-                    print("Guardado el perfil")
                     url = reverse('home')
                     return HttpResponseRedirect(url)
         except:

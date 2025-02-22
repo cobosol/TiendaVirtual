@@ -19,7 +19,7 @@
         <div class="row px-xl-5">
             <div id="imagen" class="col-lg-3 pb-0 card-header product-img position-relative text-md-left overflow-hidden bg-transparent p-0">
                 <h5 class="font-weight-semi-bold" style="font-family: sans-serif;">{{ p.gname }} {{ p.presentation }}</h5>
-                <img width="220" height="320" src="{{p.get_image_url}}" alt="{{p.get_image_url}}">
+                <img class="image1 "width="220" height="355" src="{{p.get_image_url}}" alt="{{p.get_image_url}}">
 <!--                 <div class="d-flex mb-4">
                     <p class="text-dark font-weight-medium mb-0 mr-3" style="font-family: roboto;">Ficha Técnica:</p>
                     <a href="{{ p.get_file_url }}" target="_blank"> {{ p.gname }} </a>
@@ -51,7 +51,8 @@
                                     {{ p.price_base|currency }}
                                 </td>
                             </tr>
-<!--                             <tr>
+                            <!-- {% if vendedor == 'True' %} -->
+                            <tr>
                                 <td class="align-middle">
                                     CUP
                                 </td>
@@ -66,46 +67,48 @@
                                 <td class="align-middle">
                                     {{ p.price_mlc|currency }}
                                 </td>
-                            </tr> -->
+                            </tr>
+<!--                             {% endif %} -->
                         </tbody>
                     </table>
                 </div>
                 <div>
-                    <h6 class="font-weight-semi-bold text-primary" style="font-family: sans-serif;">Formas de pago:</h6>
-                    <h6 class="text-primary" style="font-family: sans-serif;">* En nuestros <a href="/tiendas/" style="font-family: sans-serif;"><i class="font-weight-semi-bold text-primary">Puntos de venta</i></a> 
-                        puede pagar en CUP, MLC, por transferencia o en efectivo. Estamos para servirle.</h6>
-                    <h6 class="text-primary" style="font-family: sans-serif;">* Si desea ser: <br> 
+                        <p>
+                            <h6 class="font-weight-semi-bold text text-primary mb-4"> Descripción: </h6>{{p.description|safe}}
+                            <br> 
+                        </p>
+<!--                     <h6 class="text-primary"  style="font-family: sans-serif;">* Si desea ser: <br> 
                         -<i class="font-weight-semi-bold text-primary">Distribuidor</i> de nuestros productos o hacer compras al mayor. <br>
                         -<i class="font-weight-semi-bold text-primary">Productor</i> utilizando nuestras materias primas. <br>
                         Le brindamos asesoramiento y beneficios económicos. <br>
                         Acceda a su <a href="/accounts/profile/" style="font-family: sans-serif;"><i class="font-weight-semi-bold text-primary">Perfil personal</i></a> 
-                        y especifique los datos que allí se solicitan o <a href="/contacto/" style="font-family: sans-serif;"><i class="font-weight-semi-bold text-primary">Contáctenos</i></a>.</h6>
+                        y especifique los datos que allí se solicitan o <a href="/contacto/" style="font-family: sans-serif;"><i class="font-weight-semi-bold text-primary">Contáctenos</i></a>.</h6> -->
                 </div>                 
             <!--     <h4 class="mb-4" style="font-family: roboto;">Producto de: {{ p.brand }} </h4> -->
             </div>
             <div id="opciones_compra" class="col-lg-4 pb-0">
                 <div>
-                    <h6 class="font-weight-semi-bold text-primary" style="font-family: sans-serif;">Disponibilidad</h6>
+                    <h6 class="font-weight-semi-bold text-primary" style="font-family: sans-serif;">Entregas</h6>
                     <table class="table table-bordered text-center mb-0 border-0" style="font-family: sans-serif;">
                         <thead class="bg-primary text-light">
                             <tr>
                                 <th>Forma de entrega</th>
-                                <th>Disponibles</th>
+                                <!-- <th>Disponibles</th> -->
                             </tr>
                         </thead>
                         <tbody class="align-middle">
-                            {% for ps in products_stores %}
+                            {% for s in stores %}
                             <tr>
                                 <td class="align-middle">
-                                    <a href="{{ps.store.get_absolute_url}}" class="text-dark font-weight-medium mb-0 mr-3" style="font-family: sans-serif;">{{ ps.store.name }}:</a>
+                                    <a href="{{s.get_absolute_url}}" class="text-dark font-weight-medium mb-0 mr-3" style="font-family: sans-serif;">{{ s.name }}:</a>
                                 </td>
-                                <td class="align-middle">
+      <!--                           <td class="align-middle">
                                     {% if ps.available > 0%}
                                         {{ ps.available }}
                                     {% else %}
                                         0
                                     {% endif %}
-                                </td>
+                                </td> -->
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -135,10 +138,10 @@
                 {% endfor %}
             </ul>
             {% endif %}
-            <p>
+<!--             <p>
                 <h6 class="font-weight-semi-bold mb-4"> Descripción: </h6>{{p.description|safe}}
                 <br> 
-            </p>
+            </p> -->
         </div>
     </div>
 

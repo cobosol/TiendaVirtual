@@ -26,11 +26,14 @@
     <link href="/static/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="/static/css/style2.css" rel="stylesheet">
 </head>
 
 <body>
     <!-- Encabezado -->
+    
+    {% include 'messages.html' %}
+
     <section id="top_presentacion">
         <nav class="navbar navbar-expand-lg bg-light navbar-light">
             <div class="col-lg-2 text-center d-none d-lg-block">
@@ -60,7 +63,13 @@
                     </button>                        
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a href="/" class="nav-item nav-link text-primary" style="font-family: sans-serif;">Tienda</a>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle text-primary" data-toggle="dropdown" style="font-family: sans-serif;">Tienda</a>
+                                <div class="dropdown-menu rounded-0 m-0">
+                                    <a href="/" style="font-family: sans-serif; text-primary"><i class="dropdown-item">Inicio</i></a>
+                                    <a href="/catalogo/todos/" style="font-family: sans-serif; text-primary"><i class="dropdown-item">Todos los productos</i></a>
+                                </div>
+                            </div>
                             <a href="https://produccionesmuhia.ca" class="nav-item nav-link text-primary" target="_blank" style="font-family: sans-serif;">Nosotros</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle text-primary" data-toggle="dropdown" style="font-family: sans-serif;">Compras</a>
@@ -80,18 +89,28 @@
                                     {% endfor %}
                                 </div>
                             </div>
-                            {% if request.user.is_staff %}
+                            
                             <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle text-primary" data-toggle="dropdown" style="font-family: sans-serif;">Administración</a>
+                                {% if adminAccess == 'True' %}
+                                <a href="#" class="nav-link dropdown-toggle text-primary" data-toggle="dropdown" style="font-family: sans-serif;">Admin</a>
+                                {% endif%}
                                 <div class="dropdown-menu rounded-0 m-0">
-                                    <a href="{% url 'admin_orders_list' %}" style="font-family: sans-serif;"><i class="dropdown-item">Seguir órdenes de compra</i></a>
-                                    <a href="{% url 'gestion' %}" style="font-family: sans-serif; text-primary"><i class="dropdown-item">Gestionar productos</i></a>
-                                    <a href="{% url 'banners' %}" style="font-family: sans-serif; text-primary"><i class="dropdown-item">Gestionar banners</i></a>
-                                    <a href="{% url 'precios' %}" style="font-family: sans-serif; text-primary"><i class="dropdown-item">Gestionar precio</i></a>
-                                    <a href="/accounts/profile/admin/" style="font-family: sans-serif; text-primary"><i class="dropdown-item">Gestionar perfil</i></a>        
+                                    {% if comercial == 'True' or request.user.is_staff %}
+                                        <a href="{% url 'admin_orders_list' %}" style="font-family: sans-serif;"><i class="dropdown-item">Seguir órdenes de compra</i></a>
+                                    {% endif %}
+                                    {% if request.user.is_staff %}
+                                        <a href="{% url 'precios' %}" style="font-family: sans-serif; text-primary"><i class="dropdown-item">Gestionar precio</i></a>
+                                    {% endif %}
+                                    {% if vendedor == 'True' or request.user.is_staff or comercial == 'True'%}
+                                        <a href="{% url 'gestion' %}" style="font-family: sans-serif; text-primary"><i class="dropdown-item">Gestionar productos</i></a>
+                                        <a href="/accounts/profile/admin/" style="font-family: sans-serif; text-primary"><i class="dropdown-item">Gestionar perfil</i></a>        
+                                    {% endif %}
+                                    {% if marketing == 'True' or request.user.is_staff %}
+                                        <a href="{% url 'banners' %}" style="font-family: sans-serif; text-primary"><i class="dropdown-item">Gestionar banners</i></a>
+                                        <a href="{% url 'offers' %}" style="font-family: sans-serif; text-primary"><i class="dropdown-item">Gestionar ofertas</i></a>
+                                    {% endif %}
                                 </div>
                             </div>
-                            {% endif %}
                         </div>
                             {% if not request.user.is_authenticated %}
                                 <a href="{% url 'login' %}" class="nav-item nav-link text-primary" style="font-family: sans-serif;">Entrar / </a>
@@ -103,8 +122,8 @@
                     </div>
                 </nav>
             </div>
-            <div class="col-lg-1 d-none d-lg-block text-lg-right">
-                <div class="d-xl-flex d-none d-md-flex>
+            <div class="col-lg-1 text-lg-right">
+                <div class="d-xl-flex d-md-flex>
                     <a href="/carrito/carrito/">
                         <span class="fas fa-shopping-cart text-secondary"> {% cart_box request %} </span>
                     </a>
@@ -162,6 +181,24 @@
                 </nav>
                 </div>
                 {% endif %}
+  <!--               <div>
+                    <table class="table table-bordered text-center mb-0 border-0" style="font-family: sans-serif;">
+                        <thead class="bg-primary text-light">
+                            <tr>
+                                <th>Forma de entrega</th>
+                            </tr>
+                        </thead>
+                        <tbody class="align-middle">
+                            {% for s in stores %}
+                            <tr>
+                                <td class="align-middle">
+                                    <a href="{{s.get_absolute_url}}" class="text-dark font-weight-medium mb-0 mr-3" style="font-family: sans-serif;">{{ s.name }}</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div> -->
                 <div class="row border-top px-xl-1">
 <!--                     <img class="flex-grow-2" id="Imagen" src={% static "img/muhia.png" %} width="100%" href="https://produccionesmuhia.ca"></a> -->
                 </div>
@@ -186,7 +223,8 @@
                 <h2 class="font-weight-bold mb-4" style="font-family: sans-serif; color: #ffffff;">Contáctenos</h2>
                 <ul style="font-family: Roboto, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; list-style: none; line-height: 150%; margin: 0; padding: 0%; color: #ffffff;">
                     <li class="mb-2"><i class="fa fa-envelope text-red-50 mr-3"></i><a class="text-light xfont-weight-semi-bold" style="text-decoration: none;" href=" ">comercial@produccionesmuhia.ca</a></li>
-                    <li class="mb-2"><i class="fa fa-phone text-red-50 mr-3"></i></a> Atención al cliente: +53 5 988 0481</li>
+                    <li class="mb-2"><i class="fa fa-phone text-red-50 mr-3"></i></a> Atención al cliente: +53 5 988 0466</li>
+                    <li class="mb-2"></a> +53 63451050, +53 59880472</li>
                     <li class="mb-2"><i class="fa fa-phone text-red-50 mr-3"></i></a> Asistencia informática: +53 5 988 0455</li>
                     <li class="mb-2"><i class="fa fa-envelope text-red-50 mr-3"></i><a class="text-light xfont-weight-semi-bold" style="text-decoration: none;" href="/contacto/">Envíe sus comentarios</a></li>
                 </ul>
@@ -217,6 +255,11 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" fill="#ffffff" viewBox="0 0 16 16" class="bi bi-facebook text-light facebook" href="https://www.facebook.com/produccionesmuhia" style="max-width: 24px;font-size: 18px;max-height: 24px;">
                             <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"></path>
                         </svg>
+                    </a>
+                    <a id="whatsapp" class="bi bi-whatsapp" href="https://chat.whatsapp.com/JV83muQ3vQmKsHA1xdJ7j8" target="_blank" style="color:#153d50; width: 3em; vertical-align: middle;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" fill="#153d50" class="bi bi-whatsapp text-light whatsapp" viewBox="0 0 16 16">
+                            <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+                          </svg>
                     </a>
                 </nav>
             </div>
@@ -252,6 +295,44 @@
 
     <!-- Template Javascript -->
     <script src="/static/js/main.js"></script>
+    
+    <!-- Start Open Web Analytics Tracker -->
+<script type="text/javascript">
+//<![CDATA[
+var owa_baseUrl = 'https://estadisticas.produccionesmuhia.ca/';
+var owa_cmds = owa_cmds || [];
+owa_cmds.push(['setSiteId', 'fa9baacba0ad06a01e4c87644530074a']);
+owa_cmds.push(['trackPageView']);
+owa_cmds.push(['trackClicks']);
+
+(function() {
+    var _owa = document.createElement('script'); _owa.type = 'text/javascript'; _owa.async = true;
+    owa_baseUrl = ('https:' == document.location.protocol ? window.owa_baseSecUrl || owa_baseUrl.replace(/http:/, 'https:') : owa_baseUrl );
+    _owa.src = owa_baseUrl + 'modules/base/dist/owa.tracker.js';
+    var _owa_s = document.getElementsByTagName('script')[0]; _owa_s.parentNode.insertBefore(_owa, _owa_s);
+}());
+//]]>
+</script>
+<!-- End Open Web Analytics Code -->
+
+<!-- Mensajes temporales -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function(){
+        let messages = document.querySelectorAll('.message');
+        messages.forEach(msg => {
+            msg.style.opacity = '0';
+            setTimeout(() => msg.remove(), 300);
+        });
+    }, 5000);
+});
+</script>
+
+
+{% include 'cookie_banner.html' %}
+
+
+
 </body>
 
 </html>
